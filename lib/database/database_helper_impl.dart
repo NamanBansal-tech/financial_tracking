@@ -63,12 +63,6 @@ class DatabaseHelperImpl extends DatabaseHelper {
         e.remove('id');
         batch.insert(EDatabaseTableNames.categoryTable.name, e);
       }
-
-      ////TODO: Remove this code
-      for (var e in sampleTransactions) {
-        e.remove('id');
-        batch.insert(EDatabaseTableNames.transactionTable.name, e);
-      }
       await batch.commit();
     } catch (e) {
       debugPrint('Create Table Exception: $e');
