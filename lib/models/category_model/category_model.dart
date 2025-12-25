@@ -1,0 +1,22 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'category_model.freezed.dart';
+part 'category_model.g.dart';
+
+@freezed
+abstract class CategoryModel with _$CategoryModel {
+  factory CategoryModel({
+    int? id,
+    String? categoryName,
+    double? totalExpense,
+    dynamic budgetAmount,
+    int? duration,
+    int? budgetPeriod,
+    String? budgetSetDate,
+  }) = _CategoryModel;
+
+  factory CategoryModel.fromJson(Map<String, dynamic> json) =>
+      _$CategoryModelFromJson(json);
+}
+
+enum BudgetPeriods { weekly, monthly, quarterly, annually }
