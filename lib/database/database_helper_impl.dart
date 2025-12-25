@@ -5,7 +5,6 @@ import 'package:finance_tracking/models/category_model/category_model.dart';
 import 'package:finance_tracking/models/page_meta/page_meta.dart';
 import 'package:finance_tracking/models/transaction_model/transaction_model.dart';
 import 'package:finance_tracking/utils/sample_budget_data.dart';
-import 'package:finance_tracking/utils/sample_transactions.dart';
 import 'package:finance_tracking/utils/type_def.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
