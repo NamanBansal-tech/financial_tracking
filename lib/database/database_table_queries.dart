@@ -9,18 +9,18 @@ notes TEXT,
 type INTEGER
 )
 ''';
-  static String createCategoryTable = '''
+static String createCategoryTable = '''
 CREATE TABLE ${EDatabaseTableNames.categoryTable.name}(
-id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-categoryName TEXT,
-budgetAmount FLOAT,
-totalExpense FLOAT,
-duration INTEGER,
-budgetPeriod INTEGER,
-budgetSetDate TEXT
+  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  categoryName TEXT,
+  budgetAmount REAL,
+  totalExpense REAL,
+  startDate TEXT,
+  endDate TEXT
 )
 ''';
 }
+
 
 enum EDatabaseTableNames {
   transactionTable,

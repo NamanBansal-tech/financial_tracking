@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 class CategoryListPage extends StatelessWidget {
   const CategoryListPage({
     super.key,
-    required this.fromDashboard,
+    required this.fromOtherPage,
 
   });
 
-  final bool fromDashboard;
+  final bool fromOtherPage;
 
   static Route<dynamic> route({
-    required bool fromDashboard,
+    required bool fromOtherPage,
   }) {
     return MaterialPageRoute(
       builder:
           (_) => CategoryListPage(
-            fromDashboard: fromDashboard,
+            fromOtherPage: fromOtherPage,
           ),
     );
   }
@@ -24,7 +24,7 @@ class CategoryListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CategoriesList(
-      fromDashboard: fromDashboard,
+      fromOtherPage: fromOtherPage,
     );
   }
 }

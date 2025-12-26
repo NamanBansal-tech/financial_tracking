@@ -21,9 +21,7 @@ class DashBoardPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transactionRef = transactionProviderProvider(widgetRef: ref);
-    final categoryRef = categoryProviderProvider(
-      widgetRef: ref,
-    );
+    final categoryRef = categoryProviderProvider(widgetRef: ref);
     final transactionProvider = ref.watch(transactionRef.notifier);
     final categoryState = ref.watch(categoryRef);
     final transactionState = ref.watch(transactionRef);

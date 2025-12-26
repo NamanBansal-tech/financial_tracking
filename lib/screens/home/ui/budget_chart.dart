@@ -35,7 +35,7 @@ class BudgetChart extends StatelessWidget {
               'Expenses': category.totalExpense ?? 0,
             },
             baseChartColor: Colors.amber,
-            totalValue: category.budgetAmount,
+            totalValue: category.budgetAmount?.toDouble(),
             colorList: [
               Colors.red,
             ],

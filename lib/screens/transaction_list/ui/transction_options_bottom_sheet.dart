@@ -21,6 +21,7 @@ class TransctionOptionsBottomSheet extends StatelessWidget {
             leading: Icon(Icons.edit),
             title: Text("Edit"),
             onTap: () {
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 CreateTransactionPage.route(transactionModel: transactionModel),

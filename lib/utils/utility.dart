@@ -6,7 +6,10 @@ class Utility {
     return DateFormat('dd-MM-yyyy').format(date);
   }
 
-  static String calenderMonthFormatDate(DateTime date) {
+  static String calenderMonthFormatDate(DateTime? date) {
+    if ((date == null)) {
+      return "";
+    }
     return DateFormat('MMMM, yyyy').format(date);
   }
 
@@ -39,18 +42,18 @@ class Utility {
     }
   }
 
-  static String getDisplayNameforBudgetPeriod(int budgerPeriodIndex) {
-    switch (budgerPeriodIndex) {
-      case 0:
-        return 'Week(s)';
-      case 1:
-        return 'Month(s)';
-      case 2:
-        return 'Quaters(s)';
-      case 3:
-        return 'Year(s)';
-      default:
-        return 'Week(s)';
+  static String getFormattedCategoryDate(dynamic date) {
+    try {
+      if ((date == null)) {
+        return "";
+      }
+      if (date is String) {
+        final dateTime = DateTime.tryParse(date);
+        return getDateFromDateTime(dateTime) ?? "";
+      }
+      return getDateFromDateTime(date) ?? "";
+    } catch (e) {
+      return "";
     }
   }
 }

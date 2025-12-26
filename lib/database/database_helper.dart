@@ -25,8 +25,8 @@ abstract class DatabaseHelper {
   ResultOrException<List<CategoryModel>> getCategories({
     String? categoryName,
     double? budgetAmount,
-    int? duration,
-    int? budgetPeriod,
+    String? startDate,
+    String? endDate,
   });
   ResultOrException<CategoryModel> getCategory(int categoryId);
 }

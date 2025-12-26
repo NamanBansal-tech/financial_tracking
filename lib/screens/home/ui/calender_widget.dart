@@ -14,77 +14,74 @@ class CalenderWidget extends StatelessWidget {
   final DateTime selectedMonth;
   final List<TransactionModel> transactions;
 
+  bool _isSameDay(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
+
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey, width: 1),
+        border: Border.all(color: Colors.grey),
       ),
-      padding: EdgeInsets.symmetric(vertical: 12),
       child: Column(
         children: [
           Text(
             Utility.calenderMonthFormatDate(selectedMonth),
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
           TableCalendar(
             firstDay: DateTime.utc(2010, 10, 16),
-            onDisabledDayTapped: (day) {
-              Navigator.push(
-                context,
-                TransactionsListPage.route(transactionDate: day),
-              );
-            },
             lastDay: DateTime.utc(2030, 3, 14),
+            focusedDay: selectedMonth,
             headerVisible: false,
-            focusedDay: DateTime.now(), //need to pass for mannual any month
+            availableGestures: AvailableGestures.none,
+            onDisabledDayTapped: (day) =>
+                _openTransactions(context, day),
             calendarBuilders: CalendarBuilders(
-              defaultBuilder: (context, day, focusedDay) {
-                final filteredTransactions =
-                    transactions.where((e) {
-                      final transactionDate = DateTime.parse(e.date!);
-                      return transactionDate.day == day.day &&
-                          transactionDate.month == day.month &&
-                          transactionDate.year == day.year;
-                    }).toList();
-                double totalExpenses = filteredTransactions
-                    .where((e) => e.type == 0)
-                    .fold(0.0, (sum, e) => sum + e.amount);
-                double totalIncome = filteredTransactions
-                    .where((e) => e.type == 1)
-                    .fold(0.0, (sum, e) => sum + e.amount);
+              defaultBuilder: (context, day, _) {
+                final dayTransactions = transactions.where((e) =>
+                    _isSameDay(DateTime.parse(e.date!), day));
 
-                final bool isExpenseLarger = totalExpenses > totalIncome;
+                final expense = dayTransactions
+                    .where((e) => e.type == 0)
+                    .fold<double>(0, (s, e) => s + e.amount);
+
+                final income = dayTransactions
+                    .where((e) => e.type == 1)
+                    .fold<double>(0, (s, e) => s + e.amount);
+
+                final color =
+                    expense > income ? Colors.red : income > expense
+                        ? Colors.green
+                        : null;
+
                 return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      TransactionsListPage.route(transactionDate: day),
-                    );
-                  },
+                  onTap: () => _openTransactions(context, day),
                   child: CircleAvatar(
-                    backgroundColor:
-                        isExpenseLarger
-                            ? Colors.red
-                            : totalExpenses < totalIncome
-                            ? Colors.green
-                            : null,
+                    backgroundColor: color,
                     child: Text(
-                      day.day.toString(),
+                      '${day.day}',
                       style: TextStyle(
-                        color: isExpenseLarger ? Colors.white : null,
+                        color: color != null ? Colors.white : null,
                       ),
                     ),
                   ),
                 );
               },
             ),
-            availableGestures: AvailableGestures.none,
           ),
         ],
       ),
+    );
+  }
+
+  void _openTransactions(BuildContext context, DateTime day) {
+    Navigator.push(
+      context,
+      TransactionsListPage.route(transactionDate: day),
     );
   }
 }

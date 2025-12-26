@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 class CategoryOptionsBottomSheet extends StatelessWidget {
   const CategoryOptionsBottomSheet({
     super.key,
-    required this.fromDashboard,
+    required this.fromOtherPage,
     required this.categoryModel,
   });
 
   final CategoryModel categoryModel;
-  final bool fromDashboard;
+  final bool fromOtherPage;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class CategoryOptionsBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (fromDashboard)
+          if (fromOtherPage)
             ListTile(
               leading: Icon(Icons.check),
               title: Text("Select"),
@@ -35,7 +35,7 @@ class CategoryOptionsBottomSheet extends StatelessWidget {
               Navigator.push(
                 context,
                 CreateCategoryPage.route(
-                  fromCreateTransactionsPage: fromDashboard,
+                  fromOtherPage: true,
                   categoryModel: categoryModel,
                 ),
               ).then((_) {

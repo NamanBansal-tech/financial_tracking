@@ -1,6 +1,5 @@
-// dart format width=80
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -16,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CategoryModel {
 
- int? get id; String? get categoryName; double? get totalExpense; dynamic get budgetAmount; int? get duration; int? get budgetPeriod; String? get budgetSetDate;
+ int? get id; String? get categoryName; double? get totalExpense; num? get budgetAmount; String? get startDate; String? get endDate;
 /// Create a copy of CategoryModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +28,16 @@ $CategoryModelCopyWith<CategoryModel> get copyWith => _$CategoryModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.categoryName, categoryName) || other.categoryName == categoryName)&&(identical(other.totalExpense, totalExpense) || other.totalExpense == totalExpense)&&const DeepCollectionEquality().equals(other.budgetAmount, budgetAmount)&&(identical(other.duration, duration) || other.duration == duration)&&(identical(other.budgetPeriod, budgetPeriod) || other.budgetPeriod == budgetPeriod)&&(identical(other.budgetSetDate, budgetSetDate) || other.budgetSetDate == budgetSetDate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.categoryName, categoryName) || other.categoryName == categoryName)&&(identical(other.totalExpense, totalExpense) || other.totalExpense == totalExpense)&&(identical(other.budgetAmount, budgetAmount) || other.budgetAmount == budgetAmount)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,categoryName,totalExpense,const DeepCollectionEquality().hash(budgetAmount),duration,budgetPeriod,budgetSetDate);
+int get hashCode => Object.hash(runtimeType,id,categoryName,totalExpense,budgetAmount,startDate,endDate);
 
 @override
 String toString() {
-  return 'CategoryModel(id: $id, categoryName: $categoryName, totalExpense: $totalExpense, budgetAmount: $budgetAmount, duration: $duration, budgetPeriod: $budgetPeriod, budgetSetDate: $budgetSetDate)';
+  return 'CategoryModel(id: $id, categoryName: $categoryName, totalExpense: $totalExpense, budgetAmount: $budgetAmount, startDate: $startDate, endDate: $endDate)';
 }
 
 
@@ -49,7 +48,7 @@ abstract mixin class $CategoryModelCopyWith<$Res>  {
   factory $CategoryModelCopyWith(CategoryModel value, $Res Function(CategoryModel) _then) = _$CategoryModelCopyWithImpl;
 @useResult
 $Res call({
- int? id, String? categoryName, double? totalExpense, dynamic budgetAmount, int? duration, int? budgetPeriod, String? budgetSetDate
+ int? id, String? categoryName, double? totalExpense, num? budgetAmount, String? startDate, String? endDate
 });
 
 
@@ -66,15 +65,14 @@ class _$CategoryModelCopyWithImpl<$Res>
 
 /// Create a copy of CategoryModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? categoryName = freezed,Object? totalExpense = freezed,Object? budgetAmount = freezed,Object? duration = freezed,Object? budgetPeriod = freezed,Object? budgetSetDate = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? categoryName = freezed,Object? totalExpense = freezed,Object? budgetAmount = freezed,Object? startDate = freezed,Object? endDate = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,categoryName: freezed == categoryName ? _self.categoryName : categoryName // ignore: cast_nullable_to_non_nullable
 as String?,totalExpense: freezed == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
 as double?,budgetAmount: freezed == budgetAmount ? _self.budgetAmount : budgetAmount // ignore: cast_nullable_to_non_nullable
-as dynamic,duration: freezed == duration ? _self.duration : duration // ignore: cast_nullable_to_non_nullable
-as int?,budgetPeriod: freezed == budgetPeriod ? _self.budgetPeriod : budgetPeriod // ignore: cast_nullable_to_non_nullable
-as int?,budgetSetDate: freezed == budgetSetDate ? _self.budgetSetDate : budgetSetDate // ignore: cast_nullable_to_non_nullable
+as num?,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
+as String?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -82,20 +80,149 @@ as String?,
 }
 
 
+/// Adds pattern-matching-related methods to [CategoryModel].
+extension CategoryModelPatterns on CategoryModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CategoryModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _CategoryModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CategoryModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _CategoryModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CategoryModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _CategoryModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? categoryName,  double? totalExpense,  num? budgetAmount,  String? startDate,  String? endDate)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _CategoryModel() when $default != null:
+return $default(_that.id,_that.categoryName,_that.totalExpense,_that.budgetAmount,_that.startDate,_that.endDate);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? categoryName,  double? totalExpense,  num? budgetAmount,  String? startDate,  String? endDate)  $default,) {final _that = this;
+switch (_that) {
+case _CategoryModel():
+return $default(_that.id,_that.categoryName,_that.totalExpense,_that.budgetAmount,_that.startDate,_that.endDate);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? categoryName,  double? totalExpense,  num? budgetAmount,  String? startDate,  String? endDate)?  $default,) {final _that = this;
+switch (_that) {
+case _CategoryModel() when $default != null:
+return $default(_that.id,_that.categoryName,_that.totalExpense,_that.budgetAmount,_that.startDate,_that.endDate);case _:
+  return null;
+
+}
+}
+
+}
+
 /// @nodoc
 @JsonSerializable()
 
 class _CategoryModel implements CategoryModel {
-   _CategoryModel({this.id, this.categoryName, this.totalExpense, this.budgetAmount, this.duration, this.budgetPeriod, this.budgetSetDate});
+   _CategoryModel({this.id, this.categoryName, this.totalExpense, this.budgetAmount, this.startDate, this.endDate});
   factory _CategoryModel.fromJson(Map<String, dynamic> json) => _$CategoryModelFromJson(json);
 
 @override final  int? id;
 @override final  String? categoryName;
 @override final  double? totalExpense;
-@override final  dynamic budgetAmount;
-@override final  int? duration;
-@override final  int? budgetPeriod;
-@override final  String? budgetSetDate;
+@override final  num? budgetAmount;
+@override final  String? startDate;
+@override final  String? endDate;
 
 /// Create a copy of CategoryModel
 /// with the given fields replaced by the non-null parameter values.
@@ -110,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CategoryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.categoryName, categoryName) || other.categoryName == categoryName)&&(identical(other.totalExpense, totalExpense) || other.totalExpense == totalExpense)&&const DeepCollectionEquality().equals(other.budgetAmount, budgetAmount)&&(identical(other.duration, duration) || other.duration == duration)&&(identical(other.budgetPeriod, budgetPeriod) || other.budgetPeriod == budgetPeriod)&&(identical(other.budgetSetDate, budgetSetDate) || other.budgetSetDate == budgetSetDate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CategoryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.categoryName, categoryName) || other.categoryName == categoryName)&&(identical(other.totalExpense, totalExpense) || other.totalExpense == totalExpense)&&(identical(other.budgetAmount, budgetAmount) || other.budgetAmount == budgetAmount)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,categoryName,totalExpense,const DeepCollectionEquality().hash(budgetAmount),duration,budgetPeriod,budgetSetDate);
+int get hashCode => Object.hash(runtimeType,id,categoryName,totalExpense,budgetAmount,startDate,endDate);
 
 @override
 String toString() {
-  return 'CategoryModel(id: $id, categoryName: $categoryName, totalExpense: $totalExpense, budgetAmount: $budgetAmount, duration: $duration, budgetPeriod: $budgetPeriod, budgetSetDate: $budgetSetDate)';
+  return 'CategoryModel(id: $id, categoryName: $categoryName, totalExpense: $totalExpense, budgetAmount: $budgetAmount, startDate: $startDate, endDate: $endDate)';
 }
 
 
@@ -130,7 +257,7 @@ abstract mixin class _$CategoryModelCopyWith<$Res> implements $CategoryModelCopy
   factory _$CategoryModelCopyWith(_CategoryModel value, $Res Function(_CategoryModel) _then) = __$CategoryModelCopyWithImpl;
 @override @useResult
 $Res call({
- int? id, String? categoryName, double? totalExpense, dynamic budgetAmount, int? duration, int? budgetPeriod, String? budgetSetDate
+ int? id, String? categoryName, double? totalExpense, num? budgetAmount, String? startDate, String? endDate
 });
 
 
@@ -147,15 +274,14 @@ class __$CategoryModelCopyWithImpl<$Res>
 
 /// Create a copy of CategoryModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? categoryName = freezed,Object? totalExpense = freezed,Object? budgetAmount = freezed,Object? duration = freezed,Object? budgetPeriod = freezed,Object? budgetSetDate = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? categoryName = freezed,Object? totalExpense = freezed,Object? budgetAmount = freezed,Object? startDate = freezed,Object? endDate = freezed,}) {
   return _then(_CategoryModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,categoryName: freezed == categoryName ? _self.categoryName : categoryName // ignore: cast_nullable_to_non_nullable
 as String?,totalExpense: freezed == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
 as double?,budgetAmount: freezed == budgetAmount ? _self.budgetAmount : budgetAmount // ignore: cast_nullable_to_non_nullable
-as dynamic,duration: freezed == duration ? _self.duration : duration // ignore: cast_nullable_to_non_nullable
-as int?,budgetPeriod: freezed == budgetPeriod ? _self.budgetPeriod : budgetPeriod // ignore: cast_nullable_to_non_nullable
-as int?,budgetSetDate: freezed == budgetSetDate ? _self.budgetSetDate : budgetSetDate // ignore: cast_nullable_to_non_nullable
+as num?,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
+as String?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

@@ -3,6 +3,7 @@ import 'package:finance_tracking/database/database_helper_impl.dart';
 import 'package:finance_tracking/models/page_meta/page_meta.dart';
 import 'package:finance_tracking/models/transaction_model/transaction_model.dart';
 import 'package:finance_tracking/providers/transaction/transaction_state.dart';
+import 'package:finance_tracking/utils/extensions.dart';
 import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -70,6 +71,9 @@ class TransactionProvider extends _$TransactionProvider {
       selectTransactionType(
         TransactionType.values.elementAt(transaction!.type!),
       );
+    }
+    if ((transaction?.categoryId != null)) {
+      state = state.copyWith(selectedCategoryId: transaction?.categoryId);
     }
     setToInitialState();
   }
@@ -143,11 +147,11 @@ class TransactionProvider extends _$TransactionProvider {
     );
   }
 
-  void resetWidgets(){
+  void resetWidgets() {
     transactionNameController.clear();
     transactionAmountController.clear();
     transactionDateController.clear();
-    state = state.copyWith(selectedDate: null,selectedTransactionType: null);
+    state = state.copyWith(selectedDate: null, selectedTransactionType: null);
   }
 
   Future<void> filterDashboard() async {
@@ -228,7 +232,12 @@ class TransactionProvider extends _$TransactionProvider {
 
   Future<void> getTransactionsForCalenderMonth() async {
     final result = await databaseHelper.getTransactions(
-      fromDate: Utility.getDateFromDateTime(state.selectedCalenderMonth),
+      fromDate: Utility.getDateFromDateTime(
+        state.selectedCalenderMonth?.firstDayOfMonth,
+      ),
+      toDate: Utility.getDateFromDateTime(
+        state.selectedCalenderMonth?.lastDayOfMonth,
+      ),
     );
     result.fold(
       (l) {

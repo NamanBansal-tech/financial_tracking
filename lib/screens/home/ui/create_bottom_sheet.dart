@@ -3,7 +3,7 @@ import 'package:finance_tracking/screens/create_category/create_category_page.da
 import 'package:finance_tracking/screens/create_transaction/create_transaction_page.dart';
 import 'package:flutter/material.dart';
 
-showCreateBottomSheet(BuildContext context) {
+void showCreateBottomSheet(BuildContext context) {
   customBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -44,7 +44,7 @@ showCreateBottomSheet(BuildContext context) {
             onTap: () {
               Navigator.push(
                 context,
-                CreateCategoryPage.route(fromCreateTransactionsPage: false),
+                CreateCategoryPage.route(fromOtherPage: false),
               );
             },
           ),

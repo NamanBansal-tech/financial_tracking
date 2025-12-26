@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dartz/dartz.dart';
 import 'package:finance_tracking/database/database_helper.dart';
 import 'package:finance_tracking/database/database_table_queries.dart';
@@ -119,8 +121,8 @@ class DatabaseHelperImpl extends DatabaseHelper {
   ResultOrException<List<CategoryModel>> getCategories({
     String? categoryName,
     double? budgetAmount,
-    int? duration,
-    int? budgetPeriod,
+    String? startDate,
+    String? endDate,
   }) async {
     try {
       final db = await database;
@@ -139,22 +141,17 @@ class DatabaseHelperImpl extends DatabaseHelper {
           whereArgs = [budgetAmount];
         }
       }
-      if (duration != null) {
-        if (where != null && whereArgs != null) {
-          where = '$where AND duration = ?';
-          whereArgs.add(duration);
-        } else {
-          where = "duration = ?";
-          whereArgs = [duration];
-        }
+      if (startDate != null) {
+        where = 'startDate >= ? ';
+        whereArgs = [startDate];
       }
-      if (budgetPeriod != null) {
+      if (endDate != null) {
         if (where != null && whereArgs != null) {
-          where = '$where AND budgetPeriod = ?';
-          whereArgs.add(budgetPeriod);
+          where = '$where AND endDate <= ?';
+          whereArgs.add(endDate);
         } else {
-          where = "budgetPeriod = ?";
-          whereArgs = [budgetPeriod];
+          where = 'endDate <= ?';
+          whereArgs = [endDate];
         }
       }
       if (db != null) {

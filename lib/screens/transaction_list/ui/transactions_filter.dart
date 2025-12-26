@@ -64,7 +64,7 @@ class TransactionsFilter extends ConsumerWidget {
           ),
           SizedBox(height: 10),
           CustomDropDownButton(
-            selectedValue: state.selectedTransactionType,
+            initialValue: state.selectedTransactionType,
             items:
                 TransactionType.values.map((e) {
                   return DropdownMenuItem(

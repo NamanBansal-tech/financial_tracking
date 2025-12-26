@@ -104,7 +104,7 @@ class DashboardFilter extends ConsumerWidget {
               final selectedCategory = await Navigator.push(
                 context,
                 CategoryListPage.route(
-                  fromDashboard: true,
+                  fromOtherPage: true,
                 ),
               );
               if (selectedCategory != null) {

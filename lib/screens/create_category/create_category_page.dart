@@ -5,21 +5,21 @@ import 'package:flutter/material.dart';
 class CreateCategoryPage extends StatelessWidget {
   const CreateCategoryPage({
     super.key,
-    required this.fromCreateTransactionsPage,
+    required this.fromOtherPage,
     this.categoryModel,
   });
 
-  final bool fromCreateTransactionsPage;
+  final bool fromOtherPage;
   final CategoryModel? categoryModel;
 
   static Route<dynamic> route({
-    required bool fromCreateTransactionsPage,
+    required bool fromOtherPage,
     CategoryModel? categoryModel,
   }) {
     return MaterialPageRoute(
       builder:
           (_) => CreateCategoryPage(
-            fromCreateTransactionsPage: fromCreateTransactionsPage,
+            fromOtherPage: fromOtherPage,
             categoryModel: categoryModel,
           ),
     );
@@ -28,7 +28,7 @@ class CreateCategoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CreateCategoryBody(
-      fromCreateTransactionsPage: fromCreateTransactionsPage,
+      fromOtherPage: fromOtherPage,
       categoryModel: categoryModel,
     );
   }

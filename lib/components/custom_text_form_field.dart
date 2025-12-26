@@ -45,26 +45,21 @@ class CustomTextFormField extends StatelessWidget {
         label: RichText(
           text: TextSpan(
             text: labelText,
-            style: TextStyle(
-              color: Colors.black87,
-            ),
+            style: TextStyle(color: Colors.black87),
             children: [
               if (isMandatoryField)
-                TextSpan(
-                  text: ' *',
-                  style: TextStyle(
-                    color: Colors.red,
-                  ),
-                ),
+                TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
             ],
           ),
         ),
         suffixIcon: suffix,
         hintText: hintText,
       ),
-      keyboardType: digitsOnly ? TextInputType.numberWithOptions(decimal: true) : null,
+      keyboardType:
+          digitsOnly ? TextInputType.numberWithOptions(decimal: true) : null,
       inputFormatters: [
-        if (digitsOnly) FilteringTextInputFormatter.digitsOnly,
+        if (digitsOnly)
+          FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
         LengthLimitingTextInputFormatter(lengthLimit),
       ],
     );

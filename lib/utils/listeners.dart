@@ -27,7 +27,6 @@ class Listeners {
         msg: state.message!,
         backgroundColor: Colors.green,
       );
-      Navigator.pop(context);
       provider.getTransactions();
     }
   }
@@ -36,7 +35,7 @@ class Listeners {
     required BuildContext context,
     required CategoryState state,
     required CategoryProvider provider,
-    bool popTillDashboard = false,
+    bool fromOtherPage = false,
   }) {
     if (state.eCategoryState == ECategoryState.error && state.message != null) {
       Fluttertoast.showToast(
@@ -51,7 +50,6 @@ class Listeners {
         msg: state.message!,
         backgroundColor: Colors.green,
       );
-      Navigator.pop(context);
       provider.getCategories();
     }
     if (state.eCategoryState == ECategoryState.success &&
@@ -60,10 +58,10 @@ class Listeners {
         msg: state.message!,
         backgroundColor: Colors.green,
       );
-      if (popTillDashboard) {
-        Navigator.pushAndRemoveUntil(context, HomePage.route(), (_) => false);
-      } else {
+      if ((fromOtherPage)) {
         Navigator.pop(context, true);
+      } else {
+        Navigator.pushAndRemoveUntil(context, HomePage.route(), (_) => false);
       }
     }
   }

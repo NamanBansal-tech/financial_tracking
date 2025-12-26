@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomDropDownButton extends StatelessWidget {
+class CustomDropDownButton extends StatefulWidget {
   const CustomDropDownButton({
     super.key,
     required this.items,
@@ -10,7 +10,7 @@ class CustomDropDownButton extends StatelessWidget {
     this.isLoading = false,
     required this.labelText,
     this.isMandatoryField = false,
-    required this.selectedValue,
+    required this.initialValue,
     this.suffix,
   });
 
@@ -22,40 +22,55 @@ class CustomDropDownButton extends StatelessWidget {
   final String labelText;
   final Widget? suffix;
   final String? Function(Object?)? validator;
-  final dynamic selectedValue;
+  final dynamic initialValue;
+
+  @override
+  State<CustomDropDownButton> createState() => _CustomDropDownButtonState();
+}
+
+class _CustomDropDownButtonState extends State<CustomDropDownButton> {
+  dynamic selectedValue;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      selectedValue = widget.initialValue;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
-      value: selectedValue,
-      validator: validator,
+      initialValue: widget.initialValue,
+      validator: widget.validator,
       dropdownColor: Colors.white,
-      items: items,
-      icon: isLoading ? const SizedBox() : null,
+      items: widget.items,
+      icon: widget.isLoading ? const SizedBox() : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         label: RichText(
           text: TextSpan(
-            text: labelText,
-            style: TextStyle(
-              color: Colors.black87,
-            ),
+            text: widget.labelText,
+            style: TextStyle(color: Colors.black87),
             children: [
-              if (isMandatoryField)
-                TextSpan(
-                  text: ' *',
-                  style: TextStyle(
-                    color: Colors.red,
-                  ),
-                ),
+              if (widget.isMandatoryField)
+                TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
             ],
           ),
         ),
-        hintText: hintText,
-        enabled: enabled,
-        suffixIcon: isLoading ? const CircularProgressIndicator() : suffix,
+        hintText: widget.hintText,
+        enabled: widget.enabled,
+        suffixIcon:
+            widget.isLoading
+                ? const CircularProgressIndicator()
+                : widget.suffix,
       ),
-      onChanged: (val) {},
+      onChanged: (val) {
+        setState(() {
+          selectedValue = val;
+        });
+      },
     );
   }
 }

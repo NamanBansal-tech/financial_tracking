@@ -9,7 +9,8 @@ abstract class CategoryState with _$CategoryState {
   factory CategoryState({
     @Default(ECategoryState.initial) ECategoryState eCategoryState,
     String? message,
-    BudgetPeriods? selectedBudgetPeriod,
+    DateTime? endDate,
+    DateTime? startDate,
     @Default(false) bool showBudgetFields,
     required PageMeta pageMeta,
     @Default([]) List<CategoryModel> categories,
@@ -19,12 +20,11 @@ abstract class CategoryState with _$CategoryState {
   factory CategoryState.initial({
     CategoryModel? category,
     required ECategoryState eCategoryState,
-  }) =>
-      CategoryState(
-        category: category,
-        eCategoryState: eCategoryState,
-        pageMeta: PageMeta(),
-      );
+  }) => CategoryState(
+    category: category,
+    eCategoryState: eCategoryState,
+    pageMeta: PageMeta(),
+  );
 }
 
 enum ECategoryState {
@@ -37,8 +37,4 @@ enum ECategoryState {
   successDelete,
 }
 
-enum ECategoryOptions{
-  edit,
-  delete,
-  select,
-}
+enum ECategoryOptions { edit, delete, select }

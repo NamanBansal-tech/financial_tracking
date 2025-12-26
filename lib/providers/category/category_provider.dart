@@ -2,6 +2,7 @@ import 'package:finance_tracking/database/database_helper.dart';
 import 'package:finance_tracking/database/database_helper_impl.dart';
 import 'package:finance_tracking/models/category_model/category_model.dart';
 import 'package:finance_tracking/providers/category/category_state.dart';
+import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,7 +14,8 @@ class CategoryProvider extends _$CategoryProvider {
   late DatabaseHelper databaseHelper;
   late TextEditingController categoryNameController;
   late TextEditingController categoryBudgetController;
-  late TextEditingController categoryBudgetDurationController;
+  late TextEditingController categoryStartDateController;
+  late TextEditingController categoryEndDateController;
   late TextEditingController filterSelectedCategoryController;
 
   @override
@@ -31,13 +33,14 @@ class CategoryProvider extends _$CategoryProvider {
     updateShowBudgetFields(state.category?.budgetAmount != null);
     categoryBudgetController.text =
         (state.category?.budgetAmount ?? 0).toString();
-    if (state.category?.duration != null) {
-      categoryBudgetDurationController.text =
-          (state.category?.duration ?? 0).toString();
+    if (state.category?.endDate != null) {
+      state = state.copyWith(
+        endDate: DateTime.tryParse(state.category?.endDate ?? ""),
+      );
     }
-    if (state.category?.budgetPeriod != null) {
-      updateBudgetPeriod(
-        BudgetPeriods.values.elementAt(state.category!.budgetPeriod!),
+    if (state.category?.startDate != null) {
+      state = state.copyWith(
+        startDate: DateTime.tryParse(state.category?.startDate ?? ""),
       );
     }
     setToInitialState();
@@ -46,21 +49,35 @@ class CategoryProvider extends _$CategoryProvider {
   void initWidgets() {
     categoryNameController = TextEditingController();
     categoryBudgetController = TextEditingController();
-    categoryBudgetDurationController = TextEditingController();
     formKey = GlobalKey<FormState>();
     filterSelectedCategoryController = TextEditingController();
-  }
-
-  void updateBudgetPeriod(BudgetPeriods period) {
-    state = state.copyWith(selectedBudgetPeriod: period);
+    categoryStartDateController = TextEditingController();
+    categoryEndDateController = TextEditingController();
   }
 
   void resetWidgets() {
     filterSelectedCategoryController.clear();
     categoryNameController.clear();
     categoryBudgetController.clear();
-    categoryBudgetDurationController.clear();
-    state = state.copyWith(category: null, selectedBudgetPeriod: null);
+    state = state.copyWith(
+      category: null,
+      startDate: null,
+      endDate: null,
+      showBudgetFields: false,
+    );
+  }
+
+  void updateBudgetStartDate(DateTime? startDate) {
+    categoryStartDateController.text = Utility.getFormattedCategoryDate(
+      startDate
+    );
+    categoryEndDateController.text = "";
+    state = state.copyWith(startDate: startDate, endDate: null);
+  }
+
+  void updateBudgetEndDate(DateTime? endDate) {
+    categoryEndDateController.text = Utility.getFormattedCategoryDate(endDate);
+    state = state.copyWith(endDate: endDate);
   }
 
   void updateSelectedCategory(CategoryModel category) {
@@ -72,13 +89,12 @@ class CategoryProvider extends _$CategoryProvider {
     state = state.copyWith(eCategoryState: ECategoryState.loading);
     final String categoryName = categoryNameController.text.trim();
     final String budgetAmount = categoryBudgetController.text.trim();
-    final String duration = categoryBudgetDurationController.text.trim();
     final result = await databaseHelper.getCategories(
       categoryName: categoryName.isNotEmpty ? categoryName : null,
       budgetAmount:
           budgetAmount.isNotEmpty ? double.tryParse(budgetAmount) : null,
-      duration: duration.isNotEmpty ? int.tryParse(duration) : null,
-      budgetPeriod: state.selectedBudgetPeriod?.index,
+      startDate: Utility.getDateFromDateTime(state.startDate),
+      endDate: Utility.getDateFromDateTime(state.endDate),
     );
     result.fold(
       (l) {
@@ -91,7 +107,6 @@ class CategoryProvider extends _$CategoryProvider {
       },
       (r) {
         state = state.copyWith(
-          eCategoryState: ECategoryState.success,
           categories: r,
         );
         setToInitialState();
@@ -123,8 +138,8 @@ class CategoryProvider extends _$CategoryProvider {
 
   bool validateForm() {
     bool isVaidate = formKey.currentState!.validate();
-    if (state.showBudgetFields && state.selectedBudgetPeriod == null) {
-      isVaidate = false;
+    if ((state.showBudgetFields)) {
+      isVaidate = (!((state.startDate == null) || (state.endDate == null)));
     }
     return isVaidate;
   }
@@ -132,32 +147,20 @@ class CategoryProvider extends _$CategoryProvider {
   Future<void> createCategory() async {
     if (validateForm()) {
       state = state.copyWith(eCategoryState: ECategoryState.loading);
-      final result = await databaseHelper.addCategory(
-        CategoryModel(
-          categoryName: categoryNameController.text.trim(),
+      CategoryModel category = CategoryModel(
+        categoryName: categoryNameController.text.trim(),
+      );
+      if ((state.showBudgetFields)) {
+        category = category.copyWith(
+          startDate: Utility.getDateFromDateTime(state.startDate),
+          endDate: Utility.getDateFromDateTime(state.endDate),
           budgetAmount:
-              state.showBudgetFields &&
-                      categoryBudgetController.text.trim().isNotEmpty
+              categoryBudgetController.text.trim().isNotEmpty
                   ? double.parse(categoryBudgetController.text.trim())
                   : null,
-          budgetPeriod:
-              state.showBudgetFields &&
-                      categoryBudgetController.text.trim().isNotEmpty &&
-                      state.selectedBudgetPeriod != null
-                  ? state.selectedBudgetPeriod!.index
-                  : null,
-          budgetSetDate:
-              state.showBudgetFields &&
-                      categoryBudgetController.text.trim().isNotEmpty
-                  ? DateTime.now().toString()
-                  : null,
-          duration:
-              state.showBudgetFields &&
-                      categoryBudgetController.text.trim().isNotEmpty
-                  ? int.tryParse(categoryBudgetDurationController.text.trim())
-                  : null,
-        ),
-      );
+        );
+      }
+      final result = await databaseHelper.addCategory(category);
       result.fold(
         (l) {
           state = state.copyWith(
@@ -211,33 +214,22 @@ class CategoryProvider extends _$CategoryProvider {
   Future<void> editCategory() async {
     if (validateForm()) {
       state = state.copyWith(eCategoryState: ECategoryState.loading);
-      final result = await databaseHelper.editCategory(
-        CategoryModel(
-          id: state.category?.id,
-          categoryName: categoryNameController.text.trim(),
+      CategoryModel category = CategoryModel(
+        id: state.category?.id,
+        categoryName: categoryNameController.text.trim(),
+        totalExpense: state.category?.totalExpense,
+      );
+      if ((state.showBudgetFields)) {
+        category = category.copyWith(
+          startDate: state.startDate?.toString(),
+          endDate: state.endDate?.toString(),
           budgetAmount:
-              state.showBudgetFields &&
-                      categoryBudgetController.text.trim().isNotEmpty
+              categoryBudgetController.text.trim().isNotEmpty
                   ? double.parse(categoryBudgetController.text.trim())
                   : null,
-          budgetPeriod:
-              state.showBudgetFields &&
-                      categoryBudgetController.text.trim().isNotEmpty &&
-                      state.selectedBudgetPeriod != null
-                  ? state.selectedBudgetPeriod!.index
-                  : null,
-          budgetSetDate:
-              state.showBudgetFields &&
-                      categoryBudgetController.text.trim().isNotEmpty
-                  ? DateTime.now().toString()
-                  : null,
-          duration:
-              state.showBudgetFields &&
-                      categoryBudgetController.text.trim().isNotEmpty
-                  ? int.tryParse(categoryBudgetDurationController.text.trim())
-                  : null,
-        ),
-      );
+        );
+      }
+      final result = await databaseHelper.editCategory(category);
       result.fold(
         (l) {
           state = state.copyWith(

@@ -1,10 +1,7 @@
 import 'package:finance_tracking/components/custom_button.dart';
-import 'package:finance_tracking/components/custom_drop_down_button.dart';
 import 'package:finance_tracking/components/custom_text_form_field.dart';
-import 'package:finance_tracking/models/category_model/category_model.dart';
 import 'package:finance_tracking/providers/category/category_provider.dart';
 import 'package:finance_tracking/providers/transaction/transaction_state.dart';
-import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -43,31 +40,56 @@ class CategoriesFilterBottomSheet extends ConsumerWidget {
           ),
           SizedBox(height: 10),
           CustomTextFormField(
-            labelText: 'Budget Duration',
-            controller: provider.categoryBudgetDurationController,
-            hintText: 'Enter the budget duration',
-            digitsOnly: true,
+            labelText: 'Budget Start Date',
+            hintText: 'dd/mm/yyyy',
+            controller: provider.categoryStartDateController,
+            onTap: () {
+              final currentDate = DateTime.now();
+              showDatePicker(
+                context: context,
+                firstDate: DateTime(1900),
+                lastDate: currentDate.copyWith(year: currentDate.year + 1),
+                initialDate: state.startDate,
+                currentDate: currentDate,
+                helpText: 'Select Budget Start Date',
+              ).then((value) {
+                if (value != null) {
+                  provider.updateBudgetStartDate(value);
+                }
+              });
+            },
+            readOnly: true,
+            suffix: Icon(Icons.calendar_month_rounded),
           ),
           SizedBox(height: 10),
-          CustomDropDownButton(
-            selectedValue: state.selectedBudgetPeriod,
-            isMandatoryField: state.showBudgetFields,
-            items:
-                BudgetPeriods.values
-                    .map(
-                      (e) => DropdownMenuItem(
-                        onTap: () {
-                          provider.updateBudgetPeriod(e);
-                        },
-                        value: e,
-                        child: Text(
-                          Utility.getDisplayNameforBudgetPeriod(e.index),
-                        ),
-                      ),
-                    )
-                    .toList(),
-            labelText: 'Budget Period',
-            hintText: 'Select Budget Period',
+          CustomTextFormField(
+            labelText: 'Budget End Date',
+            hintText: 'dd/mm/yyyy',
+            enabled: state.startDate != null,
+            controller: provider.categoryEndDateController,
+            onTap: () {
+              final currentDate = DateTime.now();
+              DateTime firstDate = DateTime(1900);
+              if ((state.startDate != null)) {
+                firstDate = state.startDate!.copyWith(
+                  day: (state.startDate!.day) + 1,
+                );
+              }
+              showDatePicker(
+                context: context,
+                firstDate: firstDate,
+                lastDate: currentDate.copyWith(year: currentDate.year + 1),
+                initialDate: state.endDate,
+                currentDate: currentDate,
+                helpText: 'Select Budget End Date',
+              ).then((value) {
+                if (value != null) {
+                  provider.updateBudgetEndDate(value);
+                }
+              });
+            },
+            readOnly: true,
+            suffix: Icon(Icons.calendar_month_rounded),
           ),
           SizedBox(height: 16),
           Row(

@@ -49,8 +49,8 @@ class HomePage extends ConsumerWidget {
       resizeToAvoidBottomInset: true,
       body: switch (state.currentTab) {
         HomeTabs.dashboard => DashBoardPage(),
-        HomeTabs.transaction => TransactionList(fromDashboard: false),
-        HomeTabs.category => CategoriesList(fromDashboard: false),
+        HomeTabs.transaction => TransactionList(fromDashboard: true),
+        HomeTabs.category => CategoriesList(fromOtherPage: false),
       },
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: state.currentTab.index,

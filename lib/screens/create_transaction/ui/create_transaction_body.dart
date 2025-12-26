@@ -38,7 +38,7 @@ class CreateTransactionBody extends ConsumerWidget {
         context: context,
         state: next,
         provider: categoryProvider,
-        popTillDashboard: true,
+        fromOtherPage: false,
       );
     });
     ref.listen<TransactionState>((transactionProvider), (_, next) {
@@ -161,7 +161,7 @@ class CreateTransactionBody extends ConsumerWidget {
                 ),
                 SizedBox(height: 16),
                 CustomDropDownButton(
-                  selectedValue: state.selectedTransactionType,
+                  initialValue: state.selectedTransactionType,
                   enabled: !isSubmitting,
                   validator: (value) {
                     if (value == null) {
@@ -215,7 +215,7 @@ class CreateTransactionBody extends ConsumerWidget {
                           ? () async {
                             Navigator.push(
                               context,
-                              CategoryListPage.route(fromDashboard: true),
+                              CategoryListPage.route(fromOtherPage: true),
                             ).then((selectedCategory) {
                               if (selectedCategory != null) {
                                 categoryProvider.updateSelectedCategory(
@@ -245,7 +245,7 @@ class CreateTransactionBody extends ConsumerWidget {
                                 final result = await Navigator.push(
                                   context,
                                   CreateCategoryPage.route(
-                                    fromCreateTransactionsPage: true,
+                                    fromOtherPage: true,
                                   ),
                                 );
                                 if (context.mounted &&
@@ -298,7 +298,7 @@ class CreateTransactionBody extends ConsumerWidget {
                                         Navigator.push(
                                           context,
                                           CreateCategoryPage.route(
-                                            fromCreateTransactionsPage: true,
+                                            fromOtherPage: true,
                                             categoryModel:
                                                 categoryState.category,
                                           ),

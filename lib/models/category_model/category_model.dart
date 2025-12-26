@@ -9,14 +9,11 @@ abstract class CategoryModel with _$CategoryModel {
     int? id,
     String? categoryName,
     double? totalExpense,
-    dynamic budgetAmount,
-    int? duration,
-    int? budgetPeriod,
-    String? budgetSetDate,
+    num? budgetAmount,
+    String? startDate,
+    String? endDate,
   }) = _CategoryModel;
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) =>
       _$CategoryModelFromJson(json);
 }
-
-enum BudgetPeriods { weekly, monthly, quarterly, annually }

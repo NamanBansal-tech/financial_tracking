@@ -1,6 +1,5 @@
-// dart format width=80
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -15,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CategoryState {
 
- ECategoryState get eCategoryState; String? get message; BudgetPeriods? get selectedBudgetPeriod; bool get showBudgetFields; PageMeta get pageMeta; List<CategoryModel> get categories; CategoryModel? get category;
+ ECategoryState get eCategoryState; String? get message; DateTime? get endDate; DateTime? get startDate; bool get showBudgetFields; PageMeta get pageMeta; List<CategoryModel> get categories; CategoryModel? get category;
 /// Create a copy of CategoryState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +25,16 @@ $CategoryStateCopyWith<CategoryState> get copyWith => _$CategoryStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoryState&&(identical(other.eCategoryState, eCategoryState) || other.eCategoryState == eCategoryState)&&(identical(other.message, message) || other.message == message)&&(identical(other.selectedBudgetPeriod, selectedBudgetPeriod) || other.selectedBudgetPeriod == selectedBudgetPeriod)&&(identical(other.showBudgetFields, showBudgetFields) || other.showBudgetFields == showBudgetFields)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.category, category) || other.category == category));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoryState&&(identical(other.eCategoryState, eCategoryState) || other.eCategoryState == eCategoryState)&&(identical(other.message, message) || other.message == message)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.showBudgetFields, showBudgetFields) || other.showBudgetFields == showBudgetFields)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.category, category) || other.category == category));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,eCategoryState,message,selectedBudgetPeriod,showBudgetFields,pageMeta,const DeepCollectionEquality().hash(categories),category);
+int get hashCode => Object.hash(runtimeType,eCategoryState,message,endDate,startDate,showBudgetFields,pageMeta,const DeepCollectionEquality().hash(categories),category);
 
 @override
 String toString() {
-  return 'CategoryState(eCategoryState: $eCategoryState, message: $message, selectedBudgetPeriod: $selectedBudgetPeriod, showBudgetFields: $showBudgetFields, pageMeta: $pageMeta, categories: $categories, category: $category)';
+  return 'CategoryState(eCategoryState: $eCategoryState, message: $message, endDate: $endDate, startDate: $startDate, showBudgetFields: $showBudgetFields, pageMeta: $pageMeta, categories: $categories, category: $category)';
 }
 
 
@@ -46,7 +45,7 @@ abstract mixin class $CategoryStateCopyWith<$Res>  {
   factory $CategoryStateCopyWith(CategoryState value, $Res Function(CategoryState) _then) = _$CategoryStateCopyWithImpl;
 @useResult
 $Res call({
- ECategoryState eCategoryState, String? message, BudgetPeriods? selectedBudgetPeriod, bool showBudgetFields, PageMeta pageMeta, List<CategoryModel> categories, CategoryModel? category
+ ECategoryState eCategoryState, String? message, DateTime? endDate, DateTime? startDate, bool showBudgetFields, PageMeta pageMeta, List<CategoryModel> categories, CategoryModel? category
 });
 
 
@@ -63,12 +62,13 @@ class _$CategoryStateCopyWithImpl<$Res>
 
 /// Create a copy of CategoryState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? eCategoryState = null,Object? message = freezed,Object? selectedBudgetPeriod = freezed,Object? showBudgetFields = null,Object? pageMeta = null,Object? categories = null,Object? category = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? eCategoryState = null,Object? message = freezed,Object? endDate = freezed,Object? startDate = freezed,Object? showBudgetFields = null,Object? pageMeta = null,Object? categories = null,Object? category = freezed,}) {
   return _then(_self.copyWith(
 eCategoryState: null == eCategoryState ? _self.eCategoryState : eCategoryState // ignore: cast_nullable_to_non_nullable
 as ECategoryState,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String?,selectedBudgetPeriod: freezed == selectedBudgetPeriod ? _self.selectedBudgetPeriod : selectedBudgetPeriod // ignore: cast_nullable_to_non_nullable
-as BudgetPeriods?,showBudgetFields: null == showBudgetFields ? _self.showBudgetFields : showBudgetFields // ignore: cast_nullable_to_non_nullable
+as String?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,showBudgetFields: null == showBudgetFields ? _self.showBudgetFields : showBudgetFields // ignore: cast_nullable_to_non_nullable
 as bool,pageMeta: null == pageMeta ? _self.pageMeta : pageMeta // ignore: cast_nullable_to_non_nullable
 as PageMeta,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
 as List<CategoryModel>,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
@@ -100,16 +100,147 @@ $CategoryModelCopyWith<$Res>? get category {
 }
 
 
+/// Adds pattern-matching-related methods to [CategoryState].
+extension CategoryStatePatterns on CategoryState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CategoryState value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _CategoryState() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CategoryState value)  $default,){
+final _that = this;
+switch (_that) {
+case _CategoryState():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CategoryState value)?  $default,){
+final _that = this;
+switch (_that) {
+case _CategoryState() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ECategoryState eCategoryState,  String? message,  DateTime? endDate,  DateTime? startDate,  bool showBudgetFields,  PageMeta pageMeta,  List<CategoryModel> categories,  CategoryModel? category)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _CategoryState() when $default != null:
+return $default(_that.eCategoryState,_that.message,_that.endDate,_that.startDate,_that.showBudgetFields,_that.pageMeta,_that.categories,_that.category);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ECategoryState eCategoryState,  String? message,  DateTime? endDate,  DateTime? startDate,  bool showBudgetFields,  PageMeta pageMeta,  List<CategoryModel> categories,  CategoryModel? category)  $default,) {final _that = this;
+switch (_that) {
+case _CategoryState():
+return $default(_that.eCategoryState,_that.message,_that.endDate,_that.startDate,_that.showBudgetFields,_that.pageMeta,_that.categories,_that.category);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ECategoryState eCategoryState,  String? message,  DateTime? endDate,  DateTime? startDate,  bool showBudgetFields,  PageMeta pageMeta,  List<CategoryModel> categories,  CategoryModel? category)?  $default,) {final _that = this;
+switch (_that) {
+case _CategoryState() when $default != null:
+return $default(_that.eCategoryState,_that.message,_that.endDate,_that.startDate,_that.showBudgetFields,_that.pageMeta,_that.categories,_that.category);case _:
+  return null;
+
+}
+}
+
+}
+
 /// @nodoc
 
 
 class _CategoryState implements CategoryState {
-   _CategoryState({this.eCategoryState = ECategoryState.initial, this.message, this.selectedBudgetPeriod, this.showBudgetFields = false, required this.pageMeta, final  List<CategoryModel> categories = const [], this.category}): _categories = categories;
+   _CategoryState({this.eCategoryState = ECategoryState.initial, this.message, this.endDate, this.startDate, this.showBudgetFields = false, required this.pageMeta, final  List<CategoryModel> categories = const [], this.category}): _categories = categories;
   
 
 @override@JsonKey() final  ECategoryState eCategoryState;
 @override final  String? message;
-@override final  BudgetPeriods? selectedBudgetPeriod;
+@override final  DateTime? endDate;
+@override final  DateTime? startDate;
 @override@JsonKey() final  bool showBudgetFields;
 @override final  PageMeta pageMeta;
  final  List<CategoryModel> _categories;
@@ -131,16 +262,16 @@ _$CategoryStateCopyWith<_CategoryState> get copyWith => __$CategoryStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CategoryState&&(identical(other.eCategoryState, eCategoryState) || other.eCategoryState == eCategoryState)&&(identical(other.message, message) || other.message == message)&&(identical(other.selectedBudgetPeriod, selectedBudgetPeriod) || other.selectedBudgetPeriod == selectedBudgetPeriod)&&(identical(other.showBudgetFields, showBudgetFields) || other.showBudgetFields == showBudgetFields)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.category, category) || other.category == category));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CategoryState&&(identical(other.eCategoryState, eCategoryState) || other.eCategoryState == eCategoryState)&&(identical(other.message, message) || other.message == message)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.showBudgetFields, showBudgetFields) || other.showBudgetFields == showBudgetFields)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.category, category) || other.category == category));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,eCategoryState,message,selectedBudgetPeriod,showBudgetFields,pageMeta,const DeepCollectionEquality().hash(_categories),category);
+int get hashCode => Object.hash(runtimeType,eCategoryState,message,endDate,startDate,showBudgetFields,pageMeta,const DeepCollectionEquality().hash(_categories),category);
 
 @override
 String toString() {
-  return 'CategoryState(eCategoryState: $eCategoryState, message: $message, selectedBudgetPeriod: $selectedBudgetPeriod, showBudgetFields: $showBudgetFields, pageMeta: $pageMeta, categories: $categories, category: $category)';
+  return 'CategoryState(eCategoryState: $eCategoryState, message: $message, endDate: $endDate, startDate: $startDate, showBudgetFields: $showBudgetFields, pageMeta: $pageMeta, categories: $categories, category: $category)';
 }
 
 
@@ -151,7 +282,7 @@ abstract mixin class _$CategoryStateCopyWith<$Res> implements $CategoryStateCopy
   factory _$CategoryStateCopyWith(_CategoryState value, $Res Function(_CategoryState) _then) = __$CategoryStateCopyWithImpl;
 @override @useResult
 $Res call({
- ECategoryState eCategoryState, String? message, BudgetPeriods? selectedBudgetPeriod, bool showBudgetFields, PageMeta pageMeta, List<CategoryModel> categories, CategoryModel? category
+ ECategoryState eCategoryState, String? message, DateTime? endDate, DateTime? startDate, bool showBudgetFields, PageMeta pageMeta, List<CategoryModel> categories, CategoryModel? category
 });
 
 
@@ -168,12 +299,13 @@ class __$CategoryStateCopyWithImpl<$Res>
 
 /// Create a copy of CategoryState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? eCategoryState = null,Object? message = freezed,Object? selectedBudgetPeriod = freezed,Object? showBudgetFields = null,Object? pageMeta = null,Object? categories = null,Object? category = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? eCategoryState = null,Object? message = freezed,Object? endDate = freezed,Object? startDate = freezed,Object? showBudgetFields = null,Object? pageMeta = null,Object? categories = null,Object? category = freezed,}) {
   return _then(_CategoryState(
 eCategoryState: null == eCategoryState ? _self.eCategoryState : eCategoryState // ignore: cast_nullable_to_non_nullable
 as ECategoryState,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String?,selectedBudgetPeriod: freezed == selectedBudgetPeriod ? _self.selectedBudgetPeriod : selectedBudgetPeriod // ignore: cast_nullable_to_non_nullable
-as BudgetPeriods?,showBudgetFields: null == showBudgetFields ? _self.showBudgetFields : showBudgetFields // ignore: cast_nullable_to_non_nullable
+as String?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,showBudgetFields: null == showBudgetFields ? _self.showBudgetFields : showBudgetFields // ignore: cast_nullable_to_non_nullable
 as bool,pageMeta: null == pageMeta ? _self.pageMeta : pageMeta // ignore: cast_nullable_to_non_nullable
 as PageMeta,categories: null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
 as List<CategoryModel>,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable

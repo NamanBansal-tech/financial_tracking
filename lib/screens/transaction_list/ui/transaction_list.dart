@@ -4,10 +4,11 @@ import 'package:finance_tracking/components/custom_button.dart';
 import 'package:finance_tracking/models/transaction_model/transaction_model.dart';
 import 'package:finance_tracking/providers/transaction/transaction_provider.dart';
 import 'package:finance_tracking/providers/transaction/transaction_state.dart';
+import 'package:finance_tracking/screens/create_transaction/create_transaction_page.dart';
 import 'package:finance_tracking/screens/home/provider/home_state.dart';
-import 'package:finance_tracking/screens/home/ui/create_bottom_sheet.dart';
 import 'package:finance_tracking/screens/transaction_list/ui/transactions_filter.dart';
 import 'package:finance_tracking/screens/transaction_list/ui/transction_options_bottom_sheet.dart';
+import 'package:finance_tracking/utils/listeners.dart';
 import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +27,7 @@ class TransactionList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transactionRef = transactionProviderProvider(widgetRef: ref);
-    final provider = ref.watch(transactionRef.notifier);
+    final provider = ref.read(transactionRef.notifier);
     final state = ref.watch(transactionRef);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (state.eTransactionState == ETransactionState.ready) {
@@ -36,6 +37,14 @@ class TransactionList extends ConsumerWidget {
         provider.getTransactions();
       }
     });
+    ref.listen<TransactionState>(
+      (transactionRef),
+      (_, next) => Listeners.transactionListener(
+        context: context,
+        state: next,
+        provider: provider,
+      ),
+    );
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: CustomAppBar(
@@ -71,7 +80,7 @@ class TransactionList extends ConsumerWidget {
           if (fromDashboard)
             IconButton(
               onPressed: () {
-                showCreateBottomSheet(context);
+                Navigator.push(context, CreateTransactionPage.route());
               },
               icon: Icon(
                 Icons.add,
@@ -115,17 +124,22 @@ class TransactionList extends ConsumerWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       final item = state.transactions[index];
-
                       return customTransactionTile(
                         parentContext: context,
                         transactionModel: item,
+                        isDeleting:
+                            state.eTransactionState ==
+                            ETransactionState.loading,
                         onDelete: (val) {
                           if (((val == true) && (item.id != null))) {
                             deleteTransactionDialogBox(
                               context: context,
                               refProvider: transactionRef,
-                              transactionId: item.id!,
-                            );
+                            ).then((value) {
+                              if ((value == true)) {
+                                provider.deleteTransaction(item.id!);
+                              }
+                            });
                           }
                         },
                       );
@@ -147,6 +161,7 @@ class TransactionList extends ConsumerWidget {
     required BuildContext parentContext,
     required TransactionModel transactionModel,
     required dynamic Function(dynamic)? onDelete,
+    required bool isDeleting,
   }) {
     final TransactionType? transactionType =
         transactionModel.type != null
@@ -173,37 +188,37 @@ class TransactionList extends ConsumerWidget {
             : 'N/A',
         style: TextStyle(fontSize: 15),
       ),
-      trailing: Text(
-        transactionModel.amount != null && transactionType != null
-            ? '${transactionType == TransactionType.expense ? '- ' : '+ '}${transactionModel.amount}'
-            : 'N/A',
-        style: TextStyle(
-          fontSize: 18,
-          color:
-              transactionType != null
-                  ? transactionType == TransactionType.expense
-                      ? Colors.red
-                      : Colors.green
-                  : null,
-        ),
-      ),
+      trailing:
+          isDeleting
+              ? const CircularProgressIndicator(color: Colors.amber)
+              : Text(
+                transactionModel.amount != null && transactionType != null
+                    ? '${transactionType == TransactionType.expense ? '- ' : '+ '}${transactionModel.amount}'
+                    : 'N/A',
+                style: TextStyle(
+                  fontSize: 18,
+                  color:
+                      transactionType != null
+                          ? transactionType == TransactionType.expense
+                              ? Colors.red
+                              : Colors.green
+                          : null,
+                ),
+              ),
     );
   }
 
-  void deleteTransactionDialogBox({
+  Future<dynamic> deleteTransactionDialogBox({
     required BuildContext context,
     required TransactionProviderProvider refProvider,
-    required int transactionId,
   }) {
-    showDialog(
+    return showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
         return PopScope(
           child: Consumer(
             builder: (context, ref, child) {
-              final state = ref.watch(refProvider);
-              final provider = ref.watch(refProvider.notifier);
               return AlertDialog(
                 backgroundColor: Colors.white,
                 content: Row(
@@ -212,12 +227,9 @@ class TransactionList extends ConsumerWidget {
                     Expanded(
                       child: CustomButton(
                         onTap: () {
-                          provider.deleteTransaction(transactionId);
+                          Navigator.pop(context, true);
                         },
                         label: "Delete",
-                        isLoading:
-                            state.eTransactionState ==
-                            ETransactionState.loading,
                       ),
                     ),
                     SizedBox(width: 20),
@@ -227,9 +239,6 @@ class TransactionList extends ConsumerWidget {
                           Navigator.pop(context);
                         },
                         label: "Cancel",
-                        isDisabled:
-                            state.eTransactionState ==
-                            ETransactionState.loading,
                         isSecondary: true,
                       ),
                     ),
@@ -237,7 +246,7 @@ class TransactionList extends ConsumerWidget {
                 ),
                 scrollable: true,
                 title: Text(
-                  "Are you sure you want to delete this transaction?",
+                  "Are you sure you want to delete this transaction ?",
                   style: TextStyle(fontSize: 18),
                 ),
               );

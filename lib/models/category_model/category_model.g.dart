@@ -11,10 +11,9 @@ _CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num?)?.toInt(),
       categoryName: json['categoryName'] as String?,
       totalExpense: (json['totalExpense'] as num?)?.toDouble(),
-      budgetAmount: json['budgetAmount'],
-      duration: (json['duration'] as num?)?.toInt(),
-      budgetPeriod: (json['budgetPeriod'] as num?)?.toInt(),
-      budgetSetDate: json['budgetSetDate'] as String?,
+      budgetAmount: json['budgetAmount'] as num?,
+      startDate: json['startDate'] as String?,
+      endDate: json['endDate'] as String?,
     );
 
 Map<String, dynamic> _$CategoryModelToJson(_CategoryModel instance) =>
@@ -23,7 +22,6 @@ Map<String, dynamic> _$CategoryModelToJson(_CategoryModel instance) =>
       'categoryName': instance.categoryName,
       'totalExpense': instance.totalExpense,
       'budgetAmount': instance.budgetAmount,
-      'duration': instance.duration,
-      'budgetPeriod': instance.budgetPeriod,
-      'budgetSetDate': instance.budgetSetDate,
+      'startDate': instance.startDate,
+      'endDate': instance.endDate,
     };

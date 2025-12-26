@@ -1,23 +1,21 @@
 import 'package:finance_tracking/components/custom_app_bar.dart';
 import 'package:finance_tracking/components/custom_button.dart';
-import 'package:finance_tracking/components/custom_drop_down_button.dart';
 import 'package:finance_tracking/components/custom_text_form_field.dart';
 import 'package:finance_tracking/models/category_model/category_model.dart';
 import 'package:finance_tracking/providers/category/category_provider.dart';
 import 'package:finance_tracking/providers/category/category_state.dart';
 import 'package:finance_tracking/utils/listeners.dart';
-import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CreateCategoryBody extends ConsumerWidget {
   const CreateCategoryBody({
     super.key,
-    required this.fromCreateTransactionsPage,
+    required this.fromOtherPage,
     this.categoryModel,
   });
 
-  final bool fromCreateTransactionsPage;
+  final bool fromOtherPage;
   final CategoryModel? categoryModel;
 
   @override
@@ -34,7 +32,7 @@ class CreateCategoryBody extends ConsumerWidget {
         context: context,
         state: next,
         provider: provider,
-        popTillDashboard: state.category == null,
+        fromOtherPage: fromOtherPage,
       ),
     );
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -85,49 +83,78 @@ class CreateCategoryBody extends ConsumerWidget {
                   ),
                   SizedBox(height: 16),
                   CustomTextFormField(
-                    labelText: 'Budget Duration',
-                    isMandatoryField: state.showBudgetFields,
-                    enabled: state.eCategoryState != ECategoryState.loading,
-                    controller: provider.categoryBudgetDurationController,
-                    hintText: 'Enter the budget duration',
-                    digitsOnly: true,
+                    labelText: 'Budget Start Date',
+                    hintText: 'dd/mm/yyyy',
                     validator: (value) {
                       if (state.showBudgetFields &&
                           (value == null || value.isEmpty)) {
-                        return 'Please enter your budget duration for this category.';
+                        return 'Please select your Budget Start Date.';
                       }
                       return null;
                     },
+                    controller: provider.categoryStartDateController,
+                    enabled: (state.eCategoryState != ECategoryState.loading),
+                    isMandatoryField: state.showBudgetFields,
+                    onTap: () {
+                      final currentDate = DateTime.now();
+                      showDatePicker(
+                        context: context,
+                        firstDate: DateTime(1900),
+                        lastDate: currentDate.copyWith(
+                          year: currentDate.year + 1,
+                        ),
+                        initialDate: state.startDate,
+                        currentDate: currentDate,
+                        helpText: 'Select Budget Start Date',
+                      ).then((value) {
+                        if (value != null) {
+                          provider.updateBudgetStartDate(value);
+                        }
+                      });
+                    },
+                    readOnly: true,
+                    suffix: Icon(Icons.calendar_month_rounded),
                   ),
                   SizedBox(height: 16),
-                  CustomDropDownButton(
-                    selectedValue: state.selectedBudgetPeriod,
+                  CustomTextFormField(
+                    labelText: 'Budget End Date',
                     isMandatoryField: state.showBudgetFields,
-                    enabled: state.eCategoryState != ECategoryState.loading,
+                    hintText: 'dd/mm/yyyy',
+                    enabled:
+                        (((state.startDate != null) &&
+                            (state.eCategoryState != ECategoryState.loading))),
+                    controller: provider.categoryEndDateController,
                     validator: (value) {
                       if (state.showBudgetFields && value == null) {
-                        return 'Please select your budget period.';
+                        return 'Please select your Budget End Date.';
                       }
                       return null;
                     },
-                    items:
-                        BudgetPeriods.values
-                            .map(
-                              (e) => DropdownMenuItem(
-                                onTap: () {
-                                  provider.updateBudgetPeriod(e);
-                                },
-                                value: e,
-                                child: Text(
-                                  Utility.getDisplayNameforBudgetPeriod(
-                                    e.index,
-                                  ),
-                                ),
-                              ),
-                            )
-                            .toList(),
-                    labelText: 'Budget Period',
-                    hintText: 'Select Budget Period',
+                    onTap: () {
+                      final currentDate = DateTime.now();
+                      DateTime firstDate = DateTime(1900);
+                      if ((state.startDate != null)) {
+                        firstDate = state.startDate!.copyWith(
+                          day: (state.startDate!.day) + 1,
+                        );
+                      }
+                      showDatePicker(
+                        context: context,
+                        firstDate: firstDate,
+                        lastDate: currentDate.copyWith(
+                          year: currentDate.year + 1,
+                        ),
+                        initialDate: state.endDate,
+                        currentDate: currentDate,
+                        helpText: 'Select Budget End Date',
+                      ).then((value) {
+                        if (value != null) {
+                          provider.updateBudgetEndDate(value);
+                        }
+                      });
+                    },
+                    readOnly: true,
+                    suffix: Icon(Icons.calendar_month_rounded),
                   ),
                 ],
                 SizedBox(height: 16),

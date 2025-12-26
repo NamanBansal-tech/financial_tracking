@@ -7,30 +7,29 @@ import 'package:finance_tracking/providers/category/category_state.dart';
 import 'package:finance_tracking/providers/transaction/transaction_state.dart';
 import 'package:finance_tracking/screens/categorie_list/ui/categories_filter_bottom_sheet.dart';
 import 'package:finance_tracking/screens/categorie_list/ui/category_options_bottom_sheet.dart';
-import 'package:finance_tracking/screens/home/ui/create_bottom_sheet.dart';
+import 'package:finance_tracking/screens/create_category/create_category_page.dart';
 import 'package:finance_tracking/utils/listeners.dart';
 import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CategoriesList extends ConsumerWidget {
-  const CategoriesList({super.key, required this.fromDashboard});
+  const CategoriesList({super.key, required this.fromOtherPage});
 
-  final bool fromDashboard;
+  final bool fromOtherPage;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categoryRef = categoryProviderProvider(
-      widgetRef: ref,
-    );
+    final categoryRef = categoryProviderProvider(widgetRef: ref);
     final state = ref.watch(categoryRef);
-    final provider = ref.watch(categoryRef.notifier);
+    final provider = ref.read(categoryRef.notifier);
     ref.listen<CategoryState>(
       (categoryRef),
       (_, next) => Listeners.categoryListener(
         context: context,
         state: next,
         provider: provider,
+        fromOtherPage: fromOtherPage,
       ),
     );
 
@@ -71,16 +70,19 @@ class CategoriesList extends ConsumerWidget {
               size: MediaQuery.of(context).size.height * .03,
             ),
           ),
-          if (!fromDashboard)
-            IconButton(
-              onPressed: () {
-                showCreateBottomSheet(context);
-              },
-              icon: Icon(
-                Icons.add,
-                size: MediaQuery.of(context).size.height * .035,
-              ),
+          if(!(fromOtherPage))
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                CreateCategoryPage.route(fromOtherPage: false),
+              );
+            },
+            icon: Icon(
+              Icons.add,
+              size: MediaQuery.of(context).size.height * .035,
             ),
+          ),
         ],
       ),
       body: ListView(
@@ -96,7 +98,7 @@ class CategoriesList extends ConsumerWidget {
               : state.categories.isEmpty
               ? SizedBox(
                 height: MediaQuery.of(context).size.height / 1.5,
-                child: Center(child: Text('No transaction found.')),
+                child: Center(child: Text('No categories found.')),
               )
               : ListView.builder(
                 shrinkWrap: true,
@@ -107,6 +109,7 @@ class CategoriesList extends ConsumerWidget {
                   return customCategoryTile(
                     parentContext: context,
                     categoryModel: item,
+                    isDeleting: state.eCategoryState == ECategoryState.loading,
                     onSuccess: (val) {
                       if (((val != null) && (val is ECategoryOptions))) {
                         switch (val) {
@@ -117,8 +120,11 @@ class CategoriesList extends ConsumerWidget {
                               deleteCategoryDialogBox(
                                 context: context,
                                 refProvider: categoryRef,
-                                categoryId: item.id!,
-                              );
+                              ).then((value) {
+                                if ((value == true)) {
+                                  provider.deleteCategory(item.id!);
+                                }
+                              });
                             }
                             break;
                           case ECategoryOptions.select:
@@ -138,6 +144,7 @@ class CategoriesList extends ConsumerWidget {
     required BuildContext parentContext,
     required CategoryModel categoryModel,
     required dynamic Function(dynamic)? onSuccess,
+    required bool isDeleting,
   }) {
     return ListTile(
       title: Text(
@@ -150,40 +157,44 @@ class CategoriesList extends ConsumerWidget {
           topPadding: 0,
           onSuccess: onSuccess,
           child: CategoryOptionsBottomSheet(
-            fromDashboard: fromDashboard,
+            fromOtherPage: fromOtherPage,
             categoryModel: categoryModel,
           ),
         );
       },
       subtitle: Text(
-        categoryModel.budgetSetDate != null &&
-                categoryModel.duration != null &&
-                categoryModel.budgetPeriod != null
-            ? 'This budget is set on: ${Utility.formatDate(DateTime.parse(categoryModel.budgetSetDate!))} for ${categoryModel.duration} ${Utility.getDisplayNameforBudgetPeriod(categoryModel.budgetPeriod!)}'
-            : '',
+        getSubtitle(categoryModel: categoryModel),
         style: TextStyle(fontSize: 15),
       ),
-      trailing: Text(
-        '${categoryModel.budgetAmount ?? ''}',
-        style: TextStyle(fontSize: 18),
-      ),
+      trailing:
+          isDeleting
+              ? const CircularProgressIndicator(color: Colors.amber)
+              : Text(
+                '${categoryModel.budgetAmount ?? ''}',
+                style: TextStyle(fontSize: 18),
+              ),
     );
   }
 
-  void deleteCategoryDialogBox({
+  String getSubtitle({required CategoryModel categoryModel}) {
+    if (((categoryModel.startDate != null) &&
+        (categoryModel.endDate != null))) {
+      return "Budget starts from ${Utility.getFormattedCategoryDate(categoryModel.startDate)} till ${Utility.getFormattedCategoryDate(categoryModel.endDate)}";
+    }
+    return "";
+  }
+
+  Future<dynamic> deleteCategoryDialogBox({
     required BuildContext context,
     required CategoryProviderProvider refProvider,
-    required int categoryId,
   }) {
-    showDialog(
+    return showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
         return PopScope(
           child: Consumer(
             builder: (context, ref, child) {
-              final state = ref.watch(refProvider);
-              final provider = ref.watch(refProvider.notifier);
               return AlertDialog(
                 backgroundColor: Colors.white,
                 content: Row(
@@ -192,11 +203,9 @@ class CategoriesList extends ConsumerWidget {
                     Expanded(
                       child: CustomButton(
                         onTap: () {
-                          provider.deleteCategory(categoryId);
+                          Navigator.pop(context, true);
                         },
                         label: "Delete",
-                        isLoading:
-                            state.eCategoryState == ECategoryState.loading,
                       ),
                     ),
                     SizedBox(width: 20),
@@ -206,8 +215,6 @@ class CategoriesList extends ConsumerWidget {
                           Navigator.pop(context);
                         },
                         label: "Cancel",
-                        isDisabled:
-                            state.eCategoryState == ECategoryState.loading,
                         isSecondary: true,
                       ),
                     ),
