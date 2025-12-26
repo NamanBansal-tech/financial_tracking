@@ -179,7 +179,7 @@ class CategoriesList extends ConsumerWidget {
   String getSubtitle({required CategoryModel categoryModel}) {
     if (((categoryModel.startDate != null) &&
         (categoryModel.endDate != null))) {
-      return "Budget starts from ${Utility.getFormattedCategoryDate(categoryModel.startDate)} till ${Utility.getFormattedCategoryDate(categoryModel.endDate)}";
+      return "${Utility.getFormattedCategoryDate(categoryModel.startDate)} - ${Utility.getFormattedCategoryDate(categoryModel.endDate)}";
     }
     return "";
   }
