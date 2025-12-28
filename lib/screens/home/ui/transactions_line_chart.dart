@@ -18,7 +18,7 @@ class TransactionsLineChart extends StatelessWidget {
     List<ChartData> incomeData = [];
     for (var transaction in transactions) {
       DateTime transactionDate = DateTime.parse(transaction.date!);
-      double amount = transaction.amount;
+      double amount = (transaction.amount ?? 0.0).toDouble();
       if (transaction.type == 0) {
         // Expense
         expenseData.add(ChartData(transactionDate, amount));

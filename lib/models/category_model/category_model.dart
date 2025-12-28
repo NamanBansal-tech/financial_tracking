@@ -7,11 +7,8 @@ part 'category_model.g.dart';
 abstract class CategoryModel with _$CategoryModel {
   factory CategoryModel({
     int? id,
-    String? categoryName,
-    double? totalExpense,
-    num? budgetAmount,
-    String? startDate,
-    String? endDate,
+    String? name,
+    int? budgetId,
   }) = _CategoryModel;
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) =>

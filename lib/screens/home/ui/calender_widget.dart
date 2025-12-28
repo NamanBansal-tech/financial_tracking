@@ -47,11 +47,11 @@ class CalenderWidget extends StatelessWidget {
 
                 final expense = dayTransactions
                     .where((e) => e.type == 0)
-                    .fold<double>(0, (s, e) => s + e.amount);
+                    .fold<double>(0, (s, e) => s + (e.amount ?? 0));
 
                 final income = dayTransactions
                     .where((e) => e.type == 1)
-                    .fold<double>(0, (s, e) => s + e.amount);
+                    .fold<double>(0, (s, e) => s + (e.amount ?? 0));
 
                 final color =
                     expense > income ? Colors.red : income > expense

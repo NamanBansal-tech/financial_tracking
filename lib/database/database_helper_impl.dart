@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:dartz/dartz.dart';
 import 'package:finance_tracking/database/database_helper.dart';
 import 'package:finance_tracking/database/database_table_queries.dart';
+import 'package:finance_tracking/models/budget_model/budget_model.dart';
 import 'package:finance_tracking/models/category_model/category_model.dart';
 import 'package:finance_tracking/models/page_meta/page_meta.dart';
 import 'package:finance_tracking/models/transaction_model/transaction_model.dart';
@@ -48,6 +47,7 @@ class DatabaseHelperImpl extends DatabaseHelper {
         password: password,
         onCreate: onCreate,
         version: 1,
+        onUpgrade: onUpgrade,
       );
     } catch (e) {
       debugPrint('Init Database Exception: $e');
@@ -55,13 +55,15 @@ class DatabaseHelperImpl extends DatabaseHelper {
     return null;
   }
 
+  Future<void> onUpgrade(Database db, int oldVersion, int newVersion) async {}
+
   Future<void>? onCreate(Database db, int version) async {
     try {
       await db.execute(DatabaseTableQueries.createCategoryTable);
       await db.execute(DatabaseTableQueries.createTransactionTable);
+      await db.execute(DatabaseTableQueries.createBudgetTable);
       final Batch batch = db.batch();
       for (var e in sampleBudgetData) {
-        e.remove('id');
         batch.insert(EDatabaseTableNames.categoryTable.name, e);
       }
       await batch.commit();
@@ -78,8 +80,8 @@ class DatabaseHelperImpl extends DatabaseHelper {
         final count = Sqflite.firstIntValue(
           await db.query(
             EDatabaseTableNames.categoryTable.name,
-            where: 'categoryName = ?',
-            whereArgs: [category.categoryName],
+            where: 'name = ?',
+            whereArgs: [category.name],
           ),
         );
         if (count != null && count != 0) {
@@ -95,6 +97,35 @@ class DatabaseHelperImpl extends DatabaseHelper {
       }
     } catch (e) {
       debugPrint('Add Category Exception: $e');
+      return Left('Something went wrong! Please try again later!');
+    }
+  }
+
+  @override
+  ResultOrException<String> addBudget(BudgetModel budget) async {
+    try {
+      final db = await database;
+      if (db != null) {
+        final count = Sqflite.firstIntValue(
+          await db.query(
+            EDatabaseTableNames.budgetTable.name,
+            where: 'name = ?',
+            whereArgs: [budget.name],
+          ),
+        );
+        if (count != null && count != 0) {
+          return Left('This budget already exists.');
+        } else {
+          final map = budget.toJson();
+          map.remove('id');
+          await db.insert(EDatabaseTableNames.budgetTable.name, map);
+          return Right('Budget Added Successfully');
+        }
+      } else {
+        return Left('Something went wrong! Please try again later!');
+      }
+    } catch (e) {
+      debugPrint('Add Budget Exception: $e');
       return Left('Something went wrong! Please try again later!');
     }
   }
@@ -119,7 +150,50 @@ class DatabaseHelperImpl extends DatabaseHelper {
 
   @override
   ResultOrException<List<CategoryModel>> getCategories({
-    String? categoryName,
+    String? name,
+    List<int?>? ids,
+  }) async {
+    try {
+      final db = await database;
+      String? where;
+      List<Object?>? whereArgs;
+      if (name != null) {
+        where = "name LIKE ?";
+        whereArgs = ['%$name%'];
+      }
+      if (ids != null && ids.isNotEmpty) {
+        final placeholders = List.filled(ids.length, '?').join(',');
+        if (where != null && whereArgs != null) {
+          where = '$where AND id IN ($placeholders)';
+          whereArgs.addAll(ids);
+        } else {
+          where = 'id IN ($placeholders)';
+          whereArgs = [...ids];
+        }
+      }
+      if (db != null) {
+        final data = await db.query(
+          EDatabaseTableNames.categoryTable.name,
+          where: where,
+          whereArgs: whereArgs,
+        );
+        if (data.isNotEmpty) {
+          return Right(data.map((e) => CategoryModel.fromJson(e)).toList());
+        } else {
+          return Left('No categories found in the database.');
+        }
+      } else {
+        return Left('Something went wrong! Please try again later!');
+      }
+    } catch (e) {
+      debugPrint('Get Categories Exception: $e');
+      return Left('Something went wrong! Please try again later!');
+    }
+  }
+
+  @override
+  ResultOrException<List<BudgetModel>> getBudgetList({
+    String? name,
     double? budgetAmount,
     String? startDate,
     String? endDate,
@@ -128,9 +202,9 @@ class DatabaseHelperImpl extends DatabaseHelper {
       final db = await database;
       String? where;
       List<Object?>? whereArgs;
-      if (categoryName != null) {
-        where = "categoryName LIKE ?";
-        whereArgs = ['%$categoryName%'];
+      if (name != null) {
+        where = "name LIKE ?";
+        whereArgs = ['%$name%'];
       }
       if (budgetAmount != null) {
         if (where != null && whereArgs != null) {
@@ -156,20 +230,20 @@ class DatabaseHelperImpl extends DatabaseHelper {
       }
       if (db != null) {
         final data = await db.query(
-          EDatabaseTableNames.categoryTable.name,
+          EDatabaseTableNames.budgetTable.name,
           where: where,
           whereArgs: whereArgs,
         );
         if (data.isNotEmpty) {
-          return Right(data.map((e) => CategoryModel.fromJson(e)).toList());
+          return Right(data.map((e) => BudgetModel.fromJson(e)).toList());
         } else {
-          return Left('No categories found in the database.');
+          return Left('No budget found in the database.');
         }
       } else {
         return Left('Something went wrong! Please try again later!');
       }
     } catch (e) {
-      debugPrint('Get Categories Exception: $e');
+      debugPrint('Get Budget List Exception: $e');
       return Left('Something went wrong! Please try again later!');
     }
   }
@@ -184,6 +258,7 @@ class DatabaseHelperImpl extends DatabaseHelper {
     int? categoryId,
     int? transactionType,
     PageMeta? pageMeta,
+    int? budgetId,
   }) async {
     try {
       final db = await database;
@@ -243,6 +318,15 @@ class DatabaseHelperImpl extends DatabaseHelper {
             whereArgs = [transactionType];
           }
         }
+        if (budgetId != null) {
+          if (where != null && whereArgs != null) {
+            where = '$where AND budgetId = ? ';
+            whereArgs.add(budgetId);
+          } else {
+            where = 'budgetId = ? ';
+            whereArgs = [budgetId];
+          }
+        }
         if (pageMeta != null && where != null && whereArgs != null) {
           final data = await db.rawQuery(
             'SELECT DISTINCT * FROM ${EDatabaseTableNames.transactionTable.name} WHERE $where ORDER BY date DESC LIMIT ? OFFSET ?',
@@ -292,6 +376,26 @@ class DatabaseHelperImpl extends DatabaseHelper {
       }
     } catch (e) {
       debugPrint('Delete Category Exception: $e');
+      return Left('Something went wrong! Please try again later!');
+    }
+  }
+
+  @override
+  ResultOrException<String> deleteBudget(int budgetId) async {
+    try {
+      final db = await database;
+      if (db != null) {
+        await db.delete(
+          EDatabaseTableNames.budgetTable.name,
+          where: 'id = ?',
+          whereArgs: [budgetId],
+        );
+        return Right('Budget deleted Successfully');
+      } else {
+        return Left('Something went wrong! Please try again later!');
+      }
+    } catch (e) {
+      debugPrint('Delete Budget Exception: $e');
       return Left('Something went wrong! Please try again later!');
     }
   }
@@ -381,6 +485,30 @@ class DatabaseHelperImpl extends DatabaseHelper {
   }
 
   @override
+  ResultOrException<BudgetModel> getBudget(int budgetId) async {
+    try {
+      final db = await database;
+      if (db != null) {
+        final data = await db.query(
+          EDatabaseTableNames.budgetTable.name,
+          where: 'id = ?',
+          whereArgs: [budgetId],
+        );
+        if (data.isNotEmpty) {
+          return Right(BudgetModel.fromJson(data.first));
+        } else {
+          return Left('No Budget exist with these details.');
+        }
+      } else {
+        return Left('Something went wrong! Please try again later!');
+      }
+    } catch (e) {
+      debugPrint('Get Budget Exception: $e');
+      return Left('Something went wrong! Please try again later!');
+    }
+  }
+
+  @override
   ResultOrException<String> editCategory(CategoryModel category) async {
     try {
       final db = await database;
@@ -414,6 +542,44 @@ class DatabaseHelperImpl extends DatabaseHelper {
       }
     } catch (e) {
       debugPrint('Edit Category Exception: $e');
+      return Left('Something went wrong! Please try again later!');
+    }
+  }
+
+  @override
+  ResultOrException<String> editBudget(BudgetModel budget) async {
+    try {
+      final db = await database;
+      if (db != null) {
+        final count = Sqflite.firstIntValue(
+          await db.query(
+            EDatabaseTableNames.budgetTable.name,
+            where: 'id = ?',
+            whereArgs: [budget.id],
+          ),
+        );
+        if (count != null && count != 0) {
+          await db.update(
+            EDatabaseTableNames.budgetTable.name,
+            budget.toJson(),
+            where: 'id = ?',
+            whereArgs: [budget.id],
+          );
+          return Right('Changes saved Successfully');
+        } else {
+          await db.insert(
+            EDatabaseTableNames.budgetTable.name,
+            budget.toJson(),
+          );
+          return Right(
+            'No budget exist with these details. So, New budget added Successfully',
+          );
+        }
+      } else {
+        return Left('Something went wrong! Please try again later!');
+      }
+    } catch (e) {
+      debugPrint('Edit Budget Exception: $e');
       return Left('Something went wrong! Please try again later!');
     }
   }

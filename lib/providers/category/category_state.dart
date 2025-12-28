@@ -7,34 +7,32 @@ part 'category_state.freezed.dart';
 @freezed
 abstract class CategoryState with _$CategoryState {
   factory CategoryState({
-    @Default(ECategoryState.initial) ECategoryState eCategoryState,
+    @Default(EState.initial) EState eState,
     String? message,
-    DateTime? endDate,
-    DateTime? startDate,
-    @Default(false) bool showBudgetFields,
     required PageMeta pageMeta,
     @Default([]) List<CategoryModel> categories,
     CategoryModel? category,
+    int? selectedBudgetId,
   }) = _CategoryState;
 
   factory CategoryState.initial({
     CategoryModel? category,
-    required ECategoryState eCategoryState,
+    required EState eState,
   }) => CategoryState(
     category: category,
-    eCategoryState: eCategoryState,
+    eState: eState,
     pageMeta: PageMeta(),
   );
 }
 
-enum ECategoryState {
+enum EState {
   initial,
   ready,
   success,
   error,
   loading,
-  updatingCategoryForTransaction,
+  updatingBudgetForTransaction,
   successDelete,
 }
 
-enum ECategoryOptions { edit, delete, select }
+enum EMoreOptions { edit, delete, select }

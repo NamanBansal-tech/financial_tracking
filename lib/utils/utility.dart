@@ -1,4 +1,4 @@
-import 'package:finance_tracking/screens/home/provider/home_state.dart';
+import 'package:finance_tracking/providers/common_provider/common_state.dart';
 import 'package:intl/intl.dart';
 
 class Utility {
@@ -21,6 +21,8 @@ class Utility {
         return "Transactions";
       case HomeTabs.category:
         return "Categories";
+      case HomeTabs.budget:
+        return "Budget";
     }
   }
 
@@ -31,27 +33,33 @@ class Utility {
     return DateFormat('yyyy-MM-dd').format(dateTime);
   }
 
-  static String makeFirstLetterCapital(String value) {
-    if (value.isEmpty) {
-      return '';
-    }
-    if (value.length == 1) {
-      return value.toUpperCase();
-    } else {
-      return '${value.substring(0, 1).toUpperCase()}${value.substring(1).toLowerCase()}';
-    }
+static String makeFirstLetterCapital(String? value) {
+  if (value == null || value.trim().isEmpty) return '';
+
+  final text = value.trim();
+
+  if (text.length == 1) {
+    return text.toUpperCase();
   }
 
-  static String getFormattedCategoryDate(dynamic date) {
+  return text[0].toUpperCase() + text.substring(1).toLowerCase();
+}
+
+
+  static String getFormattedBudgetDate(dynamic date) {
     try {
       if ((date == null)) {
         return "";
       }
+      final dateFormat = DateFormat('dd MMM, yyyy');
       if (date is String) {
         final dateTime = DateTime.tryParse(date);
-        return getDateFromDateTime(dateTime) ?? "";
+        if ((dateTime == null)) {
+          return "";
+        }
+        return dateFormat.format(dateTime);
       }
-      return getDateFromDateTime(date) ?? "";
+      return dateFormat.format(date);
     } catch (e) {
       return "";
     }

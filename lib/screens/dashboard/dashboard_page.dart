@@ -1,10 +1,8 @@
 import 'package:finance_tracking/components/custom_app_bar.dart';
 import 'package:finance_tracking/components/custom_bottom_sheet.dart';
-import 'package:finance_tracking/providers/category/category_provider.dart';
 import 'package:finance_tracking/providers/category/category_state.dart';
-import 'package:finance_tracking/providers/transaction/transaction_provider.dart';
-import 'package:finance_tracking/providers/transaction/transaction_state.dart';
-import 'package:finance_tracking/screens/home/provider/home_state.dart';
+import 'package:finance_tracking/providers/common_provider/common_provider.dart';
+import 'package:finance_tracking/providers/common_provider/common_state.dart';
 import 'package:finance_tracking/screens/home/ui/budget_chart.dart';
 import 'package:finance_tracking/screens/home/ui/calender_widget.dart';
 import 'package:finance_tracking/screens/home/ui/create_bottom_sheet.dart';
@@ -20,33 +18,18 @@ class DashBoardPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final transactionRef = transactionProviderProvider(widgetRef: ref);
-    final categoryRef = categoryProviderProvider(widgetRef: ref);
-    final transactionProvider = ref.watch(transactionRef.notifier);
-    final categoryState = ref.watch(categoryRef);
-    final transactionState = ref.watch(transactionRef);
-    final categoryProvider = ref.watch(categoryRef.notifier);
+    final commonRef = commonProviderProvider(widgetRef: ref);
+    final provider = ref.read<CommonProvider>(commonRef.notifier);
+    final state = ref.watch<CommonState>(commonRef);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (transactionState.eTransactionState == ETransactionState.ready) {
-        transactionProvider.updateDashboardValues();
-        transactionProvider.filterDashboard();
+      if (state.eState == EState.ready) {
+        provider.updateDashboardValues();
+        provider.filterDashboard();
       }
     });
-    ref.listen<TransactionState>(
-      (transactionRef),
-      (_, next) => Listeners.transactionListener(
-        context: context,
-        state: next,
-        provider: transactionProvider,
-      ),
-    );
-    ref.listen<CategoryState>(
-      (categoryRef),
-      (_, next) => Listeners.categoryListener(
-        context: context,
-        state: next,
-        provider: categoryProvider,
-      ),
+    ref.listen<CommonState>(
+      (commonRef),
+      (_, next) => Listeners.commonListener(context: context, state: next),
     );
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -57,10 +40,7 @@ class DashBoardPage extends ConsumerWidget {
             onPressed: () {
               customBottomSheet(
                 context: context,
-                child: DashboardFilter(
-                  categoryRef: categoryRef,
-                  transactionRef: transactionRef,
-                ),
+                child: DashboardFilter(commonRef: commonRef),
                 isDismissible: false,
                 enableDrag: false,
               );
@@ -82,16 +62,16 @@ class DashBoardPage extends ConsumerWidget {
         ],
       ),
 
-      body:
-          transactionState.eTransactionState ==
-                      ETransactionState.loadingDashboard ||
-                  categoryState.eCategoryState == ECategoryState.loading ||
-                  transactionState.eTransactionState == ETransactionState.ready
-              ? SizedBox(
-                height: MediaQuery.of(context).size.height / 1.5,
-                child: Center(child: CircularProgressIndicator()),
-              )
-              : ListView(
+      body: Column(
+        children: [
+          if ((state.eState == EState.loading)) ...[
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 1.5,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          ] else ...[
+            Expanded(
+              child: ListView(
                 shrinkWrap: true,
                 padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
                 children: [
@@ -101,21 +81,22 @@ class DashBoardPage extends ConsumerWidget {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 16),
-                  TransactionsLineChart(
-                    transactions: transactionState.graphTransactions,
-                  ),
+                  TransactionsLineChart(transactions: state.graphTransactions),
                   SizedBox(height: 16),
-                  if (transactionState.selectedCalenderMonth != null)
+                  if (state.selectedCalenderMonth != null)
                     CalenderWidget(
-                      selectedMonth: transactionState.selectedCalenderMonth!,
-                      transactions: transactionState.calenderMonthtransactions,
+                      selectedMonth: state.selectedCalenderMonth!,
+                      transactions: state.calenderMonthtransactions,
                     ),
                   SizedBox(height: 16),
-                  if (categoryState.category != null &&
-                      categoryState.category?.budgetAmount != null)
-                    BudgetChart(category: categoryState.category!),
+                  if ((state.pieChartData != null))
+                    BudgetChart(data: state.pieChartData),
                 ],
               ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

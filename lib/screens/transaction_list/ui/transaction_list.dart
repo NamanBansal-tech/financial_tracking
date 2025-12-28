@@ -2,10 +2,10 @@ import 'package:finance_tracking/components/custom_app_bar.dart';
 import 'package:finance_tracking/components/custom_bottom_sheet.dart';
 import 'package:finance_tracking/components/custom_button.dart';
 import 'package:finance_tracking/models/transaction_model/transaction_model.dart';
+import 'package:finance_tracking/providers/common_provider/common_state.dart';
 import 'package:finance_tracking/providers/transaction/transaction_provider.dart';
 import 'package:finance_tracking/providers/transaction/transaction_state.dart';
 import 'package:finance_tracking/screens/create_transaction/create_transaction_page.dart';
-import 'package:finance_tracking/screens/home/provider/home_state.dart';
 import 'package:finance_tracking/screens/transaction_list/ui/transactions_filter.dart';
 import 'package:finance_tracking/screens/transaction_list/ui/transction_options_bottom_sheet.dart';
 import 'package:finance_tracking/utils/listeners.dart';
@@ -179,7 +179,7 @@ class TransactionList extends ConsumerWidget {
         );
       },
       title: Text(
-        transactionModel.notes ?? 'N/A',
+        transactionModel.name ?? 'N/A',
         style: TextStyle(fontSize: 17),
       ),
       subtitle: Text(

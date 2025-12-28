@@ -1,51 +1,35 @@
 final sampleBudgetData = [
   {
-    "categoryName": "Groceries",
-    'id': 0,
+    "name": "Groceries",
   },
   {
-    "categoryName": "Utilities",
-    'id': 1,
+    "name": "Utilities",
   },
   {
-    "categoryName": "Entertainment",
-    'id': 2,
+    "name": "Entertainment",
   },
   {
-    "categoryName": "Savings",
-    'id': 3,
+    "name": "Savings",
   },
   {
-    "categoryName": "Transportation",
-    'id': 4,
+    "name": "Transportation",
   },
   {
-    "categoryName": "Healthcare",
-    'id': 5,
+    "name": "Healthcare",
   },
   {
-    "categoryName": "Rent",
-    'id': 6,
+    "name": "Rent",
   },
   {
-    "categoryName": "Freelance",
-    'id': 7,
+    "name": "Freelance",
   },
   {
-    "categoryName": "Education",
-    'id': 8,
+    "name": "Education",
   },
   {
-    "categoryName": "Vacation",
-    'id': 9,
+    "name": "Vacation",
   },
   {
-    "categoryName": "Other Expenses",
-    'id': 10,
+    "name": "Other Expenses",
   },
 ];
-
-//total budget = income + expenses
-
-
-// 1 = monthly, 2 = quarterly, 3 = annually

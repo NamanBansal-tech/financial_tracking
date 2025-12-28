@@ -17,11 +17,10 @@ class CreateCategoryPage extends StatelessWidget {
     CategoryModel? categoryModel,
   }) {
     return MaterialPageRoute(
-      builder:
-          (_) => CreateCategoryPage(
-            fromOtherPage: fromOtherPage,
-            categoryModel: categoryModel,
-          ),
+      builder: (_) => CreateCategoryPage(
+        fromOtherPage: fromOtherPage,
+        categoryModel: categoryModel,
+      ),
     );
   }
 

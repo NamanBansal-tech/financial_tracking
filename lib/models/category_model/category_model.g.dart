@@ -9,19 +9,13 @@ part of 'category_model.dart';
 _CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
     _CategoryModel(
       id: (json['id'] as num?)?.toInt(),
-      categoryName: json['categoryName'] as String?,
-      totalExpense: (json['totalExpense'] as num?)?.toDouble(),
-      budgetAmount: json['budgetAmount'] as num?,
-      startDate: json['startDate'] as String?,
-      endDate: json['endDate'] as String?,
+      name: json['name'] as String?,
+      budgetId: (json['budgetId'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$CategoryModelToJson(_CategoryModel instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'categoryName': instance.categoryName,
-      'totalExpense': instance.totalExpense,
-      'budgetAmount': instance.budgetAmount,
-      'startDate': instance.startDate,
-      'endDate': instance.endDate,
+      'name': instance.name,
+      'budgetId': instance.budgetId,
     };
