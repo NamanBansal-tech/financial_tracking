@@ -110,7 +110,7 @@ class BudgetChart extends StatelessWidget {
     required Color color,
   }) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           label,

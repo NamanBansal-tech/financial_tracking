@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TransactionState {
 
- EState get eState; List<TransactionModel> get transactions; bool get isIncomeAddInBudget; PageMeta get pageMeta; String? get message; TransactionType? get selectedTransactionType; int? get selectedCategoryId; int? get selectedBudgetId; DateTime? get selectedDate;
+ EState get eState; List<TransactionModel> get transactions; bool get isIncomeAddInBudget; PageMeta get pageMeta; String? get message; TransactionType? get selectedTransactionType; int? get selectedCategoryId; int? get selectedBudgetId; DateTime? get selectedDate; num get totalExpense; num get totalIncome;
 /// Create a copy of TransactionState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $TransactionStateCopyWith<TransactionState> get copyWith => _$TransactionStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionState&&(identical(other.eState, eState) || other.eState == eState)&&const DeepCollectionEquality().equals(other.transactions, transactions)&&(identical(other.isIncomeAddInBudget, isIncomeAddInBudget) || other.isIncomeAddInBudget == isIncomeAddInBudget)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&(identical(other.message, message) || other.message == message)&&(identical(other.selectedTransactionType, selectedTransactionType) || other.selectedTransactionType == selectedTransactionType)&&(identical(other.selectedCategoryId, selectedCategoryId) || other.selectedCategoryId == selectedCategoryId)&&(identical(other.selectedBudgetId, selectedBudgetId) || other.selectedBudgetId == selectedBudgetId)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TransactionState&&(identical(other.eState, eState) || other.eState == eState)&&const DeepCollectionEquality().equals(other.transactions, transactions)&&(identical(other.isIncomeAddInBudget, isIncomeAddInBudget) || other.isIncomeAddInBudget == isIncomeAddInBudget)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&(identical(other.message, message) || other.message == message)&&(identical(other.selectedTransactionType, selectedTransactionType) || other.selectedTransactionType == selectedTransactionType)&&(identical(other.selectedCategoryId, selectedCategoryId) || other.selectedCategoryId == selectedCategoryId)&&(identical(other.selectedBudgetId, selectedBudgetId) || other.selectedBudgetId == selectedBudgetId)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&(identical(other.totalExpense, totalExpense) || other.totalExpense == totalExpense)&&(identical(other.totalIncome, totalIncome) || other.totalIncome == totalIncome));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,eState,const DeepCollectionEquality().hash(transactions),isIncomeAddInBudget,pageMeta,message,selectedTransactionType,selectedCategoryId,selectedBudgetId,selectedDate);
+int get hashCode => Object.hash(runtimeType,eState,const DeepCollectionEquality().hash(transactions),isIncomeAddInBudget,pageMeta,message,selectedTransactionType,selectedCategoryId,selectedBudgetId,selectedDate,totalExpense,totalIncome);
 
 @override
 String toString() {
-  return 'TransactionState(eState: $eState, transactions: $transactions, isIncomeAddInBudget: $isIncomeAddInBudget, pageMeta: $pageMeta, message: $message, selectedTransactionType: $selectedTransactionType, selectedCategoryId: $selectedCategoryId, selectedBudgetId: $selectedBudgetId, selectedDate: $selectedDate)';
+  return 'TransactionState(eState: $eState, transactions: $transactions, isIncomeAddInBudget: $isIncomeAddInBudget, pageMeta: $pageMeta, message: $message, selectedTransactionType: $selectedTransactionType, selectedCategoryId: $selectedCategoryId, selectedBudgetId: $selectedBudgetId, selectedDate: $selectedDate, totalExpense: $totalExpense, totalIncome: $totalIncome)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $TransactionStateCopyWith<$Res>  {
   factory $TransactionStateCopyWith(TransactionState value, $Res Function(TransactionState) _then) = _$TransactionStateCopyWithImpl;
 @useResult
 $Res call({
- EState eState, List<TransactionModel> transactions, bool isIncomeAddInBudget, PageMeta pageMeta, String? message, TransactionType? selectedTransactionType, int? selectedCategoryId, int? selectedBudgetId, DateTime? selectedDate
+ EState eState, List<TransactionModel> transactions, bool isIncomeAddInBudget, PageMeta pageMeta, String? message, TransactionType? selectedTransactionType, int? selectedCategoryId, int? selectedBudgetId, DateTime? selectedDate, num totalExpense, num totalIncome
 });
 
 
@@ -62,7 +62,7 @@ class _$TransactionStateCopyWithImpl<$Res>
 
 /// Create a copy of TransactionState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? eState = null,Object? transactions = null,Object? isIncomeAddInBudget = null,Object? pageMeta = null,Object? message = freezed,Object? selectedTransactionType = freezed,Object? selectedCategoryId = freezed,Object? selectedBudgetId = freezed,Object? selectedDate = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? eState = null,Object? transactions = null,Object? isIncomeAddInBudget = null,Object? pageMeta = null,Object? message = freezed,Object? selectedTransactionType = freezed,Object? selectedCategoryId = freezed,Object? selectedBudgetId = freezed,Object? selectedDate = freezed,Object? totalExpense = null,Object? totalIncome = null,}) {
   return _then(_self.copyWith(
 eState: null == eState ? _self.eState : eState // ignore: cast_nullable_to_non_nullable
 as EState,transactions: null == transactions ? _self.transactions : transactions // ignore: cast_nullable_to_non_nullable
@@ -73,7 +73,9 @@ as String?,selectedTransactionType: freezed == selectedTransactionType ? _self.s
 as TransactionType?,selectedCategoryId: freezed == selectedCategoryId ? _self.selectedCategoryId : selectedCategoryId // ignore: cast_nullable_to_non_nullable
 as int?,selectedBudgetId: freezed == selectedBudgetId ? _self.selectedBudgetId : selectedBudgetId // ignore: cast_nullable_to_non_nullable
 as int?,selectedDate: freezed == selectedDate ? _self.selectedDate : selectedDate // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,totalExpense: null == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
+as num,totalIncome: null == totalIncome ? _self.totalIncome : totalIncome // ignore: cast_nullable_to_non_nullable
+as num,
   ));
 }
 /// Create a copy of TransactionState
@@ -167,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( EState eState,  List<TransactionModel> transactions,  bool isIncomeAddInBudget,  PageMeta pageMeta,  String? message,  TransactionType? selectedTransactionType,  int? selectedCategoryId,  int? selectedBudgetId,  DateTime? selectedDate)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( EState eState,  List<TransactionModel> transactions,  bool isIncomeAddInBudget,  PageMeta pageMeta,  String? message,  TransactionType? selectedTransactionType,  int? selectedCategoryId,  int? selectedBudgetId,  DateTime? selectedDate,  num totalExpense,  num totalIncome)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TransactionState() when $default != null:
-return $default(_that.eState,_that.transactions,_that.isIncomeAddInBudget,_that.pageMeta,_that.message,_that.selectedTransactionType,_that.selectedCategoryId,_that.selectedBudgetId,_that.selectedDate);case _:
+return $default(_that.eState,_that.transactions,_that.isIncomeAddInBudget,_that.pageMeta,_that.message,_that.selectedTransactionType,_that.selectedCategoryId,_that.selectedBudgetId,_that.selectedDate,_that.totalExpense,_that.totalIncome);case _:
   return orElse();
 
 }
@@ -188,10 +190,10 @@ return $default(_that.eState,_that.transactions,_that.isIncomeAddInBudget,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( EState eState,  List<TransactionModel> transactions,  bool isIncomeAddInBudget,  PageMeta pageMeta,  String? message,  TransactionType? selectedTransactionType,  int? selectedCategoryId,  int? selectedBudgetId,  DateTime? selectedDate)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( EState eState,  List<TransactionModel> transactions,  bool isIncomeAddInBudget,  PageMeta pageMeta,  String? message,  TransactionType? selectedTransactionType,  int? selectedCategoryId,  int? selectedBudgetId,  DateTime? selectedDate,  num totalExpense,  num totalIncome)  $default,) {final _that = this;
 switch (_that) {
 case _TransactionState():
-return $default(_that.eState,_that.transactions,_that.isIncomeAddInBudget,_that.pageMeta,_that.message,_that.selectedTransactionType,_that.selectedCategoryId,_that.selectedBudgetId,_that.selectedDate);case _:
+return $default(_that.eState,_that.transactions,_that.isIncomeAddInBudget,_that.pageMeta,_that.message,_that.selectedTransactionType,_that.selectedCategoryId,_that.selectedBudgetId,_that.selectedDate,_that.totalExpense,_that.totalIncome);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +210,10 @@ return $default(_that.eState,_that.transactions,_that.isIncomeAddInBudget,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( EState eState,  List<TransactionModel> transactions,  bool isIncomeAddInBudget,  PageMeta pageMeta,  String? message,  TransactionType? selectedTransactionType,  int? selectedCategoryId,  int? selectedBudgetId,  DateTime? selectedDate)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( EState eState,  List<TransactionModel> transactions,  bool isIncomeAddInBudget,  PageMeta pageMeta,  String? message,  TransactionType? selectedTransactionType,  int? selectedCategoryId,  int? selectedBudgetId,  DateTime? selectedDate,  num totalExpense,  num totalIncome)?  $default,) {final _that = this;
 switch (_that) {
 case _TransactionState() when $default != null:
-return $default(_that.eState,_that.transactions,_that.isIncomeAddInBudget,_that.pageMeta,_that.message,_that.selectedTransactionType,_that.selectedCategoryId,_that.selectedBudgetId,_that.selectedDate);case _:
+return $default(_that.eState,_that.transactions,_that.isIncomeAddInBudget,_that.pageMeta,_that.message,_that.selectedTransactionType,_that.selectedCategoryId,_that.selectedBudgetId,_that.selectedDate,_that.totalExpense,_that.totalIncome);case _:
   return null;
 
 }
@@ -223,7 +225,7 @@ return $default(_that.eState,_that.transactions,_that.isIncomeAddInBudget,_that.
 
 
 class _TransactionState implements TransactionState {
-   _TransactionState({this.eState = EState.initial, final  List<TransactionModel> transactions = const [], this.isIncomeAddInBudget = false, required this.pageMeta, this.message, this.selectedTransactionType, this.selectedCategoryId, this.selectedBudgetId, this.selectedDate}): _transactions = transactions;
+   _TransactionState({this.eState = EState.initial, final  List<TransactionModel> transactions = const [], this.isIncomeAddInBudget = false, required this.pageMeta, this.message, this.selectedTransactionType, this.selectedCategoryId, this.selectedBudgetId, this.selectedDate, this.totalExpense = 0, this.totalIncome = 0}): _transactions = transactions;
   
 
 @override@JsonKey() final  EState eState;
@@ -241,6 +243,8 @@ class _TransactionState implements TransactionState {
 @override final  int? selectedCategoryId;
 @override final  int? selectedBudgetId;
 @override final  DateTime? selectedDate;
+@override@JsonKey() final  num totalExpense;
+@override@JsonKey() final  num totalIncome;
 
 /// Create a copy of TransactionState
 /// with the given fields replaced by the non-null parameter values.
@@ -252,16 +256,16 @@ _$TransactionStateCopyWith<_TransactionState> get copyWith => __$TransactionStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TransactionState&&(identical(other.eState, eState) || other.eState == eState)&&const DeepCollectionEquality().equals(other._transactions, _transactions)&&(identical(other.isIncomeAddInBudget, isIncomeAddInBudget) || other.isIncomeAddInBudget == isIncomeAddInBudget)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&(identical(other.message, message) || other.message == message)&&(identical(other.selectedTransactionType, selectedTransactionType) || other.selectedTransactionType == selectedTransactionType)&&(identical(other.selectedCategoryId, selectedCategoryId) || other.selectedCategoryId == selectedCategoryId)&&(identical(other.selectedBudgetId, selectedBudgetId) || other.selectedBudgetId == selectedBudgetId)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TransactionState&&(identical(other.eState, eState) || other.eState == eState)&&const DeepCollectionEquality().equals(other._transactions, _transactions)&&(identical(other.isIncomeAddInBudget, isIncomeAddInBudget) || other.isIncomeAddInBudget == isIncomeAddInBudget)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&(identical(other.message, message) || other.message == message)&&(identical(other.selectedTransactionType, selectedTransactionType) || other.selectedTransactionType == selectedTransactionType)&&(identical(other.selectedCategoryId, selectedCategoryId) || other.selectedCategoryId == selectedCategoryId)&&(identical(other.selectedBudgetId, selectedBudgetId) || other.selectedBudgetId == selectedBudgetId)&&(identical(other.selectedDate, selectedDate) || other.selectedDate == selectedDate)&&(identical(other.totalExpense, totalExpense) || other.totalExpense == totalExpense)&&(identical(other.totalIncome, totalIncome) || other.totalIncome == totalIncome));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,eState,const DeepCollectionEquality().hash(_transactions),isIncomeAddInBudget,pageMeta,message,selectedTransactionType,selectedCategoryId,selectedBudgetId,selectedDate);
+int get hashCode => Object.hash(runtimeType,eState,const DeepCollectionEquality().hash(_transactions),isIncomeAddInBudget,pageMeta,message,selectedTransactionType,selectedCategoryId,selectedBudgetId,selectedDate,totalExpense,totalIncome);
 
 @override
 String toString() {
-  return 'TransactionState(eState: $eState, transactions: $transactions, isIncomeAddInBudget: $isIncomeAddInBudget, pageMeta: $pageMeta, message: $message, selectedTransactionType: $selectedTransactionType, selectedCategoryId: $selectedCategoryId, selectedBudgetId: $selectedBudgetId, selectedDate: $selectedDate)';
+  return 'TransactionState(eState: $eState, transactions: $transactions, isIncomeAddInBudget: $isIncomeAddInBudget, pageMeta: $pageMeta, message: $message, selectedTransactionType: $selectedTransactionType, selectedCategoryId: $selectedCategoryId, selectedBudgetId: $selectedBudgetId, selectedDate: $selectedDate, totalExpense: $totalExpense, totalIncome: $totalIncome)';
 }
 
 
@@ -272,7 +276,7 @@ abstract mixin class _$TransactionStateCopyWith<$Res> implements $TransactionSta
   factory _$TransactionStateCopyWith(_TransactionState value, $Res Function(_TransactionState) _then) = __$TransactionStateCopyWithImpl;
 @override @useResult
 $Res call({
- EState eState, List<TransactionModel> transactions, bool isIncomeAddInBudget, PageMeta pageMeta, String? message, TransactionType? selectedTransactionType, int? selectedCategoryId, int? selectedBudgetId, DateTime? selectedDate
+ EState eState, List<TransactionModel> transactions, bool isIncomeAddInBudget, PageMeta pageMeta, String? message, TransactionType? selectedTransactionType, int? selectedCategoryId, int? selectedBudgetId, DateTime? selectedDate, num totalExpense, num totalIncome
 });
 
 
@@ -289,7 +293,7 @@ class __$TransactionStateCopyWithImpl<$Res>
 
 /// Create a copy of TransactionState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? eState = null,Object? transactions = null,Object? isIncomeAddInBudget = null,Object? pageMeta = null,Object? message = freezed,Object? selectedTransactionType = freezed,Object? selectedCategoryId = freezed,Object? selectedBudgetId = freezed,Object? selectedDate = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? eState = null,Object? transactions = null,Object? isIncomeAddInBudget = null,Object? pageMeta = null,Object? message = freezed,Object? selectedTransactionType = freezed,Object? selectedCategoryId = freezed,Object? selectedBudgetId = freezed,Object? selectedDate = freezed,Object? totalExpense = null,Object? totalIncome = null,}) {
   return _then(_TransactionState(
 eState: null == eState ? _self.eState : eState // ignore: cast_nullable_to_non_nullable
 as EState,transactions: null == transactions ? _self._transactions : transactions // ignore: cast_nullable_to_non_nullable
@@ -300,7 +304,9 @@ as String?,selectedTransactionType: freezed == selectedTransactionType ? _self.s
 as TransactionType?,selectedCategoryId: freezed == selectedCategoryId ? _self.selectedCategoryId : selectedCategoryId // ignore: cast_nullable_to_non_nullable
 as int?,selectedBudgetId: freezed == selectedBudgetId ? _self.selectedBudgetId : selectedBudgetId // ignore: cast_nullable_to_non_nullable
 as int?,selectedDate: freezed == selectedDate ? _self.selectedDate : selectedDate // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,totalExpense: null == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
+as num,totalIncome: null == totalIncome ? _self.totalIncome : totalIncome // ignore: cast_nullable_to_non_nullable
+as num,
   ));
 }
 

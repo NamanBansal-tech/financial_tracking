@@ -15,6 +15,8 @@ _TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) =>
       type: (json['type'] as num?)?.toInt(),
       id: (json['id'] as num?)?.toInt(),
       budgetId: (json['budgetId'] as num?)?.toInt(),
+      isIncomeAddedInBudget:
+          (json['isIncomeAddedInBudget'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$TransactionModelToJson(_TransactionModel instance) =>
@@ -26,4 +28,5 @@ Map<String, dynamic> _$TransactionModelToJson(_TransactionModel instance) =>
       'type': instance.type,
       'id': instance.id,
       'budgetId': instance.budgetId,
+      'isIncomeAddedInBudget': instance.isIncomeAddedInBudget,
     };

@@ -74,6 +74,9 @@ class CreateBudgetBody extends ConsumerWidget {
                     if ((value == null || value.isEmpty)) {
                       return 'Please enter your budget.';
                     }
+                    if ((num.tryParse(value) == 0)) {
+                      return 'Budget should be greater than 0.';
+                    }
                     return null;
                   },
                 ),

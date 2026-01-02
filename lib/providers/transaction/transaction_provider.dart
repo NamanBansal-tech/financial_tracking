@@ -52,10 +52,16 @@ class TransactionProvider extends _$TransactionProvider {
     if ((transaction?.budgetId != null)) {
       state = state.copyWith(selectedBudgetId: transaction?.budgetId);
     }
+    if ((transaction?.isIncomeAddedInBudget == 1)) {
+      updateBudgetCheck(true);
+    }
     setToInitialState();
   }
 
   void selectTransactionType(TransactionType? type) {
+    if ((type == TransactionType.expense)) {
+      state = state.copyWith(isIncomeAddInBudget: false);
+    }
     state = state.copyWith(selectedTransactionType: type);
   }
 
@@ -116,8 +122,38 @@ class TransactionProvider extends _$TransactionProvider {
             offset: state.pageMeta.offset + state.pageMeta.limit,
           ),
         );
+        updateTotalValues(r);
         setToInitialState();
       },
+    );
+  }
+
+  void updateTotalValues(List<TransactionModel> transactions) {
+    num totalExpense = state.totalExpense;
+    num totalIncome = state.totalIncome;
+    if ((transactions.isNotEmpty)) {
+      for (var element in transactions) {
+        final type = TransactionType.values.elementAtOrNull(element.type ?? -1);
+        final amount = (element.amount ?? 0);
+        switch (type) {
+          case null:
+            break;
+          case TransactionType.expense:
+            {
+              totalExpense += amount;
+              break;
+            }
+          case TransactionType.income:
+            {
+              totalIncome += amount;
+              break;
+            }
+        }
+      }
+    }
+    state = state.copyWith(
+      totalExpense: totalExpense,
+      totalIncome: totalIncome,
     );
   }
 
@@ -132,6 +168,7 @@ class TransactionProvider extends _$TransactionProvider {
           name: nameController.text.trim(),
           type: state.selectedTransactionType!.index,
           budgetId: state.selectedBudgetId,
+          isIncomeAddedInBudget: state.isIncomeAddInBudget ? 1 : 0,
         ),
       );
       result.fold(
@@ -159,6 +196,7 @@ class TransactionProvider extends _$TransactionProvider {
           id: arguementTransaction?.id,
           type: state.selectedTransactionType!.index,
           budgetId: state.selectedBudgetId,
+          isIncomeAddedInBudget: state.isIncomeAddInBudget ? 1 : 0,
         ),
       );
       result.fold(

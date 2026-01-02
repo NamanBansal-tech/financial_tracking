@@ -15,15 +15,9 @@ abstract class BudgetState with _$BudgetState {
     required PageMeta pageMeta,
     @Default([]) List<BudgetModel> budgetList,
     BudgetModel? budget,
+    int? resultId,
   }) = _BudgetState;
 
-  factory BudgetState.initial({
-    BudgetModel? budget,
-    required EState eState,
-  }) => BudgetState(
-    budget: budget,
-    eState: eState,
-    pageMeta: PageMeta(),
-  );
+  factory BudgetState.initial({BudgetModel? budget, required EState eState}) =>
+      BudgetState(budget: budget, eState: eState, pageMeta: PageMeta());
 }
-

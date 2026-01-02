@@ -32,7 +32,6 @@ class BudgetProvider extends _$BudgetProvider {
     formKey = GlobalKey<FormState>();
     startDateController = TextEditingController();
     endDateController = TextEditingController();
-
   }
 
   void resetWidgets() {
@@ -44,15 +43,11 @@ class BudgetProvider extends _$BudgetProvider {
   void updateValuesForEditBudget() {
     nameController.text = state.budget?.name ?? "";
     amountController.text = (state.budget?.budgetAmount ?? 0).toString();
-    if (state.budget?.endDate != null) {
-      state = state.copyWith(
-        endDate: DateTime.tryParse(state.budget?.endDate ?? ""),
-      );
+    if (state.budget?.startDate?.isNotEmpty ?? false) {
+      updateBudgetStartDate(DateTime.tryParse(state.budget?.startDate ?? ""));
     }
-    if (state.budget?.startDate != null) {
-      state = state.copyWith(
-        startDate: DateTime.tryParse(state.budget?.startDate ?? ""),
-      );
+    if (state.budget?.endDate?.isNotEmpty ?? false) {
+      updateBudgetEndDate(DateTime.tryParse(state.budget?.endDate ?? ""));
     }
     setToInitialState();
   }
@@ -145,7 +140,11 @@ class BudgetProvider extends _$BudgetProvider {
           setToInitialState();
         },
         (r) {
-          state = state.copyWith(message: r, eState: EState.success);
+          state = state.copyWith(
+            message: 'Budget Added Successfully',
+            resultId: r,
+            eState: EState.success,
+          );
           setToInitialState();
         },
       );

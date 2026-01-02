@@ -20,7 +20,6 @@ import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class CreateTransactionBody extends ConsumerWidget {
   const CreateTransactionBody({super.key, this.transactionModel});
@@ -60,19 +59,25 @@ class CreateTransactionBody extends ConsumerWidget {
     ref.listen<TransactionState>((transactionRef), (_, next) {
       if (next.eState == EState.success) {
         if (budgetState.budget != null) {
+          num? expense = budgetState.budget?.totalExpense ?? 0;
+          num budget = (budgetState.budget?.budgetAmount ?? 0);
+          if ((next.selectedTransactionType == TransactionType.expense)) {
+            if ((transactionModel?.isIncomeAddedInBudget == 1)) {
+              budget -= double.parse(provider.amountController.text.trim());
+            }
+            expense += double.parse(provider.amountController.text.trim());
+          }
+          if ((next.selectedTransactionType == TransactionType.income)) {
+            if ((next.isIncomeAddInBudget)) {
+              budget += double.parse(provider.amountController.text.trim());
+            } else {
+              budget -= double.parse(provider.amountController.text.trim());
+            }
+          }
           budgetProvider.updateBudgetFromCreateTransaction(
             budgetState.budget!.copyWith(
-              totalExpense:
-                  state.selectedTransactionType == TransactionType.expense
-                  ? ((budgetState.budget?.totalExpense ?? 0) +
-                        double.parse(provider.amountController.text.trim()))
-                  : budgetState.budget?.totalExpense,
-              budgetAmount:
-                  state.selectedTransactionType == TransactionType.income &&
-                      state.isIncomeAddInBudget
-                  ? ((budgetState.budget?.budgetAmount ?? 0) +
-                        double.parse(provider.amountController.text.trim()))
-                  : budgetState.budget?.budgetAmount,
+              totalExpense: expense,
+              budgetAmount: budget,
             ),
           );
           return;
@@ -175,6 +180,9 @@ class CreateTransactionBody extends ConsumerWidget {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your transaction amount.';
                         }
+                        if ((num.tryParse(value) == 0)) {
+                          return 'Amount should be greater than 0.';
+                        }
                         return null;
                       },
                     ),
@@ -248,7 +256,7 @@ class CreateTransactionBody extends ConsumerWidget {
     required CategoryState categoryState,
     required TransactionProvider provider,
     required bool isSubmitting,
-      required TransactionState state,
+    required TransactionState state,
   }) {
     return Column(
       children: [
@@ -311,9 +319,10 @@ class CreateTransactionBody extends ConsumerWidget {
                           CreateCategoryPage.route(fromOtherPage: true),
                         );
                         if (((context.mounted) &&
-                            (result is bool) &&
-                            (result == true))) {
-                          categoryProvider.getCategories();
+                            (result is int?) &&
+                            (result != null))) {
+                          provider.updateCategoryId(result);
+                          categoryProvider.getCategory(result);
                         }
                       }
                     },
@@ -395,9 +404,10 @@ class CreateTransactionBody extends ConsumerWidget {
                           CreateBudgetPage.route(fromOtherPage: true),
                         );
                         if (((context.mounted) &&
-                            (result is bool) &&
-                            (result == true))) {
-                          budgetProvider.getBudgetList();
+                            (result is int?) &&
+                            (result != null))) {
+                          budgetProvider.getBudget(result);
+                          provider.updateBudgetId(result);
                         }
                       }
                     },
@@ -422,26 +432,7 @@ class CreateTransactionBody extends ConsumerWidget {
                     onChanged: isSubmitting
                         ? null
                         : (value) {
-                            if (budgetState.budget?.budgetAmount != null) {
-                              provider.updateBudgetCheck(value ?? false);
-                            } else {
-                              Fluttertoast.showToast(
-                                msg: "Please select the budget details first!",
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white,
-                              );
-                              Navigator.push(
-                                context,
-                                CreateBudgetPage.route(
-                                  fromOtherPage: true,
-                                  budget: budgetState.budget,
-                                ),
-                              ).whenComplete(() {
-                                budgetProvider.getBudget(
-                                  budgetState.budget!.id!,
-                                );
-                              });
-                            }
+                            provider.updateBudgetCheck(value ?? false);
                           },
                   ),
                   Flexible(

@@ -2,6 +2,7 @@ import 'package:finance_tracking/components/custom_app_bar.dart';
 import 'package:finance_tracking/components/custom_bottom_sheet.dart';
 import 'package:finance_tracking/components/custom_button.dart';
 import 'package:finance_tracking/models/transaction_model/transaction_model.dart';
+import 'package:finance_tracking/providers/budget/budget_provider.dart';
 import 'package:finance_tracking/providers/category/category_state.dart';
 import 'package:finance_tracking/providers/common_provider/common_state.dart';
 import 'package:finance_tracking/providers/transaction/transaction_provider.dart';
@@ -9,6 +10,7 @@ import 'package:finance_tracking/providers/transaction/transaction_state.dart';
 import 'package:finance_tracking/screens/create_transaction/create_transaction_page.dart';
 import 'package:finance_tracking/screens/transaction_list/ui/transactions_filter.dart';
 import 'package:finance_tracking/screens/transaction_list/ui/transction_options_bottom_sheet.dart';
+import 'package:finance_tracking/utils/app_colors.dart';
 import 'package:finance_tracking/utils/extensions.dart';
 import 'package:finance_tracking/utils/listeners.dart';
 import 'package:finance_tracking/utils/utility.dart';
@@ -36,6 +38,9 @@ class TransactionList extends ConsumerWidget {
     final transactionRef = transactionProviderProvider(widgetRef: ref);
     final provider = ref.read(transactionRef.notifier);
     final state = ref.watch(transactionRef);
+    final budgetRef = budgetProviderProvider(widgetRef: ref);
+    final budgetProvider = ref.read(budgetRef.notifier);
+    final budgetState = ref.watch(budgetRef);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if ((state.eState == EState.ready)) {
         if ((transactionDate != null)) {
@@ -46,6 +51,9 @@ class TransactionList extends ConsumerWidget {
         }
         if ((budgetId != null)) {
           provider.updateBudgetId(budgetId);
+          if ((budgetState.eState == EState.ready)) {
+            budgetProvider.getBudget(budgetId!);
+          }
         }
         provider.getTransactions();
       }
@@ -85,28 +93,21 @@ class TransactionList extends ConsumerWidget {
                 },
               );
             },
-            icon: Icon(
-              Icons.filter_alt_rounded,
-              size: context.height * .03,
-            ),
+            icon: Icon(Icons.filter_alt_rounded, size: context.height * .03),
           ),
           if (fromDashboard)
             IconButton(
               onPressed: () {
                 Navigator.push(context, CreateTransactionPage.route());
               },
-              icon: Icon(
-                Icons.add,
-                size: context.height * .035,
-              ),
+              icon: Icon(Icons.add, size: context.height * .035),
             ),
         ],
       ),
 
       body: LazyLoadScrollView(
         onEndOfPage: () {
-          if (state.pageMeta.hasNext &&
-              state.eState == EState.initial) {
+          if (state.pageMeta.hasNext && state.eState == EState.initial) {
             provider.getTransactions(loadMore: true);
           }
         },
@@ -120,8 +121,16 @@ class TransactionList extends ConsumerWidget {
             shrinkWrap: true,
             padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 12.w),
             children: [
-              state.eState == EState.loading ||
-                      state.eState == EState.ready
+              if ((state.transactions.isNotEmpty)) ...[
+                headerWidget(
+                  totalExpense: state.totalExpense,
+                  totalIncome: state.totalIncome,
+                  budget: budgetState.budget?.budgetAmount,
+                  isBudgetLoading: (budgetState.eState == EState.loading),
+                ),
+              ],
+              ((state.eState == EState.loading) ||
+                      (state.eState == EState.ready))
                   ? SizedBox(
                       height: context.height / 1.5,
                       child: Center(child: CircularProgressIndicator()),
@@ -140,9 +149,7 @@ class TransactionList extends ConsumerWidget {
                         return customTransactionTile(
                           parentContext: context,
                           transactionModel: item,
-                          isDeleting:
-                              state.eState ==
-                              EState.loading,
+                          isDeleting: state.eState == EState.loading,
                           onDelete: (val) {
                             if (((val == true) && (item.id != null))) {
                               deleteTransactionDialogBox(
@@ -167,6 +174,69 @@ class TransactionList extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget headerWidget({
+    required num totalExpense,
+    required num totalIncome,
+    required num? budget,
+    required bool isBudgetLoading,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade300, width: 1.w),
+      ),
+      padding: EdgeInsets.all(16.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _amountTile(
+            label: 'Total Expenses',
+            value: totalExpense,
+            color: AppColors.expenseColor,
+          ),
+          if ((budget != null)) ...[
+            _amountTile(
+              label: 'Total Budget',
+              value: budget,
+              color: Colors.black87,
+            ),
+          ],
+          _amountTile(
+            label: 'Total Income',
+            value: totalIncome,
+            color: AppColors.incomeColor,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _amountTile({
+    required String label,
+    required num value,
+    required Color color,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          label,
+          style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+        ),
+        SizedBox(height: 4.h),
+        Text(
+          value.toStringAsFixed(0),
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
+            color: color,
+          ),
+        ),
+      ],
     );
   }
 

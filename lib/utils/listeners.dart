@@ -65,7 +65,7 @@ class Listeners {
         backgroundColor: Colors.green,
       );
       if ((fromOtherPage)) {
-        Navigator.pop(context, true);
+        Navigator.pop(context, state.resultId);
       } else {
         Navigator.pushAndRemoveUntil(context, HomePage.route(), (_) => false);
       }
@@ -98,7 +98,7 @@ class Listeners {
         backgroundColor: Colors.green,
       );
       if ((fromOtherPage)) {
-        Navigator.pop(context, true);
+        Navigator.pop(context, state.resultId);
       } else {
         Navigator.pushAndRemoveUntil(context, HomePage.route(), (_) => false);
       }

@@ -105,7 +105,8 @@ class CategoryProvider extends _$CategoryProvider {
         },
         (r) {
           state = state.copyWith(
-            message: r,
+            message: 'Category Added Successfully',
+            resultId: r,
             eState: EState.success,
           );
           setToInitialState();

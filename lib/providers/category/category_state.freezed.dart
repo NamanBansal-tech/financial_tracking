@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CategoryState {
 
- EState get eState; String? get message; PageMeta get pageMeta; List<CategoryModel> get categories; CategoryModel? get category; int? get selectedBudgetId;
+ EState get eState; String? get message; PageMeta get pageMeta; List<CategoryModel> get categories; CategoryModel? get category; int? get selectedBudgetId; int? get resultId;
 /// Create a copy of CategoryState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $CategoryStateCopyWith<CategoryState> get copyWith => _$CategoryStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoryState&&(identical(other.eState, eState) || other.eState == eState)&&(identical(other.message, message) || other.message == message)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.category, category) || other.category == category)&&(identical(other.selectedBudgetId, selectedBudgetId) || other.selectedBudgetId == selectedBudgetId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoryState&&(identical(other.eState, eState) || other.eState == eState)&&(identical(other.message, message) || other.message == message)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.category, category) || other.category == category)&&(identical(other.selectedBudgetId, selectedBudgetId) || other.selectedBudgetId == selectedBudgetId)&&(identical(other.resultId, resultId) || other.resultId == resultId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,eState,message,pageMeta,const DeepCollectionEquality().hash(categories),category,selectedBudgetId);
+int get hashCode => Object.hash(runtimeType,eState,message,pageMeta,const DeepCollectionEquality().hash(categories),category,selectedBudgetId,resultId);
 
 @override
 String toString() {
-  return 'CategoryState(eState: $eState, message: $message, pageMeta: $pageMeta, categories: $categories, category: $category, selectedBudgetId: $selectedBudgetId)';
+  return 'CategoryState(eState: $eState, message: $message, pageMeta: $pageMeta, categories: $categories, category: $category, selectedBudgetId: $selectedBudgetId, resultId: $resultId)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $CategoryStateCopyWith<$Res>  {
   factory $CategoryStateCopyWith(CategoryState value, $Res Function(CategoryState) _then) = _$CategoryStateCopyWithImpl;
 @useResult
 $Res call({
- EState eState, String? message, PageMeta pageMeta, List<CategoryModel> categories, CategoryModel? category, int? selectedBudgetId
+ EState eState, String? message, PageMeta pageMeta, List<CategoryModel> categories, CategoryModel? category, int? selectedBudgetId, int? resultId
 });
 
 
@@ -62,7 +62,7 @@ class _$CategoryStateCopyWithImpl<$Res>
 
 /// Create a copy of CategoryState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? eState = null,Object? message = freezed,Object? pageMeta = null,Object? categories = null,Object? category = freezed,Object? selectedBudgetId = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? eState = null,Object? message = freezed,Object? pageMeta = null,Object? categories = null,Object? category = freezed,Object? selectedBudgetId = freezed,Object? resultId = freezed,}) {
   return _then(_self.copyWith(
 eState: null == eState ? _self.eState : eState // ignore: cast_nullable_to_non_nullable
 as EState,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
@@ -70,6 +70,7 @@ as String?,pageMeta: null == pageMeta ? _self.pageMeta : pageMeta // ignore: cas
 as PageMeta,categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
 as List<CategoryModel>,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as CategoryModel?,selectedBudgetId: freezed == selectedBudgetId ? _self.selectedBudgetId : selectedBudgetId // ignore: cast_nullable_to_non_nullable
+as int?,resultId: freezed == resultId ? _self.resultId : resultId // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
 }
@@ -176,10 +177,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( EState eState,  String? message,  PageMeta pageMeta,  List<CategoryModel> categories,  CategoryModel? category,  int? selectedBudgetId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( EState eState,  String? message,  PageMeta pageMeta,  List<CategoryModel> categories,  CategoryModel? category,  int? selectedBudgetId,  int? resultId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CategoryState() when $default != null:
-return $default(_that.eState,_that.message,_that.pageMeta,_that.categories,_that.category,_that.selectedBudgetId);case _:
+return $default(_that.eState,_that.message,_that.pageMeta,_that.categories,_that.category,_that.selectedBudgetId,_that.resultId);case _:
   return orElse();
 
 }
@@ -197,10 +198,10 @@ return $default(_that.eState,_that.message,_that.pageMeta,_that.categories,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( EState eState,  String? message,  PageMeta pageMeta,  List<CategoryModel> categories,  CategoryModel? category,  int? selectedBudgetId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( EState eState,  String? message,  PageMeta pageMeta,  List<CategoryModel> categories,  CategoryModel? category,  int? selectedBudgetId,  int? resultId)  $default,) {final _that = this;
 switch (_that) {
 case _CategoryState():
-return $default(_that.eState,_that.message,_that.pageMeta,_that.categories,_that.category,_that.selectedBudgetId);case _:
+return $default(_that.eState,_that.message,_that.pageMeta,_that.categories,_that.category,_that.selectedBudgetId,_that.resultId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -217,10 +218,10 @@ return $default(_that.eState,_that.message,_that.pageMeta,_that.categories,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( EState eState,  String? message,  PageMeta pageMeta,  List<CategoryModel> categories,  CategoryModel? category,  int? selectedBudgetId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( EState eState,  String? message,  PageMeta pageMeta,  List<CategoryModel> categories,  CategoryModel? category,  int? selectedBudgetId,  int? resultId)?  $default,) {final _that = this;
 switch (_that) {
 case _CategoryState() when $default != null:
-return $default(_that.eState,_that.message,_that.pageMeta,_that.categories,_that.category,_that.selectedBudgetId);case _:
+return $default(_that.eState,_that.message,_that.pageMeta,_that.categories,_that.category,_that.selectedBudgetId,_that.resultId);case _:
   return null;
 
 }
@@ -232,7 +233,7 @@ return $default(_that.eState,_that.message,_that.pageMeta,_that.categories,_that
 
 
 class _CategoryState implements CategoryState {
-   _CategoryState({this.eState = EState.initial, this.message, required this.pageMeta, final  List<CategoryModel> categories = const [], this.category, this.selectedBudgetId}): _categories = categories;
+   _CategoryState({this.eState = EState.initial, this.message, required this.pageMeta, final  List<CategoryModel> categories = const [], this.category, this.selectedBudgetId, this.resultId}): _categories = categories;
   
 
 @override@JsonKey() final  EState eState;
@@ -247,6 +248,7 @@ class _CategoryState implements CategoryState {
 
 @override final  CategoryModel? category;
 @override final  int? selectedBudgetId;
+@override final  int? resultId;
 
 /// Create a copy of CategoryState
 /// with the given fields replaced by the non-null parameter values.
@@ -258,16 +260,16 @@ _$CategoryStateCopyWith<_CategoryState> get copyWith => __$CategoryStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CategoryState&&(identical(other.eState, eState) || other.eState == eState)&&(identical(other.message, message) || other.message == message)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.category, category) || other.category == category)&&(identical(other.selectedBudgetId, selectedBudgetId) || other.selectedBudgetId == selectedBudgetId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CategoryState&&(identical(other.eState, eState) || other.eState == eState)&&(identical(other.message, message) || other.message == message)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.category, category) || other.category == category)&&(identical(other.selectedBudgetId, selectedBudgetId) || other.selectedBudgetId == selectedBudgetId)&&(identical(other.resultId, resultId) || other.resultId == resultId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,eState,message,pageMeta,const DeepCollectionEquality().hash(_categories),category,selectedBudgetId);
+int get hashCode => Object.hash(runtimeType,eState,message,pageMeta,const DeepCollectionEquality().hash(_categories),category,selectedBudgetId,resultId);
 
 @override
 String toString() {
-  return 'CategoryState(eState: $eState, message: $message, pageMeta: $pageMeta, categories: $categories, category: $category, selectedBudgetId: $selectedBudgetId)';
+  return 'CategoryState(eState: $eState, message: $message, pageMeta: $pageMeta, categories: $categories, category: $category, selectedBudgetId: $selectedBudgetId, resultId: $resultId)';
 }
 
 
@@ -278,7 +280,7 @@ abstract mixin class _$CategoryStateCopyWith<$Res> implements $CategoryStateCopy
   factory _$CategoryStateCopyWith(_CategoryState value, $Res Function(_CategoryState) _then) = __$CategoryStateCopyWithImpl;
 @override @useResult
 $Res call({
- EState eState, String? message, PageMeta pageMeta, List<CategoryModel> categories, CategoryModel? category, int? selectedBudgetId
+ EState eState, String? message, PageMeta pageMeta, List<CategoryModel> categories, CategoryModel? category, int? selectedBudgetId, int? resultId
 });
 
 
@@ -295,7 +297,7 @@ class __$CategoryStateCopyWithImpl<$Res>
 
 /// Create a copy of CategoryState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? eState = null,Object? message = freezed,Object? pageMeta = null,Object? categories = null,Object? category = freezed,Object? selectedBudgetId = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? eState = null,Object? message = freezed,Object? pageMeta = null,Object? categories = null,Object? category = freezed,Object? selectedBudgetId = freezed,Object? resultId = freezed,}) {
   return _then(_CategoryState(
 eState: null == eState ? _self.eState : eState // ignore: cast_nullable_to_non_nullable
 as EState,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
@@ -303,6 +305,7 @@ as String?,pageMeta: null == pageMeta ? _self.pageMeta : pageMeta // ignore: cas
 as PageMeta,categories: null == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
 as List<CategoryModel>,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as CategoryModel?,selectedBudgetId: freezed == selectedBudgetId ? _self.selectedBudgetId : selectedBudgetId // ignore: cast_nullable_to_non_nullable
+as int?,resultId: freezed == resultId ? _self.resultId : resultId // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
 }

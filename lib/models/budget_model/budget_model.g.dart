@@ -9,7 +9,7 @@ part of 'budget_model.dart';
 _BudgetModel _$BudgetModelFromJson(Map<String, dynamic> json) => _BudgetModel(
   id: (json['id'] as num?)?.toInt(),
   name: json['name'] as String?,
-  totalExpense: (json['totalExpense'] as num?)?.toDouble(),
+  totalExpense: json['totalExpense'] as num?,
   budgetAmount: json['budgetAmount'] as num?,
   startDate: json['startDate'] as String?,
   endDate: json['endDate'] as String?,

@@ -58,7 +58,7 @@ final class CategoryProviderProvider
   }
 }
 
-String _$categoryProviderHash() => r'825b378756b5451654033cfbca97e8b2f6cb57ec';
+String _$categoryProviderHash() => r'8de63af9a8cb748d6caa75efa2eb1177ed35e3c0';
 
 final class CategoryProviderFamily extends $Family
     with

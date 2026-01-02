@@ -8,7 +8,7 @@ abstract class BudgetModel with _$BudgetModel {
   factory BudgetModel({
     int? id,
     String? name,
-    double? totalExpense,
+    num? totalExpense,
     num? budgetAmount,
     String? startDate,
     String? endDate,

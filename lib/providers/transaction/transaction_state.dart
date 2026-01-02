@@ -17,6 +17,8 @@ abstract class TransactionState with _$TransactionState {
     int? selectedCategoryId,
     int? selectedBudgetId,
     DateTime? selectedDate,
+    @Default(0) num totalExpense,
+    @Default(0) num totalIncome,
   }) = _TransactionState;
 
   factory TransactionState.initial({required EState eState}) =>
