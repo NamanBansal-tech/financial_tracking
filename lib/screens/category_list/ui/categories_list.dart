@@ -8,6 +8,7 @@ import 'package:finance_tracking/providers/category/category_state.dart';
 import 'package:finance_tracking/providers/transaction/transaction_state.dart';
 import 'package:finance_tracking/screens/category_list/ui/categories_filter_bottom_sheet.dart';
 import 'package:finance_tracking/screens/create_category/create_category_page.dart';
+import 'package:finance_tracking/screens/transaction_list/transactions_list_page.dart';
 import 'package:finance_tracking/utils/listeners.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -88,8 +89,7 @@ class CategoriesList extends ConsumerWidget {
         shrinkWrap: true,
         padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
         children: [
-          state.eState == EState.loading ||
-                  state.eState == EState.ready
+          state.eState == EState.loading || state.eState == EState.ready
               ? SizedBox(
                   height: MediaQuery.of(context).size.height / 1.5,
                   child: Center(child: CircularProgressIndicator()),
@@ -108,28 +108,45 @@ class CategoriesList extends ConsumerWidget {
                     return customCategoryTile(
                       parentContext: context,
                       categoryModel: item,
-                      isDeleting:
-                          state.eState == EState.loading,
+                      isDeleting: state.eState == EState.loading,
                       onSuccess: (val) {
                         if (((val != null) && (val is EMoreOptions))) {
                           switch (val) {
                             case EMoreOptions.edit:
-                              provider.getCategories();
-                            case EMoreOptions.delete:
-                              if ((item.id != null)) {
-                                deleteDialogBox(
-                                  context: context,
-                                  title:
-                                      "Are you sure want to delete the budget '${item.name ?? ""}'?",
-                                ).then((value) {
-                                  if ((value == true)) {
-                                    provider.deleteCategory(item.id!);
-                                  }
-                                });
+                              {
+                                provider.getCategories();
+                                break;
                               }
-                              break;
+                            case EMoreOptions.delete:
+                              {
+                                if ((item.id != null)) {
+                                  deleteDialogBox(
+                                    context: context,
+                                    title:
+                                        "Are you sure want to delete the budget '${item.name ?? ""}'?",
+                                  ).then((value) {
+                                    if ((value == true)) {
+                                      provider.deleteCategory(item.id!);
+                                    }
+                                  });
+                                }
+                                break;
+                              }
                             case EMoreOptions.select:
-                              Navigator.pop(context, item);
+                              {
+                                Navigator.pop(context, item);
+                                break;
+                              }
+                            case EMoreOptions.viewTransactions:
+                              {
+                                Navigator.push(
+                                  context,
+                                  TransactionsListPage.route(
+                                    categoryId: item.id,
+                                  ),
+                                );
+                                break;
+                              }
                           }
                         }
                       },
@@ -148,10 +165,7 @@ class CategoriesList extends ConsumerWidget {
     required bool isDeleting,
   }) {
     return ListTile(
-      title: Text(
-        categoryModel.name ?? 'N/A',
-        style: TextStyle(fontSize: 17),
-      ),
+      title: Text(categoryModel.name ?? 'N/A', style: TextStyle(fontSize: 17)),
       onTap: () {
         customBottomSheet(
           context: parentContext,

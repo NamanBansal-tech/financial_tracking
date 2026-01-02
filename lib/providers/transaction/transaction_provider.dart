@@ -68,6 +68,14 @@ class TransactionProvider extends _$TransactionProvider {
     state = state.copyWith(selectedDate: date);
   }
 
+  void updateBudgetId(int? id) {
+    state = state.copyWith(selectedBudgetId: id);
+  }
+
+  void updateCategoryId(int? id) {
+    state = state.copyWith(selectedCategoryId: id);
+  }
+
   // @override
   // void dispose() {
   //   transactionNameController.dispose();
@@ -105,6 +113,8 @@ class TransactionProvider extends _$TransactionProvider {
       transactionType: state.selectedTransactionType?.index,
       pageMeta: state.pageMeta,
       transactionDate: Utility.getDateFromDateTime(state.selectedDate),
+      budgetId: state.selectedBudgetId,
+      categoryId: state.selectedCategoryId,
     );
     result.fold(
       (l) {

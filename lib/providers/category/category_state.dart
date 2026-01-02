@@ -18,11 +18,7 @@ abstract class CategoryState with _$CategoryState {
   factory CategoryState.initial({
     CategoryModel? category,
     required EState eState,
-  }) => CategoryState(
-    category: category,
-    eState: eState,
-    pageMeta: PageMeta(),
-  );
+  }) => CategoryState(category: category, eState: eState, pageMeta: PageMeta());
 }
 
 enum EState {
@@ -35,4 +31,4 @@ enum EState {
   successDelete,
 }
 
-enum EMoreOptions { edit, delete, select }
+enum EMoreOptions { edit, delete, select, viewTransactions }

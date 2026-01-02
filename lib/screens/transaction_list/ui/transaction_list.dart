@@ -19,10 +19,14 @@ class TransactionList extends ConsumerWidget {
     super.key,
     required this.fromDashboard,
     this.transactionDate,
+    this.categoryId,
+    this.budgetId,
   });
 
   final bool fromDashboard;
   final DateTime? transactionDate;
+  final int? categoryId;
+  final int? budgetId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,9 +34,15 @@ class TransactionList extends ConsumerWidget {
     final provider = ref.read(transactionRef.notifier);
     final state = ref.watch(transactionRef);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (state.eTransactionState == ETransactionState.ready) {
-        if (transactionDate != null) {
+      if ((state.eTransactionState == ETransactionState.ready)) {
+        if ((transactionDate != null)) {
           provider.selectTransactionDate(transactionDate!);
+        }
+        if ((categoryId != null)) {
+          provider.updateCategoryId(categoryId);
+        }
+        if ((budgetId != null)) {
+          provider.updateBudgetId(budgetId);
         }
         provider.getTransactions();
       }
@@ -110,41 +120,41 @@ class TransactionList extends ConsumerWidget {
               state.eTransactionState == ETransactionState.loading ||
                       state.eTransactionState == ETransactionState.ready
                   ? SizedBox(
-                    height: MediaQuery.of(context).size.height / 1.5,
-                    child: Center(child: CircularProgressIndicator()),
-                  )
+                      height: MediaQuery.of(context).size.height / 1.5,
+                      child: Center(child: CircularProgressIndicator()),
+                    )
                   : state.transactions.isEmpty
                   ? SizedBox(
-                    height: MediaQuery.of(context).size.height / 1.5,
-                    child: Center(child: Text('No transaction found.')),
-                  )
+                      height: MediaQuery.of(context).size.height / 1.5,
+                      child: Center(child: Text('No transaction found.')),
+                    )
                   : ListView.builder(
-                    itemCount: state.transactions.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      final item = state.transactions[index];
-                      return customTransactionTile(
-                        parentContext: context,
-                        transactionModel: item,
-                        isDeleting:
-                            state.eTransactionState ==
-                            ETransactionState.loading,
-                        onDelete: (val) {
-                          if (((val == true) && (item.id != null))) {
-                            deleteTransactionDialogBox(
-                              context: context,
-                              refProvider: transactionRef,
-                            ).then((value) {
-                              if ((value == true)) {
-                                provider.deleteTransaction(item.id!);
-                              }
-                            });
-                          }
-                        },
-                      );
-                    },
-                  ),
+                      itemCount: state.transactions.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        final item = state.transactions[index];
+                        return customTransactionTile(
+                          parentContext: context,
+                          transactionModel: item,
+                          isDeleting:
+                              state.eTransactionState ==
+                              ETransactionState.loading,
+                          onDelete: (val) {
+                            if (((val == true) && (item.id != null))) {
+                              deleteTransactionDialogBox(
+                                context: context,
+                                refProvider: transactionRef,
+                              ).then((value) {
+                                if ((value == true)) {
+                                  provider.deleteTransaction(item.id!);
+                                }
+                              });
+                            }
+                          },
+                        );
+                      },
+                    ),
               if (state.eTransactionState == ETransactionState.loadingMore)
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 24),
@@ -163,10 +173,9 @@ class TransactionList extends ConsumerWidget {
     required dynamic Function(dynamic)? onDelete,
     required bool isDeleting,
   }) {
-    final TransactionType? transactionType =
-        transactionModel.type != null
-            ? TransactionType.values.elementAt(transactionModel.type!)
-            : null;
+    final TransactionType? transactionType = transactionModel.type != null
+        ? TransactionType.values.elementAt(transactionModel.type!)
+        : null;
     return ListTile(
       onTap: () {
         customBottomSheet(
@@ -188,23 +197,21 @@ class TransactionList extends ConsumerWidget {
             : 'N/A',
         style: TextStyle(fontSize: 15),
       ),
-      trailing:
-          isDeleting
-              ? const CircularProgressIndicator(color: Colors.amber)
-              : Text(
-                transactionModel.amount != null && transactionType != null
-                    ? '${transactionType == TransactionType.expense ? '- ' : '+ '}${transactionModel.amount}'
-                    : 'N/A',
-                style: TextStyle(
-                  fontSize: 18,
-                  color:
-                      transactionType != null
-                          ? transactionType == TransactionType.expense
-                              ? Colors.red
-                              : Colors.green
-                          : null,
-                ),
+      trailing: isDeleting
+          ? const CircularProgressIndicator(color: Colors.amber)
+          : Text(
+              transactionModel.amount != null && transactionType != null
+                  ? '${transactionType == TransactionType.expense ? '- ' : '+ '}${transactionModel.amount}'
+                  : 'N/A',
+              style: TextStyle(
+                fontSize: 18,
+                color: transactionType != null
+                    ? transactionType == TransactionType.expense
+                          ? Colors.red
+                          : Colors.green
+                    : null,
               ),
+            ),
     );
   }
 

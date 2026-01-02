@@ -9,6 +9,7 @@ import 'package:finance_tracking/providers/category/category_state.dart';
 import 'package:finance_tracking/providers/transaction/transaction_state.dart';
 import 'package:finance_tracking/screens/budget_list/ui/budget_filter_bottom_sheet.dart';
 import 'package:finance_tracking/screens/create_budget/create_budget_page.dart';
+import 'package:finance_tracking/screens/transaction_list/transactions_list_page.dart';
 import 'package:finance_tracking/utils/listeners.dart';
 import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
@@ -90,8 +91,7 @@ class BudgetList extends ConsumerWidget {
         shrinkWrap: true,
         padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
         children: [
-          state.eState == EState.loading ||
-                  state.eState == EState.ready
+          state.eState == EState.loading || state.eState == EState.ready
               ? SizedBox(
                   height: MediaQuery.of(context).size.height / 1.5,
                   child: Center(child: CircularProgressIndicator()),
@@ -115,22 +115,38 @@ class BudgetList extends ConsumerWidget {
                         if (((val != null) && (val is EMoreOptions))) {
                           switch (val) {
                             case EMoreOptions.edit:
-                              provider.getBudgetList();
-                            case EMoreOptions.delete:
-                              if ((item.id != null)) {
-                                deleteDialogBox(
-                                  context: context,
-                                  title:
-                                      "Are you sure want to delete the budget '${item.name ?? ""}'?",
-                                ).then((value) {
-                                  if ((value == true)) {
-                                    provider.deleteBudget(item.id!);
-                                  }
-                                });
+                              {
+                                provider.getBudgetList();
+                                break;
                               }
-                              break;
+                            case EMoreOptions.delete:
+                              {
+                                if ((item.id != null)) {
+                                  deleteDialogBox(
+                                    context: context,
+                                    title:
+                                        "Are you sure want to delete the budget '${item.name ?? ""}'?",
+                                  ).then((value) {
+                                    if ((value == true)) {
+                                      provider.deleteBudget(item.id!);
+                                    }
+                                  });
+                                }
+                                break;
+                              }
                             case EMoreOptions.select:
-                              Navigator.pop(context, item);
+                              {
+                                Navigator.pop(context, item);
+                                break;
+                              }
+                            case EMoreOptions.viewTransactions:
+                              {
+                                Navigator.push(
+                                  context,
+                                  TransactionsListPage.route(budgetId: item.id),
+                                );
+                                break;
+                              }
                           }
                         }
                       },
@@ -160,10 +176,7 @@ class BudgetList extends ConsumerWidget {
             onEdit: () {
               Navigator.push(
                 parentContext,
-                CreateBudgetPage .route(
-                  fromOtherPage: true,
-                  budget: budget,
-                ),
+                CreateBudgetPage.route(fromOtherPage: true, budget: budget),
               ).then((_) {
                 if (parentContext.mounted) {
                   Navigator.pop(parentContext, EMoreOptions.edit);

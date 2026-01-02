@@ -22,15 +22,17 @@ class CustomBottomNavigationBar extends StatelessWidget {
                 getCurrentTabImage(e),
                 height: 25,
                 width: 25,
-                color: e.index == currentIndex ? Colors.amber : Colors.grey,
+                color: e.index == currentIndex
+                    ? Colors.black
+                    : Colors.black.withValues(alpha: 0.3),
               ),
               label: Utility.getCurrentTabLabel(e),
+              backgroundColor: Colors.amber,
             ),
           )
           .toList(),
       currentIndex: currentIndex,
-      unselectedItemColor: Colors.grey,
-      selectedItemColor: Colors.amberAccent,
+      selectedItemColor: Colors.black,
       onTap: onTap,
     );
   }
