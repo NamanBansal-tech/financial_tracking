@@ -9,10 +9,13 @@ import 'package:finance_tracking/providers/category/category_state.dart';
 import 'package:finance_tracking/providers/transaction/transaction_state.dart';
 import 'package:finance_tracking/screens/budget_list/ui/budget_filter_bottom_sheet.dart';
 import 'package:finance_tracking/screens/create_budget/create_budget_page.dart';
+import 'package:finance_tracking/screens/transaction_list/transactions_list_page.dart';
+import 'package:finance_tracking/utils/extensions.dart';
 import 'package:finance_tracking/utils/listeners.dart';
 import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BudgetList extends ConsumerWidget {
   const BudgetList({super.key, required this.fromOtherPage});
@@ -68,7 +71,7 @@ class BudgetList extends ConsumerWidget {
             },
             icon: Icon(
               Icons.filter_alt_rounded,
-              size: MediaQuery.of(context).size.height * .03,
+              size: context.height * .03,
             ),
           ),
           if (!(fromOtherPage))
@@ -81,24 +84,23 @@ class BudgetList extends ConsumerWidget {
               },
               icon: Icon(
                 Icons.add,
-                size: MediaQuery.of(context).size.height * .035,
+                size: context.height * .035,
               ),
             ),
         ],
       ),
       body: ListView(
         shrinkWrap: true,
-        padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
+        padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 12.w),
         children: [
-          state.eState == EState.loading ||
-                  state.eState == EState.ready
+          state.eState == EState.loading || state.eState == EState.ready
               ? SizedBox(
-                  height: MediaQuery.of(context).size.height / 1.5,
+                  height: context.height / 1.5,
                   child: Center(child: CircularProgressIndicator()),
                 )
               : state.budgetList.isEmpty
               ? SizedBox(
-                  height: MediaQuery.of(context).size.height / 1.5,
+                  height: context.height / 1.5,
                   child: Center(child: Text('No budget found.')),
                 )
               : ListView.builder(
@@ -115,22 +117,38 @@ class BudgetList extends ConsumerWidget {
                         if (((val != null) && (val is EMoreOptions))) {
                           switch (val) {
                             case EMoreOptions.edit:
-                              provider.getBudgetList();
-                            case EMoreOptions.delete:
-                              if ((item.id != null)) {
-                                deleteDialogBox(
-                                  context: context,
-                                  title:
-                                      "Are you sure want to delete the budget '${item.name ?? ""}'?",
-                                ).then((value) {
-                                  if ((value == true)) {
-                                    provider.deleteBudget(item.id!);
-                                  }
-                                });
+                              {
+                                provider.getBudgetList();
+                                break;
                               }
-                              break;
+                            case EMoreOptions.delete:
+                              {
+                                if ((item.id != null)) {
+                                  deleteDialogBox(
+                                    context: context,
+                                    title:
+                                        "Are you sure want to delete the budget '${item.name ?? ""}'?",
+                                  ).then((value) {
+                                    if ((value == true)) {
+                                      provider.deleteBudget(item.id!);
+                                    }
+                                  });
+                                }
+                                break;
+                              }
                             case EMoreOptions.select:
-                              Navigator.pop(context, item);
+                              {
+                                Navigator.pop(context, item);
+                                break;
+                              }
+                            case EMoreOptions.viewTransactions:
+                              {
+                                Navigator.push(
+                                  context,
+                                  TransactionsListPage.route(budgetId: item.id),
+                                );
+                                break;
+                              }
                           }
                         }
                       },
@@ -149,7 +167,7 @@ class BudgetList extends ConsumerWidget {
     required bool isDeleting,
   }) {
     return ListTile(
-      title: Text(budget.name ?? 'N/A', style: TextStyle(fontSize: 17)),
+      title: Text(budget.name ?? 'N/A', style: TextStyle(fontSize: 17.sp)),
       onTap: () {
         customBottomSheet(
           context: parentContext,
@@ -160,10 +178,7 @@ class BudgetList extends ConsumerWidget {
             onEdit: () {
               Navigator.push(
                 parentContext,
-                CreateBudgetPage .route(
-                  fromOtherPage: true,
-                  budget: budget,
-                ),
+                CreateBudgetPage.route(fromOtherPage: true, budget: budget),
               ).then((_) {
                 if (parentContext.mounted) {
                   Navigator.pop(parentContext, EMoreOptions.edit);
@@ -175,13 +190,13 @@ class BudgetList extends ConsumerWidget {
       },
       subtitle: Text(
         getSubtitle(budget: budget),
-        style: TextStyle(fontSize: 15),
+        style: TextStyle(fontSize: 15.sp),
       ),
       trailing: isDeleting
-          ? const CircularProgressIndicator(color: Colors.amber)
+          ? const CircularProgressIndicator()
           : Text(
               '${budget.budgetAmount ?? ''}',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(fontSize: 18.sp),
             ),
     );
   }

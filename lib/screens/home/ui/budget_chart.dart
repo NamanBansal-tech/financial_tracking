@@ -1,6 +1,7 @@
 import 'package:finance_tracking/models/pie_chart/pie_chart_model.dart';
 import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 class BudgetChart extends StatelessWidget {
@@ -13,14 +14,14 @@ class BudgetChart extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey, width: 1),
+        border: Border.all(color: Colors.grey, width: 1.w),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
       child: Column(
         children: [
           Text(
             '${data?.budgetName ?? 'N/A'} Budget (${data?.totalBudget ?? ""})',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
           ),
           PieChart(
             dataMap: data == null

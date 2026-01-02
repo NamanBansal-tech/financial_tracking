@@ -2,7 +2,9 @@ import 'package:finance_tracking/components/custom_bottom_sheet.dart';
 import 'package:finance_tracking/screens/create_budget/create_budget_page.dart';
 import 'package:finance_tracking/screens/create_category/create_category_page.dart';
 import 'package:finance_tracking/screens/create_transaction/create_transaction_page.dart';
+import 'package:finance_tracking/utils/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void showCreateBottomSheet(BuildContext context) {
   customBottomSheet(
@@ -16,11 +18,11 @@ void showCreateBottomSheet(BuildContext context) {
           ListTile(
             leading: Image.asset(
               'assets/images/transaction.png',
-              height: MediaQuery.of(context).size.height / 10,
+              height: context.height / 10,
             ),
             title: Text(
               'Add New Transaction',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               'Add your transactions with ease and keep your finances organized.',
@@ -29,15 +31,15 @@ void showCreateBottomSheet(BuildContext context) {
               Navigator.push(context, CreateTransactionPage.route());
             },
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 20.h),
           ListTile(
             leading: Image.asset(
               'assets/images/budget_category.png',
-              height: MediaQuery.of(context).size.height / 10,
+              height: context.height / 10,
             ),
             title: Text(
               'Add New Category',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               'Add new categories to streamline your financial planning and stay organized.',
@@ -49,15 +51,15 @@ void showCreateBottomSheet(BuildContext context) {
               );
             },
           ),
-            SizedBox(height: 20),
+            SizedBox(height: 20.h),
           ListTile(
             leading: Image.asset(
               'assets/images/budget.png',
-              height: MediaQuery.of(context).size.height / 10,
+              height: context.height / 10,
             ),
             title: Text(
               'Add New Budget',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
               'Create budgets to plan expenses and track your finances better.',

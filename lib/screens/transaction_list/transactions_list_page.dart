@@ -2,18 +2,42 @@ import 'package:finance_tracking/screens/transaction_list/ui/transaction_list.da
 import 'package:flutter/material.dart';
 
 class TransactionsListPage extends StatelessWidget {
-  const TransactionsListPage({super.key, required this.transactionDate});
+  const TransactionsListPage({
+    super.key,
+    this.transactionDate,
+    this.categoryId,
+    this.budgetId,
+    this.fromDashboard = false,
+  });
 
-  final DateTime transactionDate;
+  final DateTime? transactionDate;
+  final int? categoryId;
+  final int? budgetId;
+  final bool fromDashboard;
 
-  static Route<dynamic> route({required DateTime transactionDate}) {
+  static Route<dynamic> route({
+    DateTime? transactionDate,
+    int? categoryId,
+    int? budgetId,
+    bool fromDashboard = false,
+  }) {
     return MaterialPageRoute(
-      builder: (_) => TransactionsListPage(transactionDate: transactionDate),
+      builder: (_) => TransactionsListPage(
+        transactionDate: transactionDate,
+        categoryId: categoryId,
+        budgetId: budgetId,
+        fromDashboard: fromDashboard,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return TransactionList(fromDashboard: true, transactionDate: transactionDate);
+    return TransactionList(
+      fromDashboard: fromDashboard,
+      transactionDate: transactionDate,
+      categoryId: categoryId,
+      budgetId: budgetId,
+    );
   }
 }

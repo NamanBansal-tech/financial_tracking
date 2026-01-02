@@ -25,6 +25,7 @@ abstract class DatabaseHelper {
     int? transactionType,
     PageMeta? pageMeta,
     int? budgetId,
+    int? categoryId,
   });
   ResultOrException<List<CategoryModel>> getCategories({String? name, List<int?>? ids});
   ResultOrException<List<BudgetModel>> getBudgetList({

@@ -8,6 +8,7 @@ import 'package:finance_tracking/providers/category/category_state.dart';
 import 'package:finance_tracking/utils/listeners.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreateBudgetBody extends ConsumerWidget {
   const CreateBudgetBody({super.key, required this.fromOtherPage, this.budget});
@@ -41,12 +42,13 @@ class CreateBudgetBody extends ConsumerWidget {
       resizeToAvoidBottomInset: true,
       appBar: CustomAppBar(title: "Add Budget"),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
         child: Form(
           key: provider.formKey,
           child: SingleChildScrollView(
             child: Column(
               children: [
+                SizedBox(height: 10.h),
                 CustomTextFormField(
                   hintText: 'Budget Name',
                   isMandatoryField: true,
@@ -60,7 +62,7 @@ class CreateBudgetBody extends ConsumerWidget {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 CustomTextFormField(
                   labelText: 'Budget',
                   isMandatoryField: true,
@@ -75,7 +77,7 @@ class CreateBudgetBody extends ConsumerWidget {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 CustomTextFormField(
                   labelText: 'Budget Start Date',
                   hintText: 'dd/mm/yyyy',
@@ -108,7 +110,7 @@ class CreateBudgetBody extends ConsumerWidget {
                   readOnly: true,
                   suffix: Icon(Icons.calendar_month_rounded),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 CustomTextFormField(
                   labelText: 'Budget End Date',
                   isMandatoryField: true,
@@ -149,7 +151,7 @@ class CreateBudgetBody extends ConsumerWidget {
                   readOnly: true,
                   suffix: Icon(Icons.calendar_month_rounded),
                 ),
-                SizedBox(height: 30),
+                SizedBox(height: 30.h),
                 CustomButton(
                   onTap: () {
                     if (state.budget != null) {

@@ -8,10 +8,12 @@ import 'package:finance_tracking/screens/home/ui/calender_widget.dart';
 import 'package:finance_tracking/screens/home/ui/create_bottom_sheet.dart';
 import 'package:finance_tracking/screens/home/ui/dashboard_filter.dart';
 import 'package:finance_tracking/screens/home/ui/transactions_line_chart.dart';
+import 'package:finance_tracking/utils/extensions.dart';
 import 'package:finance_tracking/utils/listeners.dart';
 import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DashBoardPage extends ConsumerWidget {
   const DashBoardPage({super.key});
@@ -47,7 +49,7 @@ class DashBoardPage extends ConsumerWidget {
             },
             icon: Icon(
               Icons.filter_alt_rounded,
-              size: MediaQuery.of(context).size.height * .03,
+              size: context.height * .03,
             ),
           ),
           IconButton(
@@ -56,7 +58,7 @@ class DashBoardPage extends ConsumerWidget {
             },
             icon: Icon(
               Icons.add,
-              size: MediaQuery.of(context).size.height * .035,
+              size: context.height * .035,
             ),
           ),
         ],
@@ -66,29 +68,29 @@ class DashBoardPage extends ConsumerWidget {
         children: [
           if ((state.eState == EState.loading)) ...[
             SizedBox(
-              height: MediaQuery.of(context).size.height / 1.5,
+              height: context.height / 1.5,
               child: Center(child: CircularProgressIndicator()),
             ),
           ] else ...[
             Expanded(
               child: ListView(
                 shrinkWrap: true,
-                padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
+                padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 12.w),
                 children: [
                   Text(
                     "Transactions Summary",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   TransactionsLineChart(transactions: state.graphTransactions),
-                  SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   if (state.selectedCalenderMonth != null)
                     CalenderWidget(
                       selectedMonth: state.selectedCalenderMonth!,
                       transactions: state.calenderMonthtransactions,
                     ),
-                  SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   if ((state.pieChartData != null))
                     BudgetChart(data: state.pieChartData),
                 ],

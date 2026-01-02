@@ -5,6 +5,7 @@ import 'package:finance_tracking/providers/common_provider/common_state.dart';
 import 'package:finance_tracking/screens/budget_list/budget_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DashboardFilter extends ConsumerWidget {
   const DashboardFilter({super.key, required this.commonRef});
@@ -41,7 +42,7 @@ class DashboardFilter extends ConsumerWidget {
             readOnly: true,
             suffix: Icon(Icons.calendar_month_rounded),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 10.h),
           CustomTextFormField(
             labelText: 'To Date of Transaction',
             hintText: 'dd/mm/yyyy',
@@ -70,7 +71,7 @@ class DashboardFilter extends ConsumerWidget {
             readOnly: true,
             suffix: Icon(Icons.calendar_month_rounded),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 10.h),
           CustomTextFormField(
             labelText: 'Select Calender Month',
             hintText: 'dd/mm/yyyy',
@@ -93,7 +94,7 @@ class DashboardFilter extends ConsumerWidget {
             readOnly: true,
             suffix: Icon(Icons.calendar_month_rounded),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 10.h),
           CustomTextFormField(
             labelText: 'Budget',
             hintText: 'Select Budget',
@@ -109,7 +110,7 @@ class DashboardFilter extends ConsumerWidget {
               }
             },
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 10.h),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -123,7 +124,7 @@ class DashboardFilter extends ConsumerWidget {
                   label: 'Search',
                 ),
               ),
-              SizedBox(width: 20),
+              SizedBox(width: 20.w),
               Expanded(
                 child: CustomButton(
                   onTap: () {

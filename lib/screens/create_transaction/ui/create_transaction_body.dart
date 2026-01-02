@@ -19,6 +19,7 @@ import 'package:finance_tracking/utils/listeners.dart';
 import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class CreateTransactionBody extends ConsumerWidget {
@@ -57,7 +58,7 @@ class CreateTransactionBody extends ConsumerWidget {
       );
     });
     ref.listen<TransactionState>((transactionRef), (_, next) {
-      if (next.eTransactionState == ETransactionState.success) {
+      if (next.eState == EState.success) {
         if (budgetState.budget != null) {
           budgetProvider.updateBudgetFromCreateTransaction(
             budgetState.budget!.copyWith(
@@ -74,8 +75,8 @@ class CreateTransactionBody extends ConsumerWidget {
                   : budgetState.budget?.budgetAmount,
             ),
           );
+          return;
         }
-      } else {
         Listeners.transactionListener(
           context: context,
           state: next,
@@ -85,7 +86,7 @@ class CreateTransactionBody extends ConsumerWidget {
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if ((state.eTransactionState == ETransactionState.ready) &&
+      if ((state.eState == EState.ready) &&
           (provider.arguementTransaction != null)) {
         provider.updateValuesFromEditTransaction();
         if (provider.arguementTransaction?.categoryId != null) {
@@ -94,15 +95,13 @@ class CreateTransactionBody extends ConsumerWidget {
           );
         }
         if (provider.arguementTransaction?.budgetId != null) {
-          budgetProvider.getBudget(
-            provider.arguementTransaction!.budgetId!,
-          );
+          budgetProvider.getBudget(provider.arguementTransaction!.budgetId!);
         }
       }
     });
     final bool isEditTransaction = provider.arguementTransaction != null;
     final bool isSubmitting =
-        ((state.eTransactionState == ETransactionState.loading) ||
+        ((state.eState == EState.loading) ||
         (budgetState.eState == EState.updatingBudgetForTransaction));
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -110,15 +109,17 @@ class CreateTransactionBody extends ConsumerWidget {
         title: isEditTransaction ? "Edit Transaction" : "Add Transaction",
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
         child: Form(
           key: provider.formKey,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Expanded(
                 child: ListView(
                   shrinkWrap: true,
                   children: [
+                    SizedBox(height: 10.h),
                     CustomTextFormField(
                       hintText: 'Transaction Name',
                       enabled: !isSubmitting,
@@ -132,7 +133,7 @@ class CreateTransactionBody extends ConsumerWidget {
                         return null;
                       },
                     ),
-                    SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     CustomTextFormField(
                       labelText: 'Date',
                       enabled: !isSubmitting,
@@ -151,7 +152,7 @@ class CreateTransactionBody extends ConsumerWidget {
                           context: context,
                           firstDate: DateTime(1900),
                           lastDate: currentDate,
-                          initialDate: currentDate,
+                          initialDate: state.selectedDate,
                           currentDate: currentDate,
                           helpText: 'Select Transaction Date',
                         );
@@ -162,7 +163,7 @@ class CreateTransactionBody extends ConsumerWidget {
                       readOnly: true,
                       suffix: Icon(Icons.calendar_month_rounded),
                     ),
-                    SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     CustomTextFormField(
                       labelText: 'Amount',
                       enabled: !isSubmitting,
@@ -177,7 +178,7 @@ class CreateTransactionBody extends ConsumerWidget {
                         return null;
                       },
                     ),
-                    SizedBox(height: 16),
+                    SizedBox(height: 16.h),
                     CustomDropDownButton(
                       initialValue: state.selectedTransactionType,
                       enabled: !isSubmitting,
@@ -206,6 +207,7 @@ class CreateTransactionBody extends ConsumerWidget {
                       categoryState: categoryState,
                       provider: provider,
                       isSubmitting: isSubmitting,
+                      state: state,
                     ),
                     budgetWidget(
                       context: context,
@@ -219,7 +221,7 @@ class CreateTransactionBody extends ConsumerWidget {
                 ),
               ),
               Padding(
-                padding:  EdgeInsets.symmetric(vertical: 12),
+                padding: EdgeInsets.symmetric(vertical: 12.h),
                 child: CustomButton(
                   label: 'Submit',
                   onTap: () {
@@ -246,30 +248,37 @@ class CreateTransactionBody extends ConsumerWidget {
     required CategoryState categoryState,
     required TransactionProvider provider,
     required bool isSubmitting,
+      required TransactionState state,
   }) {
     return Column(
       children: [
-        SizedBox(height: 16),
+        SizedBox(height: 16.h),
         CustomTextFormField(
           labelText: 'Category',
           hintText: 'Select Category',
-          isMandatoryField: true,
           controller: categoryProvider.filterSelectedCategoryController,
-          enabled: !isSubmitting && categoryState.eState != EState.loading,
-          validator: (value) {
-            if (((value == null) || (value.isEmpty))) {
-              return 'Please select your transaction category type.';
-            }
-            return null;
-          },
+          enabled:
+              ((!isSubmitting) && (categoryState.eState != EState.loading)),
           readOnly: true,
-          suffix: categoryState.eState == EState.loading
+          suffix: (categoryState.eState == EState.loading)
               ? Padding(
-                  padding: EdgeInsets.all(12),
-                  child: const CircularProgressIndicator(color: Colors.amber),
+                  padding: EdgeInsets.all(12.w),
+                  child: const CircularProgressIndicator(),
+                )
+              : (state.selectedCategoryId != null)
+              ? GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    categoryProvider.updateSelectedCategory(null);
+                    provider.updateCategoryId(null);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(12.w),
+                    child: Icon(Icons.close_rounded),
+                  ),
                 )
               : null,
-          onTap: (!isSubmitting && categoryState.eState != EState.loading)
+          onTap: ((!isSubmitting) && (categoryState.eState != EState.loading))
               ? () async {
                   Navigator.push(
                     context,
@@ -278,13 +287,13 @@ class CreateTransactionBody extends ConsumerWidget {
                     if (((selectedCategory != null) &&
                         (selectedCategory is CategoryModel))) {
                       categoryProvider.updateSelectedCategory(selectedCategory);
-                      provider.selectTransactionCategory(selectedCategory.id);
+                      provider.updateCategoryId(selectedCategory.id);
                     }
                   });
                 }
               : null,
         ),
-        SizedBox(height: 16),
+        SizedBox(height: 16.h),
         RichText(
           text: TextSpan(
             text:
@@ -332,23 +341,28 @@ class CreateTransactionBody extends ConsumerWidget {
         CustomTextFormField(
           labelText: 'Budget',
           hintText: 'Select Budget',
-          isMandatoryField: true,
           controller: budgetProvider.nameController,
           enabled: !isSubmitting && budgetState.eState != EState.loading,
-          validator: (value) {
-            if (((value == null) || (value.isEmpty))) {
-              return 'Please select your budget.';
-            }
-            return null;
-          },
           readOnly: true,
           suffix: budgetState.eState == EState.loading
               ? Padding(
-                  padding: EdgeInsets.all(12),
-                  child: const CircularProgressIndicator(color: Colors.amber),
+                  padding: EdgeInsets.all(12.w),
+                  child: const CircularProgressIndicator(),
+                )
+              : (state.selectedBudgetId != null)
+              ? GestureDetector(
+                  behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    budgetProvider.updateSelectedBudget(null);
+                    provider.updateBudgetId(null);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(12.w),
+                    child: Icon(Icons.close_rounded),
+                  ),
                 )
               : null,
-          onTap: (!isSubmitting && budgetState.eState != EState.loading)
+          onTap: ((!isSubmitting) && (budgetState.eState != EState.loading))
               ? () async {
                   Navigator.push(
                     context,
@@ -357,13 +371,13 @@ class CreateTransactionBody extends ConsumerWidget {
                     if (((selectedBudget != null) &&
                         (selectedBudget is BudgetModel))) {
                       budgetProvider.updateSelectedBudget(selectedBudget);
-                      provider.selectTransactionBudget(selectedBudget.id!);
+                      provider.updateBudgetId(selectedBudget.id!);
                     }
                   });
                 }
               : null,
         ),
-        SizedBox(height: 16),
+        SizedBox(height: 16.h),
         RichText(
           text: TextSpan(
             text:
@@ -398,7 +412,7 @@ class CreateTransactionBody extends ConsumerWidget {
             (budgetState.budget != null))) ...[
           Column(
             children: [
-              SizedBox(height: 16),
+              SizedBox(height: 16.h),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.start,

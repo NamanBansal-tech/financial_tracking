@@ -1,5 +1,6 @@
 import 'package:finance_tracking/components/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Future<dynamic> deleteDialogBox({
   required BuildContext context,
@@ -36,7 +37,7 @@ Future<dynamic> deleteDialogBox({
             ],
           ),
           scrollable: true,
-          title: Text(title, style: TextStyle(fontSize: 18)),
+          title: Text(title, style: TextStyle(fontSize: 18.sp)),
         ),
       );
     },

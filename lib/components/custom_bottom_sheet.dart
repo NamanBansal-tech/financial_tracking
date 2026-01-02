@@ -1,4 +1,6 @@
+import 'package:finance_tracking/utils/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void customBottomSheet({
   required BuildContext context,
@@ -19,17 +21,17 @@ void customBottomSheet({
         showDragHandle: enableDrag,
         backgroundColor: Colors.white,
         constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.7,
+          maxHeight: context.height * 0.7,
         ),
         builder: (_) {
           return PopScope(
             canPop: isDismissible,
             child: Padding(
               padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom + 36,
-                left: 16,
-                right: 16,
-                top: topPadding ?? 36,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 36.h,
+                left: 16.w,
+                right: 16.w,
+                top: topPadding ?? 36.h,
               ),
               child: child,
             ),

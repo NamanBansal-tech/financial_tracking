@@ -27,6 +27,14 @@ class CommonOptionsBottomSheet extends StatelessWidget {
               },
             ),
           ListTile(
+            leading: Icon(Icons.show_chart_rounded),
+            title: Text("Show Transactions"),
+            onTap: () {
+              Navigator.pop(context, EMoreOptions.viewTransactions);
+            },
+          ),
+
+          ListTile(
             leading: Icon(Icons.edit),
             title: Text("Edit"),
             onTap: onEdit,

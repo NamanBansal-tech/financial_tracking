@@ -16,21 +16,26 @@ class Listeners {
     required TransactionProvider provider,
     bool fromCreateTransactionPage = false,
   }) {
-    if (state.eTransactionState == ETransactionState.error &&
-        state.message != null) {
+    if (state.eState == EState.error && state.message != null) {
       Fluttertoast.showToast(
         msg: state.message!,
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
     }
-    if (state.eTransactionState == ETransactionState.successDelete &&
-        state.message != null) {
+    if (state.eState == EState.successDelete && state.message != null) {
       Fluttertoast.showToast(
         msg: state.message!,
         backgroundColor: Colors.green,
       );
       provider.getTransactions();
+    }
+    if (state.eState == EState.success && state.message != null) {
+      Fluttertoast.showToast(
+        msg: state.message!,
+        backgroundColor: Colors.green,
+      );
+      Navigator.pushAndRemoveUntil(context, HomePage.route(), (_) => false);
     }
   }
 
@@ -47,16 +52,14 @@ class Listeners {
         textColor: Colors.white,
       );
     }
-    if (state.eState == EState.successDelete &&
-        state.message != null) {
+    if (state.eState == EState.successDelete && state.message != null) {
       Fluttertoast.showToast(
         msg: state.message!,
         backgroundColor: Colors.green,
       );
       provider.getCategories();
     }
-    if (state.eState == EState.success &&
-        state.message != null) {
+    if (state.eState == EState.success && state.message != null) {
       Fluttertoast.showToast(
         msg: state.message!,
         backgroundColor: Colors.green,
@@ -82,8 +85,7 @@ class Listeners {
         textColor: Colors.white,
       );
     }
-    if (state.eState == EState.successDelete &&
-        state.message != null) {
+    if (state.eState == EState.successDelete && state.message != null) {
       Fluttertoast.showToast(
         msg: state.message!,
         backgroundColor: Colors.green,
@@ -103,12 +105,11 @@ class Listeners {
     }
   }
 
-    static void commonListener({
+  static void commonListener({
     required BuildContext context,
     required CommonState state,
   }) {
-    if (state.eState == EState.error &&
-        state.message != null) {
+    if (state.eState == EState.error && state.message != null) {
       Fluttertoast.showToast(
         msg: state.message!,
         backgroundColor: Colors.red,
@@ -116,5 +117,4 @@ class Listeners {
       );
     }
   }
-
 }

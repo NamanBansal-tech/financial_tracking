@@ -121,8 +121,8 @@ class BudgetProvider extends _$BudgetProvider {
     );
   }
 
-  void updateSelectedBudget(BudgetModel budget) {
-    nameController.text = budget.name ?? "";
+  void updateSelectedBudget(BudgetModel? budget) {
+    nameController.text = budget?.name ?? "";
     state = state.copyWith(budget: budget);
   }
 

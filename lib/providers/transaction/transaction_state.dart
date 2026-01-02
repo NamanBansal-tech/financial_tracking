@@ -1,5 +1,6 @@
 import 'package:finance_tracking/models/page_meta/page_meta.dart';
 import 'package:finance_tracking/models/transaction_model/transaction_model.dart';
+import 'package:finance_tracking/providers/category/category_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'transaction_state.freezed.dart';
@@ -7,7 +8,7 @@ part 'transaction_state.freezed.dart';
 @freezed
 abstract class TransactionState with _$TransactionState {
   factory TransactionState({
-    @Default(ETransactionState.initial) ETransactionState eTransactionState,
+    @Default(EState.initial) EState eState,
     @Default([]) List<TransactionModel> transactions,
     @Default(false) bool isIncomeAddInBudget,
     required PageMeta pageMeta,
@@ -18,22 +19,8 @@ abstract class TransactionState with _$TransactionState {
     DateTime? selectedDate,
   }) = _TransactionState;
 
-  factory TransactionState.initial({
-    required ETransactionState eTransactionState,
-  }) => TransactionState(
-    eTransactionState: eTransactionState,
-    pageMeta: PageMeta(),
-  );
-}
-
-enum ETransactionState {
-  initial,
-  loading,
-  loadingMore,
-  ready,
-  error,
-  success,
-  successDelete,
+  factory TransactionState.initial({required EState eState}) =>
+      TransactionState(eState: eState, pageMeta: PageMeta());
 }
 
 enum ESearchType { filter, reset }

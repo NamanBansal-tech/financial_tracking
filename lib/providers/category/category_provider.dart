@@ -42,8 +42,8 @@ class CategoryProvider extends _$CategoryProvider {
     state = state.copyWith(category: null, selectedBudgetId: null);
   }
 
-  void updateSelectedCategory(CategoryModel category) {
-    filterSelectedCategoryController.text = category.name ?? '';
+  void updateSelectedCategory(CategoryModel? category) {
+    filterSelectedCategoryController.text = category?.name ?? '';
     state = state.copyWith(category: category);
   }
 
