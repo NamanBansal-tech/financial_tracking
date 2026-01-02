@@ -2,16 +2,19 @@ import 'package:finance_tracking/components/custom_app_bar.dart';
 import 'package:finance_tracking/components/custom_bottom_sheet.dart';
 import 'package:finance_tracking/components/custom_button.dart';
 import 'package:finance_tracking/models/transaction_model/transaction_model.dart';
+import 'package:finance_tracking/providers/category/category_state.dart';
 import 'package:finance_tracking/providers/common_provider/common_state.dart';
 import 'package:finance_tracking/providers/transaction/transaction_provider.dart';
 import 'package:finance_tracking/providers/transaction/transaction_state.dart';
 import 'package:finance_tracking/screens/create_transaction/create_transaction_page.dart';
 import 'package:finance_tracking/screens/transaction_list/ui/transactions_filter.dart';
 import 'package:finance_tracking/screens/transaction_list/ui/transction_options_bottom_sheet.dart';
+import 'package:finance_tracking/utils/extensions.dart';
 import 'package:finance_tracking/utils/listeners.dart';
 import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 class TransactionList extends ConsumerWidget {
@@ -34,7 +37,7 @@ class TransactionList extends ConsumerWidget {
     final provider = ref.read(transactionRef.notifier);
     final state = ref.watch(transactionRef);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if ((state.eTransactionState == ETransactionState.ready)) {
+      if ((state.eState == EState.ready)) {
         if ((transactionDate != null)) {
           provider.selectTransactionDate(transactionDate!);
         }
@@ -84,7 +87,7 @@ class TransactionList extends ConsumerWidget {
             },
             icon: Icon(
               Icons.filter_alt_rounded,
-              size: MediaQuery.of(context).size.height * .03,
+              size: context.height * .03,
             ),
           ),
           if (fromDashboard)
@@ -94,7 +97,7 @@ class TransactionList extends ConsumerWidget {
               },
               icon: Icon(
                 Icons.add,
-                size: MediaQuery.of(context).size.height * .035,
+                size: context.height * .035,
               ),
             ),
         ],
@@ -103,29 +106,29 @@ class TransactionList extends ConsumerWidget {
       body: LazyLoadScrollView(
         onEndOfPage: () {
           if (state.pageMeta.hasNext &&
-              state.eTransactionState == ETransactionState.initial) {
+              state.eState == EState.initial) {
             provider.getTransactions(loadMore: true);
           }
         },
         child: RefreshIndicator(
           onRefresh: () async {
-            if (state.eTransactionState == ETransactionState.initial) {
+            if (state.eState == EState.initial) {
               provider.getTransactions();
             }
           },
           child: ListView(
             shrinkWrap: true,
-            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
+            padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 12.w),
             children: [
-              state.eTransactionState == ETransactionState.loading ||
-                      state.eTransactionState == ETransactionState.ready
+              state.eState == EState.loading ||
+                      state.eState == EState.ready
                   ? SizedBox(
-                      height: MediaQuery.of(context).size.height / 1.5,
+                      height: context.height / 1.5,
                       child: Center(child: CircularProgressIndicator()),
                     )
                   : state.transactions.isEmpty
                   ? SizedBox(
-                      height: MediaQuery.of(context).size.height / 1.5,
+                      height: context.height / 1.5,
                       child: Center(child: Text('No transaction found.')),
                     )
                   : ListView.builder(
@@ -138,8 +141,8 @@ class TransactionList extends ConsumerWidget {
                           parentContext: context,
                           transactionModel: item,
                           isDeleting:
-                              state.eTransactionState ==
-                              ETransactionState.loading,
+                              state.eState ==
+                              EState.loading,
                           onDelete: (val) {
                             if (((val == true) && (item.id != null))) {
                               deleteTransactionDialogBox(
@@ -155,9 +158,9 @@ class TransactionList extends ConsumerWidget {
                         );
                       },
                     ),
-              if (state.eTransactionState == ETransactionState.loadingMore)
+              if (state.eState == EState.loadingMore)
                 Padding(
-                  padding: EdgeInsets.symmetric(vertical: 24),
+                  padding: EdgeInsets.symmetric(vertical: 24.h),
                   child: Center(child: CircularProgressIndicator()),
                 ),
             ],
@@ -189,22 +192,22 @@ class TransactionList extends ConsumerWidget {
       },
       title: Text(
         transactionModel.name ?? 'N/A',
-        style: TextStyle(fontSize: 17),
+        style: TextStyle(fontSize: 17.sp),
       ),
       subtitle: Text(
         transactionModel.date != null
             ? Utility.formatDate(DateTime.parse(transactionModel.date!))
             : 'N/A',
-        style: TextStyle(fontSize: 15),
+        style: TextStyle(fontSize: 15.sp),
       ),
       trailing: isDeleting
-          ? const CircularProgressIndicator(color: Colors.amber)
+          ? const CircularProgressIndicator()
           : Text(
               transactionModel.amount != null && transactionType != null
                   ? '${transactionType == TransactionType.expense ? '- ' : '+ '}${transactionModel.amount}'
                   : 'N/A',
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 18.sp,
                 color: transactionType != null
                     ? transactionType == TransactionType.expense
                           ? Colors.red
@@ -239,7 +242,7 @@ class TransactionList extends ConsumerWidget {
                         label: "Delete",
                       ),
                     ),
-                    SizedBox(width: 20),
+                    SizedBox(width: 20.w),
                     Expanded(
                       child: CustomButton(
                         onTap: () {
@@ -254,7 +257,7 @@ class TransactionList extends ConsumerWidget {
                 scrollable: true,
                 title: Text(
                   "Are you sure you want to delete this transaction ?",
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 18.sp),
                 ),
               );
             },

@@ -4,6 +4,7 @@ import 'package:finance_tracking/providers/budget/budget_provider.dart';
 import 'package:finance_tracking/providers/transaction/transaction_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BudgetFilterBottomSheet extends ConsumerWidget {
   const BudgetFilterBottomSheet({super.key, required this.budgetRef});
@@ -22,23 +23,23 @@ class BudgetFilterBottomSheet extends ConsumerWidget {
         children: [
           Text(
             'Filter Budget',
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 20.sp),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 16.h),
           CustomTextFormField(
             hintText: 'Budget Name',
             controller: provider.nameController,
             labelText: 'Budget Name',
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 10.h),
           CustomTextFormField(
             labelText: 'Budget Amount',
             controller: provider.amountController,
             hintText: 'Enter the budget amount',
             digitsOnly: true,
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 10.h),
           CustomTextFormField(
             labelText: 'Budget Start Date',
             hintText: 'dd/mm/yyyy',
@@ -61,7 +62,7 @@ class BudgetFilterBottomSheet extends ConsumerWidget {
             readOnly: true,
             suffix: Icon(Icons.calendar_month_rounded),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 10.h),
           CustomTextFormField(
             labelText: 'Budget End Date',
             hintText: 'dd/mm/yyyy',
@@ -91,7 +92,7 @@ class BudgetFilterBottomSheet extends ConsumerWidget {
             readOnly: true,
             suffix: Icon(Icons.calendar_month_rounded),
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -106,7 +107,7 @@ class BudgetFilterBottomSheet extends ConsumerWidget {
                 ),
               ),
 
-              SizedBox(width: 20),
+              SizedBox(width: 20.w),
               Expanded(
                 child: CustomButton(
                   label: 'Reset',

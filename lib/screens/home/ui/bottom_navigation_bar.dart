@@ -1,6 +1,7 @@
 import 'package:finance_tracking/providers/common_provider/common_state.dart';
 import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   const CustomBottomNavigationBar({
@@ -20,8 +21,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
             (e) => BottomNavigationBarItem(
               icon: Image.asset(
                 getCurrentTabImage(e),
-                height: 25,
-                width: 25,
+                height: 25.h,
+                width: 25.w,
                 color: e.index == currentIndex
                     ? Colors.black
                     : Colors.black.withValues(alpha: 0.3),

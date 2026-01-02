@@ -60,7 +60,7 @@ final class TransactionProviderProvider
 }
 
 String _$transactionProviderHash() =>
-    r'c9d81f9233492d3f60fa0004120e9cc548568460';
+    r'b1c4ef3374c782bd74bc3308fa8049c8a84d7fab';
 
 final class TransactionProviderFamily extends $Family
     with

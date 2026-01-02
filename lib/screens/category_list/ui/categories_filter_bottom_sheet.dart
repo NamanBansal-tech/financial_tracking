@@ -4,6 +4,7 @@ import 'package:finance_tracking/providers/category/category_provider.dart';
 import 'package:finance_tracking/providers/transaction/transaction_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CategoriesFilterBottomSheet extends ConsumerWidget {
   const CategoriesFilterBottomSheet({super.key, required this.categoryRef});
@@ -20,16 +21,16 @@ class CategoriesFilterBottomSheet extends ConsumerWidget {
         children: [
           Text(
             'Filter Categories',
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 20.sp),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 16.h),
           CustomTextFormField(
             hintText: 'Category Name',
             controller: provider.nameController,
             labelText: 'Category Name',
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -44,7 +45,7 @@ class CategoriesFilterBottomSheet extends ConsumerWidget {
                 ),
               ),
 
-              SizedBox(width: 20),
+              SizedBox(width: 20.w),
               Expanded(
                 child: CustomButton(
                   label: 'Reset',

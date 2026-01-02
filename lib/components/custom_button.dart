@@ -1,4 +1,6 @@
+import 'package:finance_tracking/utils/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -25,9 +27,9 @@ class CustomButton extends StatelessWidget {
     return isLoading
         ? Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width / 9,
+            horizontal: context.width / 9,
           ),
-          child: const CircularProgressIndicator(color: Colors.amber),
+          child: const CircularProgressIndicator(),
         )
         : InkWell(
           onTap: isDisabled ? null : onTap,
@@ -37,10 +39,10 @@ class CustomButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               border:
                   isSecondary && !isDisabled
-                      ? Border.all(color: Colors.amberAccent, width: 1)
+                      ? Border.all(color: Colors.amberAccent, width: 1.w)
                       : null,
             ),
-            width: isExpanded ? MediaQuery.of(context).size.width : width,
+            width: isExpanded ? context.width : width,
             alignment: Alignment.center,
             foregroundDecoration:
                 isDisabled
@@ -49,13 +51,13 @@ class CustomButton extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     )
                     : null,
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             child: Text(
               label,
               style: TextStyle(
                 color: isSecondary ? Colors.amber.shade600 : Colors.white,
                 fontWeight: FontWeight.w700,
-                fontSize: 14,
+                fontSize: 14.sp,
               ),
             ),
           ),

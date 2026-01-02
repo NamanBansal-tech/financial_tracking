@@ -1,6 +1,7 @@
 import 'package:finance_tracking/database/chart_model.dart';
 import 'package:finance_tracking/models/transaction_model/transaction_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -33,10 +34,10 @@ class TransactionsLineChart extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: Colors.grey,
-          width: 1,
+          width: 1.w,
         ),
       ),
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
       child: SfCartesianChart(
         primaryXAxis: DateTimeAxis(
           dateFormat: DateFormat('d'),

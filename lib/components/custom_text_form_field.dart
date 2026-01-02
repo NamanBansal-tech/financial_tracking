@@ -9,7 +9,6 @@ class CustomTextFormField extends StatelessWidget {
     this.controller,
     this.suffix,
     this.lengthLimit = 50,
-    this.initialValue,
     this.digitsOnly = false,
     this.onTap,
     this.validator,
@@ -25,7 +24,6 @@ class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final void Function()? onTap;
   final bool readOnly;
-  final String? initialValue;
   final String? Function(String?)? validator;
   final bool digitsOnly;
   final bool isMandatoryField;
@@ -37,21 +35,11 @@ class CustomTextFormField extends StatelessWidget {
       readOnly: readOnly,
       enabled: enabled,
       controller: controller,
-      initialValue: initialValue,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       onTap: onTap,
       validator: validator,
       decoration: InputDecoration(
-        label: RichText(
-          text: TextSpan(
-            text: labelText,
-            style: TextStyle(color: Colors.black87),
-            children: [
-              if (isMandatoryField)
-                TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
-            ],
-          ),
-        ),
+        labelText: labelText,
         suffixIcon: suffix,
         hintText: hintText,
       ),

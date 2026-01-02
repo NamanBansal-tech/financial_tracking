@@ -7,6 +7,7 @@ import 'package:finance_tracking/providers/transaction/transaction_state.dart';
 import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TransactionsFilter extends ConsumerWidget {
   const TransactionsFilter({super.key, required this.transactionRef});
@@ -23,16 +24,16 @@ class TransactionsFilter extends ConsumerWidget {
         children: [
           Text(
             'Filter Transactions',
-            style: TextStyle(fontSize: 20),
+            style: TextStyle(fontSize: 20.sp),
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 16.h),
           CustomTextFormField(
             labelText: 'Notes',
             hintText: 'Enter something..',
             controller: provider.nameController,
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 10.h),
           CustomTextFormField(
             labelText: 'Date',
             hintText: 'dd/mm/yyyy',
@@ -55,14 +56,14 @@ class TransactionsFilter extends ConsumerWidget {
             readOnly: true,
             suffix: Icon(Icons.calendar_month_rounded),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 10.h),
           CustomTextFormField(
             labelText: 'Amount',
             hintText: 'Enter the amount',
             controller: provider.amountController,
             digitsOnly: true,
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 10.h),
           CustomDropDownButton(
             initialValue: state.selectedTransactionType,
             items:
@@ -85,7 +86,7 @@ class TransactionsFilter extends ConsumerWidget {
               icon: Icon(Icons.close_rounded, color: Colors.amber),
             ),
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -100,7 +101,7 @@ class TransactionsFilter extends ConsumerWidget {
                 ),
               ),
 
-              SizedBox(width: 20),
+              SizedBox(width: 20.w),
               Expanded(
                 child: CustomButton(
                   label: 'Reset',

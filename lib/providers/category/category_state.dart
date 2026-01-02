@@ -29,6 +29,7 @@ enum EState {
   loading,
   updatingBudgetForTransaction,
   successDelete,
+  loadingMore,
 }
 
 enum EMoreOptions { edit, delete, select, viewTransactions }

@@ -2,6 +2,7 @@ import 'package:finance_tracking/database/database_helper.dart';
 import 'package:finance_tracking/database/database_helper_impl.dart';
 import 'package:finance_tracking/models/page_meta/page_meta.dart';
 import 'package:finance_tracking/models/transaction_model/transaction_model.dart';
+import 'package:finance_tracking/providers/category/category_state.dart';
 import 'package:finance_tracking/providers/transaction/transaction_state.dart';
 import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class TransactionProvider extends _$TransactionProvider {
     initWidgets();
     arguementTransaction = transaction;
     databaseHelper = widgetRef.watch(databaseHelperProvider);
-    return TransactionState.initial(eTransactionState: ETransactionState.ready);
+    return TransactionState.initial(eState: EState.ready);
   }
 
   void updateBudgetCheck(bool value) {
@@ -48,15 +49,10 @@ class TransactionProvider extends _$TransactionProvider {
     if ((transaction?.categoryId != null)) {
       state = state.copyWith(selectedCategoryId: transaction?.categoryId);
     }
+    if ((transaction?.budgetId != null)) {
+      state = state.copyWith(selectedBudgetId: transaction?.budgetId);
+    }
     setToInitialState();
-  }
-
-  void selectTransactionCategory(int? categoryId) {
-    state = state.copyWith(selectedCategoryId: categoryId);
-  }
-
-  void selectTransactionBudget(int budgetId) {
-    state = state.copyWith(selectedBudgetId: budgetId);
   }
 
   void selectTransactionType(TransactionType? type) {
@@ -76,13 +72,6 @@ class TransactionProvider extends _$TransactionProvider {
     state = state.copyWith(selectedCategoryId: id);
   }
 
-  // @override
-  // void dispose() {
-  //   transactionNameController.dispose();
-  //   transactionAmountController.dispose();
-  //   transactionDateController.dispose();
-  // }
-
   void initWidgets() {
     nameController = TextEditingController();
     dateController = TextEditingController();
@@ -99,9 +88,7 @@ class TransactionProvider extends _$TransactionProvider {
 
   Future<void> getTransactions({bool loadMore = false}) async {
     state = state.copyWith(
-      eTransactionState: loadMore
-          ? ETransactionState.loadingMore
-          : ETransactionState.loading,
+      eState: loadMore ? EState.loadingMore : EState.loading,
     );
     if (!loadMore) {
       state = state.copyWith(pageMeta: PageMeta());
@@ -118,10 +105,7 @@ class TransactionProvider extends _$TransactionProvider {
     );
     result.fold(
       (l) {
-        state = state.copyWith(
-          message: l,
-          eTransactionState: ETransactionState.error,
-        );
+        state = state.copyWith(message: l, eState: EState.error);
         setToInitialState();
       },
       (r) {
@@ -139,107 +123,72 @@ class TransactionProvider extends _$TransactionProvider {
 
   Future<void> createTransaction() async {
     if (formKey.currentState!.validate()) {
-      if (state.selectedCategoryId != null &&
-          state.selectedDate != null &&
-          state.selectedTransactionType != null) {
-        state = state.copyWith(eTransactionState: ETransactionState.loading);
-        final result = await databaseHelper.addTransaction(
-          TransactionModel(
-            amount: num.tryParse(amountController.text.trim()),
-            categoryId: state.selectedCategoryId,
-            date: Utility.getDateFromDateTime(state.selectedDate!),
-            name: nameController.text.trim(),
-            type: state.selectedTransactionType!.index,
-            budgetId: state.selectedBudgetId,
-          ),
-        );
-        result.fold(
-          (l) {
-            state = state.copyWith(
-              message: l,
-              eTransactionState: ETransactionState.error,
-            );
-            setToInitialState();
-          },
-          (r) {
-            state = state.copyWith(
-              message: r,
-              eTransactionState: ETransactionState.success,
-            );
-            setToInitialState();
-          },
-        );
-      }
+      state = state.copyWith(eState: EState.loading);
+      final result = await databaseHelper.addTransaction(
+        TransactionModel(
+          amount: num.tryParse(amountController.text.trim()),
+          categoryId: state.selectedCategoryId,
+          date: Utility.getDateFromDateTime(state.selectedDate!),
+          name: nameController.text.trim(),
+          type: state.selectedTransactionType!.index,
+          budgetId: state.selectedBudgetId,
+        ),
+      );
+      result.fold(
+        (l) {
+          state = state.copyWith(message: l, eState: EState.error);
+          setToInitialState();
+        },
+        (r) {
+          state = state.copyWith(message: r, eState: EState.success);
+          setToInitialState();
+        },
+      );
     }
   }
 
   Future<void> editTransaction() async {
     if (formKey.currentState!.validate()) {
-      if (state.selectedCategoryId != null &&
-          state.selectedDate != null &&
-          state.selectedTransactionType != null) {
-        state = state.copyWith(eTransactionState: ETransactionState.loading);
-        final result = await databaseHelper.editTransaction(
-          TransactionModel(
-            amount: num.tryParse(amountController.text.trim()),
-            categoryId: state.selectedCategoryId,
-            date: Utility.getDateFromDateTime(state.selectedDate!),
-            name: nameController.text.trim(),
-            id: arguementTransaction?.id,
-            type: state.selectedTransactionType!.index,
-            budgetId: state.selectedBudgetId,
-          ),
-        );
-        result.fold(
-          (l) {
-            state = state.copyWith(
-              message: l,
-              eTransactionState: ETransactionState.error,
-            );
-            setToInitialState();
-          },
-          (r) {
-            state = state.copyWith(
-              message: r,
-              eTransactionState: ETransactionState.success,
-            );
-            setToInitialState();
-          },
-        );
-      } else {
-        state = state.copyWith(
-          message: 'Please fill all the mandatory fields',
-          eTransactionState: ETransactionState.error,
-        );
-        setToInitialState();
-      }
+      state = state.copyWith(eState: EState.loading);
+      final result = await databaseHelper.editTransaction(
+        TransactionModel(
+          amount: num.tryParse(amountController.text.trim()),
+          categoryId: state.selectedCategoryId,
+          date: Utility.getDateFromDateTime(state.selectedDate!),
+          name: nameController.text.trim(),
+          id: arguementTransaction?.id,
+          type: state.selectedTransactionType!.index,
+          budgetId: state.selectedBudgetId,
+        ),
+      );
+      result.fold(
+        (l) {
+          state = state.copyWith(message: l, eState: EState.error);
+          setToInitialState();
+        },
+        (r) {
+          state = state.copyWith(message: r, eState: EState.success);
+          setToInitialState();
+        },
+      );
     }
   }
 
   Future<void> deleteTransaction(int transactionId) async {
-    state = state.copyWith(eTransactionState: ETransactionState.loading);
+    state = state.copyWith(eState: EState.loading);
     final result = await databaseHelper.deleteTransaction(transactionId);
     result.fold(
       (l) {
-        state = state.copyWith(
-          message: l,
-          eTransactionState: ETransactionState.error,
-        );
+        state = state.copyWith(message: l, eState: EState.error);
         setToInitialState();
       },
       (r) {
-        state = state.copyWith(
-          message: r,
-          eTransactionState: ETransactionState.successDelete,
-        );
+        state = state.copyWith(message: r, eState: EState.successDelete);
       },
     );
   }
 
   void setToInitialState() {
-    state = state.copyWith(
-      eTransactionState: ETransactionState.initial,
-      message: null,
-    );
+    state = state.copyWith(eState: EState.initial, message: null);
   }
 }
