@@ -10,6 +10,7 @@ import 'package:finance_tracking/providers/transaction/transaction_state.dart';
 import 'package:finance_tracking/screens/budget_list/ui/budget_filter_bottom_sheet.dart';
 import 'package:finance_tracking/screens/create_budget/create_budget_page.dart';
 import 'package:finance_tracking/screens/transaction_list/transactions_list_page.dart';
+import 'package:finance_tracking/utils/app_colors.dart';
 import 'package:finance_tracking/utils/extensions.dart';
 import 'package:finance_tracking/utils/listeners.dart';
 import 'package:finance_tracking/utils/utility.dart';
@@ -69,10 +70,7 @@ class BudgetList extends ConsumerWidget {
                 },
               );
             },
-            icon: Icon(
-              Icons.filter_alt_rounded,
-              size: context.height * .03,
-            ),
+            icon: Icon(Icons.filter_alt_rounded, size: context.height * .03),
           ),
           if (!(fromOtherPage))
             IconButton(
@@ -82,10 +80,7 @@ class BudgetList extends ConsumerWidget {
                   CreateBudgetPage.route(fromOtherPage: false),
                 );
               },
-              icon: Icon(
-                Icons.add,
-                size: context.height * .035,
-              ),
+              icon: Icon(Icons.add, size: context.height * .035),
             ),
         ],
       ),
@@ -163,41 +158,84 @@ class BudgetList extends ConsumerWidget {
   Widget customBudgetTile({
     required BuildContext parentContext,
     required BudgetModel budget,
-    required dynamic Function(dynamic)? onSuccess,
+    required dynamic Function(dynamic) onSuccess,
     required bool isDeleting,
   }) {
-    return ListTile(
-      title: Text(budget.name ?? 'N/A', style: TextStyle(fontSize: 17.sp)),
-      onTap: () {
-        customBottomSheet(
-          context: parentContext,
-          topPadding: 0,
-          onSuccess: onSuccess,
-          child: CommonOptionsBottomSheet(
-            fromOtherPage: fromOtherPage,
-            onEdit: () {
-              Navigator.push(
-                parentContext,
-                CreateBudgetPage.route(fromOtherPage: true, budget: budget),
-              ).then((_) {
-                if (parentContext.mounted) {
-                  Navigator.pop(parentContext, EMoreOptions.edit);
-                }
-              });
-            },
-          ),
-        );
-      },
-      subtitle: Text(
-        getSubtitle(budget: budget),
-        style: TextStyle(fontSize: 15.sp),
-      ),
-      trailing: isDeleting
-          ? const CircularProgressIndicator()
-          : Text(
-              '${budget.budgetAmount ?? ''}',
-              style: TextStyle(fontSize: 18.sp),
+    return InkWell(
+      onTap: fromOtherPage
+          ? () {
+              onSuccess(EMoreOptions.select);
+            }
+          : null,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 12.h),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    budget.name ?? 'N/A',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
+                Text(
+                  '${budget.budgetAmount ?? ''}',
+                  style: TextStyle(
+                    fontSize: 17.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ],
             ),
+            SizedBox(height: 6.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    getSubtitle(budget: budget),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ),
+                isDeleting
+                    ? const CircularProgressIndicator()
+                    : CommonOptions(
+                        onDelete: () {
+                          onSuccess(EMoreOptions.delete);
+                        },
+                        onEdit: () {
+                          Navigator.push(
+                            parentContext,
+                            CreateBudgetPage.route(
+                              fromOtherPage: true,
+                              budget: budget,
+                            ),
+                          ).then((_) {
+                            onSuccess(EMoreOptions.edit);
+                          });
+                        },
+                        onView: () {
+                          onSuccess(EMoreOptions.viewTransactions);
+                        },
+                      ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 

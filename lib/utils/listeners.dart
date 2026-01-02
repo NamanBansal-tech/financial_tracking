@@ -6,8 +6,8 @@ import 'package:finance_tracking/providers/common_provider/common_state.dart';
 import 'package:finance_tracking/providers/transaction/transaction_provider.dart';
 import 'package:finance_tracking/providers/transaction/transaction_state.dart';
 import 'package:finance_tracking/screens/home/home_page.dart';
+import 'package:finance_tracking/utils/toast_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class Listeners {
   static void transactionListener({
@@ -17,24 +17,14 @@ class Listeners {
     bool fromCreateTransactionPage = false,
   }) {
     if (state.eState == EState.error && state.message != null) {
-      Fluttertoast.showToast(
-        msg: state.message!,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      ToastUtils.showErrorToast(message: state.message!);
     }
     if (state.eState == EState.successDelete && state.message != null) {
-      Fluttertoast.showToast(
-        msg: state.message!,
-        backgroundColor: Colors.green,
-      );
+      ToastUtils.showSuccessToast(message: state.message!);
       provider.getTransactions();
     }
     if (state.eState == EState.success && state.message != null) {
-      Fluttertoast.showToast(
-        msg: state.message!,
-        backgroundColor: Colors.green,
-      );
+      ToastUtils.showSuccessToast(message: state.message!);
       Navigator.pushAndRemoveUntil(context, HomePage.route(), (_) => false);
     }
   }
@@ -46,24 +36,15 @@ class Listeners {
     bool fromOtherPage = false,
   }) {
     if (state.eState == EState.error && state.message != null) {
-      Fluttertoast.showToast(
-        msg: state.message!,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      ToastUtils.showErrorToast(message: state.message!);
     }
     if (state.eState == EState.successDelete && state.message != null) {
-      Fluttertoast.showToast(
-        msg: state.message!,
-        backgroundColor: Colors.green,
-      );
+      ToastUtils.showSuccessToast(message: state.message!);
+
       provider.getCategories();
     }
     if (state.eState == EState.success && state.message != null) {
-      Fluttertoast.showToast(
-        msg: state.message!,
-        backgroundColor: Colors.green,
-      );
+      ToastUtils.showSuccessToast(message: state.message!);
       if ((fromOtherPage)) {
         Navigator.pop(context, state.resultId);
       } else {
@@ -79,24 +60,14 @@ class Listeners {
     bool fromOtherPage = false,
   }) {
     if (state.eState == EState.error && state.message != null) {
-      Fluttertoast.showToast(
-        msg: state.message!,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      ToastUtils.showErrorToast(message: state.message!);
     }
     if (state.eState == EState.successDelete && state.message != null) {
-      Fluttertoast.showToast(
-        msg: state.message!,
-        backgroundColor: Colors.green,
-      );
+      ToastUtils.showSuccessToast(message: state.message!);
       provider.getBudgetList();
     }
     if (state.eState == EState.success && state.message != null) {
-      Fluttertoast.showToast(
-        msg: state.message!,
-        backgroundColor: Colors.green,
-      );
+      ToastUtils.showSuccessToast(message: state.message!);
       if ((fromOtherPage)) {
         Navigator.pop(context, state.resultId);
       } else {
@@ -110,11 +81,7 @@ class Listeners {
     required CommonState state,
   }) {
     if (state.eState == EState.error && state.message != null) {
-      Fluttertoast.showToast(
-        msg: state.message!,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-      );
+      ToastUtils.showErrorToast(message: state.message!);
     }
   }
 }

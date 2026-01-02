@@ -192,7 +192,7 @@ class BudgetProvider extends _$BudgetProvider {
 
   Future<void> deleteBudget(int budgetId) async {
     state = state.copyWith(eState: EState.loading);
-    final result = await databaseHelper.deleteCategory(budgetId);
+    final result = await databaseHelper.deleteBudget(budgetId);
     result.fold(
       (l) {
         state = state.copyWith(message: l, eState: EState.error);

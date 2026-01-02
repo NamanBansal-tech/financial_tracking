@@ -97,7 +97,7 @@ class TransactionProvider extends _$TransactionProvider {
       eState: loadMore ? EState.loadingMore : EState.loading,
     );
     if (!loadMore) {
-      state = state.copyWith(pageMeta: PageMeta());
+      state = state.copyWith(pageMeta: PageMeta(),totalExpense: 0,totalIncome: 0);
     }
 
     final result = await databaseHelper.getTransactions(

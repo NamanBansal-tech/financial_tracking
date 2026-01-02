@@ -18,10 +18,7 @@ class CategoryProvider extends _$CategoryProvider {
   CategoryState build({required WidgetRef widgetRef, CategoryModel? category}) {
     databaseHelper = widgetRef.watch(databaseHelperProvider);
     initWidgets();
-    return CategoryState.initial(
-      category: category,
-      eState: EState.ready,
-    );
+    return CategoryState.initial(category: category, eState: EState.ready);
   }
 
   void updateValuesForEditCategory() {
@@ -74,10 +71,7 @@ class CategoryProvider extends _$CategoryProvider {
     final result = await databaseHelper.getCategory(categoryId);
     result.fold(
       (l) {
-        state = state.copyWith(
-          eState: EState.error,
-          message: l,
-        );
+        state = state.copyWith(eState: EState.error, message: l);
         setToInitialState();
       },
       (r) {
@@ -97,10 +91,7 @@ class CategoryProvider extends _$CategoryProvider {
       final result = await databaseHelper.addCategory(category);
       result.fold(
         (l) {
-          state = state.copyWith(
-            message: l,
-            eState: EState.error,
-          );
+          state = state.copyWith(message: l, eState: EState.error);
           setToInitialState();
         },
         (r) {
@@ -132,17 +123,11 @@ class CategoryProvider extends _$CategoryProvider {
       final result = await databaseHelper.editCategory(category);
       result.fold(
         (l) {
-          state = state.copyWith(
-            message: l,
-            eState: EState.error,
-          );
+          state = state.copyWith(message: l, eState: EState.error);
           setToInitialState();
         },
         (r) {
-          state = state.copyWith(
-            message: r,
-            eState: EState.success,
-          );
+          state = state.copyWith(message: r, eState: EState.success);
           setToInitialState();
         },
       );
@@ -160,25 +145,16 @@ class CategoryProvider extends _$CategoryProvider {
     final result = await databaseHelper.deleteCategory(categoryId);
     result.fold(
       (l) {
-        state = state.copyWith(
-          message: l,
-          eState: EState.error,
-        );
+        state = state.copyWith(message: l, eState: EState.error);
         setToInitialState();
       },
       (r) {
-        state = state.copyWith(
-          message: r,
-          eState: EState.successDelete,
-        );
+        state = state.copyWith(message: r, eState: EState.successDelete);
       },
     );
   }
 
   void setToInitialState() {
-    state = state.copyWith(
-      eState: EState.initial,
-      message: null,
-    );
+    state = state.copyWith(eState: EState.initial, message: null);
   }
 }
