@@ -1,15 +1,13 @@
 import 'package:finance_tracking/database/chart_model.dart';
 import 'package:finance_tracking/models/transaction_model/transaction_model.dart';
+import 'package:finance_tracking/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class TransactionsLineChart extends StatelessWidget {
-  const TransactionsLineChart({
-    super.key,
-    required this.transactions,
-  });
+  const TransactionsLineChart({super.key, required this.transactions});
 
   final List<TransactionModel> transactions;
 
@@ -31,11 +29,9 @@ class TransactionsLineChart extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.grey,
-          width: 1.w,
-        ),
+        border: Border.all(color: Colors.grey, width: 1.w),
       ),
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
       child: SfCartesianChart(
@@ -43,24 +39,21 @@ class TransactionsLineChart extends StatelessWidget {
           dateFormat: DateFormat('d'),
           intervalType: DateTimeIntervalType.days,
         ),
-        legend: Legend(
-          isVisible: true,
-          position: LegendPosition.bottom,
-        ),
+        legend: Legend(isVisible: true, position: LegendPosition.bottom),
         series: <CartesianSeries>[
           LineSeries<ChartData, DateTime>(
             name: 'Expense',
             dataSource: expenseData,
             xValueMapper: (ChartData data, _) => data.date,
             yValueMapper: (ChartData data, _) => data.amount,
-            color: Colors.red,
+            color: AppColors.expenseColor,
           ),
           LineSeries<ChartData, DateTime>(
             name: 'Income',
             dataSource: incomeData,
             xValueMapper: (ChartData data, _) => data.date,
             yValueMapper: (ChartData data, _) => data.amount,
-            color: Colors.green,
+            color: AppColors.incomeColor,
           ),
         ],
         tooltipBehavior: TooltipBehavior(enable: true),

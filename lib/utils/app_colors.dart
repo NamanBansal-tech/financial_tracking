@@ -10,6 +10,7 @@ class AppColors {
   static const Color primary = Color(0xFFFFC107); // ⭐ amber primary
   static const Color primaryLight = Color(0xFFFFF3CD);
   static const Color primaryDark = Color(0xFFB45309);
+
   // 📝 Text
   static const Color textPrimary = Color(0xFF111827);
   static const Color textSecondary = Color(0xFF6B7280);
@@ -25,8 +26,6 @@ class AppColors {
   static const Color bottomNavUnselected = Color(0xFF9CA3AF);
 
   // 📆 Calendar
-  static const Color calendarSelectedIncome = success;
-  static const Color calendarSelectedExpense = error;
   static const Color calendarSelectedNeutral = primary;
   static const Color calendarSelectedText = Color(0xFF111827);
   static const Color calendarSelectedBg = Color(0xFFFFF3CD); // Soft yellow
@@ -44,4 +43,22 @@ class AppColors {
   static const Color tooltipText = Color(0xFFF9FAFB); // Almost white
   static const Color tooltipSubText = Color(0xFFD1D5DB); // Gray-300
   static const Color tooltipDivider = Color(0xFF374151); // Slate-700
+
+  // transaction type color
+  static const Color incomeColor = success;
+  static const Color expenseColor = error;
+
+  // pie chart colors
+  static const List<Color> categoryColors = [
+    Color(0xFFDC2626), // red
+    Color(0xFFF59E0B), // amber
+    Color(0xFF10B981), // green
+    Color(0xFF3B82F6), // blue
+    Color(0xFF8B5CF6), // purple
+    Color(0xFFEC4899), // pink
+    Color(0xFF14B8A6), // teal
+    Color(0xFFF97316), // orange
+  ];
+  static const Color availableBalanceBg = Color(0xFFEAF4EC);
+
 }

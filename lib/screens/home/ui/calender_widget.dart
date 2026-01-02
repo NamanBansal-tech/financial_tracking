@@ -18,8 +18,8 @@ class CalenderWidget extends StatelessWidget {
   final List<TransactionModel> transactions;
 
   final _calenderBackgroundColor = <int, Color>{
-    0: AppColors.calendarSelectedExpense,
-    1: AppColors.calendarSelectedIncome,
+    0: AppColors.expenseColor,
+    1: AppColors.incomeColor,
     2: AppColors.calendarTodayBg,
     3: AppColors.calendarSelectedBg,
   };
@@ -41,6 +41,7 @@ class CalenderWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12.h),
       decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.grey),
       ),
@@ -214,7 +215,7 @@ class CalenderWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Padding(
-              padding: EdgeInsetsGeometry.only(right: 15.w,top: 5.w),
+              padding: EdgeInsetsGeometry.only(right: 15.w, top: 5.w),
               child: TooltipArrow(color: AppColors.tooltipBg),
             ),
             Container(
