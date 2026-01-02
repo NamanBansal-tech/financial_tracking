@@ -15,7 +15,7 @@ class TransactionsFilter extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(transactionRef);
-    final provider = ref.watch(transactionRef.notifier);
+    final provider = ref.read(transactionRef.notifier);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,13 +30,13 @@ class TransactionsFilter extends ConsumerWidget {
           CustomTextFormField(
             labelText: 'Notes',
             hintText: 'Enter something..',
-            controller: provider.transactionNameController,
+            controller: provider.nameController,
           ),
           SizedBox(height: 10),
           CustomTextFormField(
             labelText: 'Date',
             hintText: 'dd/mm/yyyy',
-            controller: provider.transactionDateController,
+            controller: provider.dateController,
             onTap: () {
               final currentDate = DateTime.now();
               showDatePicker(
@@ -59,7 +59,7 @@ class TransactionsFilter extends ConsumerWidget {
           CustomTextFormField(
             labelText: 'Amount',
             hintText: 'Enter the amount',
-            controller: provider.transactionAmountController,
+            controller: provider.amountController,
             digitsOnly: true,
           ),
           SizedBox(height: 10),

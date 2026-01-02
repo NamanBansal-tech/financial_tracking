@@ -3,7 +3,6 @@ import 'package:finance_tracking/database/database_helper_impl.dart';
 import 'package:finance_tracking/models/page_meta/page_meta.dart';
 import 'package:finance_tracking/models/transaction_model/transaction_model.dart';
 import 'package:finance_tracking/providers/transaction/transaction_state.dart';
-import 'package:finance_tracking/utils/extensions.dart';
 import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,12 +12,9 @@ part 'transaction_provider.g.dart';
 
 @riverpod
 class TransactionProvider extends _$TransactionProvider {
-  late TextEditingController transactionNameController;
-  late TextEditingController transactionDateController;
-  late TextEditingController transactionAmountController;
-  late TextEditingController fromLineChartDateController;
-  late TextEditingController toLineChartDateController;
-  late TextEditingController calenderMonthController;
+  late TextEditingController nameController;
+  late TextEditingController dateController;
+  late TextEditingController amountController;
   late GlobalKey<FormState> formKey;
   late DatabaseHelper databaseHelper;
   TransactionModel? arguementTransaction;
@@ -34,36 +30,13 @@ class TransactionProvider extends _$TransactionProvider {
     return TransactionState.initial(eTransactionState: ETransactionState.ready);
   }
 
-  void updateDashboardValues() {
-    final currentDate = DateTime.now();
-    final nextMonth = DateTime(currentDate.year, currentDate.month + 1, 1);
-    final lastDate = nextMonth.subtract(Duration(days: 1));
-    fromLineChartDateController.text = Utility.formatDate(
-      DateTime(currentDate.year, currentDate.month, 1),
-    );
-    toLineChartDateController.text = Utility.formatDate(
-      DateTime(currentDate.year, currentDate.month, lastDate.day),
-    );
-    calenderMonthController.text = Utility.calenderMonthFormatDate(currentDate);
-    state = state.copyWith(
-      fromLineChartDate: DateTime(currentDate.year, currentDate.month, 1),
-      selectedCalenderMonth: currentDate,
-      toLineChartDate: DateTime(
-        currentDate.year,
-        currentDate.month,
-        lastDate.day,
-      ),
-    );
-  }
-
   void updateBudgetCheck(bool value) {
     state = state.copyWith(isIncomeAddInBudget: value);
   }
 
   void updateValuesFromEditTransaction() {
-    transactionNameController.text = arguementTransaction?.notes ?? "";
-    transactionAmountController.text =
-        (arguementTransaction?.amount ?? 0).toString();
+    nameController.text = arguementTransaction?.name ?? "";
+    amountController.text = (arguementTransaction?.amount ?? 0).toString();
     if (transaction?.date != null) {
       selectTransactionDate(DateTime.parse(transaction!.date!));
     }
@@ -78,23 +51,12 @@ class TransactionProvider extends _$TransactionProvider {
     setToInitialState();
   }
 
-  void selectfromLineTransactionDate(DateTime date) {
-    fromLineChartDateController.text = Utility.formatDate(date);
-    state = state.copyWith(fromLineChartDate: date);
-  }
-
-  void selecttoLineTransactionDate(DateTime date) {
-    toLineChartDateController.text = Utility.formatDate(date);
-    state = state.copyWith(toLineChartDate: date);
-  }
-
-  void selectCalenderMonth(DateTime date) {
-    calenderMonthController.text = Utility.calenderMonthFormatDate(date);
-    state = state.copyWith(selectedCalenderMonth: date);
-  }
-
-  void selectTransactionCategory(int categoryId) {
+  void selectTransactionCategory(int? categoryId) {
     state = state.copyWith(selectedCategoryId: categoryId);
+  }
+
+  void selectTransactionBudget(int budgetId) {
+    state = state.copyWith(selectedBudgetId: budgetId);
   }
 
   void selectTransactionType(TransactionType? type) {
@@ -102,7 +64,7 @@ class TransactionProvider extends _$TransactionProvider {
   }
 
   void selectTransactionDate(DateTime date) {
-    transactionDateController.text = Utility.formatDate(date);
+    dateController.text = Utility.formatDate(date);
     state = state.copyWith(selectedDate: date);
   }
 
@@ -114,79 +76,32 @@ class TransactionProvider extends _$TransactionProvider {
   // }
 
   void initWidgets() {
-    transactionNameController = TextEditingController();
-    transactionDateController = TextEditingController();
-    transactionAmountController = TextEditingController();
-    calenderMonthController = TextEditingController();
+    nameController = TextEditingController();
+    dateController = TextEditingController();
+    amountController = TextEditingController();
     formKey = GlobalKey<FormState>();
-    fromLineChartDateController = TextEditingController();
-    toLineChartDateController = TextEditingController();
-  }
-
-  void resetDashboardWidgets() {
-    final currentDate = DateTime.now();
-    final nextMonth = DateTime(currentDate.year, currentDate.month + 1, 1);
-    final lastDate = nextMonth.subtract(Duration(days: 1));
-    fromLineChartDateController.text = Utility.formatDate(
-      DateTime(currentDate.year, currentDate.month, 1),
-    );
-    toLineChartDateController.text = Utility.formatDate(
-      DateTime(currentDate.year, currentDate.month, lastDate.day),
-    );
-    calenderMonthController.text = Utility.calenderMonthFormatDate(currentDate);
-    state = state.copyWith(
-      fromLineChartDate: DateTime(currentDate.year, currentDate.month, 1),
-      transactions: [],
-      calenderMonthtransactions: [],
-      selectedCalenderMonth: currentDate,
-      toLineChartDate: DateTime(
-        currentDate.year,
-        currentDate.month,
-        lastDate.day,
-      ),
-    );
   }
 
   void resetWidgets() {
-    transactionNameController.clear();
-    transactionAmountController.clear();
-    transactionDateController.clear();
+    nameController.clear();
+    amountController.clear();
+    dateController.clear();
     state = state.copyWith(selectedDate: null, selectedTransactionType: null);
-  }
-
-  Future<void> filterDashboard() async {
-    state = state.copyWith(
-      eTransactionState: ETransactionState.loadingDashboard,
-    );
-    await databaseHelper.initAppDatabase();
-    await Future.wait([
-          getDashboardTransactions(),
-          getTransactionsForCalenderMonth(),
-        ])
-        .then((_) {
-          setToInitialState();
-        })
-        .onError((e, trace) {
-          state = state.copyWith(
-            message: e.toString(),
-            eTransactionState: ETransactionState.error,
-          );
-          setToInitialState();
-        });
   }
 
   Future<void> getTransactions({bool loadMore = false}) async {
     state = state.copyWith(
-      eTransactionState:
-          loadMore ? ETransactionState.loadingMore : ETransactionState.loading,
+      eTransactionState: loadMore
+          ? ETransactionState.loadingMore
+          : ETransactionState.loading,
     );
     if (!loadMore) {
       state = state.copyWith(pageMeta: PageMeta());
     }
 
     final result = await databaseHelper.getTransactions(
-      amount: transactionAmountController.text.trim(),
-      transactionName: transactionNameController.text.trim(),
+      amount: amountController.text.trim(),
+      transactionName: nameController.text.trim(),
       transactionType: state.selectedTransactionType?.index,
       pageMeta: state.pageMeta,
       transactionDate: Utility.getDateFromDateTime(state.selectedDate),
@@ -212,43 +127,6 @@ class TransactionProvider extends _$TransactionProvider {
     );
   }
 
-  Future<void> getDashboardTransactions() async {
-    state = state.copyWith(eTransactionState: ETransactionState.loading);
-
-    final result = await databaseHelper.getTransactions(
-      fromDate: Utility.getDateFromDateTime(state.fromLineChartDate),
-      toDate: Utility.getDateFromDateTime(state.toLineChartDate),
-    );
-    result.fold(
-      (l) {
-        throw l;
-      },
-      (r) {
-        state = state.copyWith(graphTransactions: r);
-        setToInitialState();
-      },
-    );
-  }
-
-  Future<void> getTransactionsForCalenderMonth() async {
-    final result = await databaseHelper.getTransactions(
-      fromDate: Utility.getDateFromDateTime(
-        state.selectedCalenderMonth?.firstDayOfMonth,
-      ),
-      toDate: Utility.getDateFromDateTime(
-        state.selectedCalenderMonth?.lastDayOfMonth,
-      ),
-    );
-    result.fold(
-      (l) {
-        throw l;
-      },
-      (r) {
-        state = state.copyWith(calenderMonthtransactions: r);
-      },
-    );
-  }
-
   Future<void> createTransaction() async {
     if (formKey.currentState!.validate()) {
       if (state.selectedCategoryId != null &&
@@ -257,11 +135,12 @@ class TransactionProvider extends _$TransactionProvider {
         state = state.copyWith(eTransactionState: ETransactionState.loading);
         final result = await databaseHelper.addTransaction(
           TransactionModel(
-            amount: transactionAmountController.text.trim(),
+            amount: num.tryParse(amountController.text.trim()),
             categoryId: state.selectedCategoryId,
             date: Utility.getDateFromDateTime(state.selectedDate!),
-            notes: transactionNameController.text.trim(),
+            name: nameController.text.trim(),
             type: state.selectedTransactionType!.index,
+            budgetId: state.selectedBudgetId,
           ),
         );
         result.fold(
@@ -280,12 +159,6 @@ class TransactionProvider extends _$TransactionProvider {
             setToInitialState();
           },
         );
-      } else {
-        state = state.copyWith(
-          message: 'Please fill all the mandatory fields',
-          eTransactionState: ETransactionState.error,
-        );
-        setToInitialState();
       }
     }
   }
@@ -298,12 +171,13 @@ class TransactionProvider extends _$TransactionProvider {
         state = state.copyWith(eTransactionState: ETransactionState.loading);
         final result = await databaseHelper.editTransaction(
           TransactionModel(
-            amount: transactionAmountController.text.trim(),
+            amount: num.tryParse(amountController.text.trim()),
             categoryId: state.selectedCategoryId,
             date: Utility.getDateFromDateTime(state.selectedDate!),
-            notes: transactionNameController.text.trim(),
+            name: nameController.text.trim(),
             id: arguementTransaction?.id,
             type: state.selectedTransactionType!.index,
+            budgetId: state.selectedBudgetId,
           ),
         );
         result.fold(

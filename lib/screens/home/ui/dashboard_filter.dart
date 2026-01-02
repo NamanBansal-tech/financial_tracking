@@ -1,28 +1,20 @@
 import 'package:finance_tracking/components/custom_button.dart';
 import 'package:finance_tracking/components/custom_text_form_field.dart';
-import 'package:finance_tracking/providers/category/category_provider.dart';
-import 'package:finance_tracking/providers/transaction/transaction_provider.dart';
-import 'package:finance_tracking/screens/categorie_list/category_list_page.dart';
+import 'package:finance_tracking/providers/common_provider/common_provider.dart';
+import 'package:finance_tracking/providers/common_provider/common_state.dart';
+import 'package:finance_tracking/screens/budget_list/budget_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class DashboardFilter extends ConsumerWidget {
-  const DashboardFilter({
-    super.key,
-    required this.transactionRef,
-    required this.categoryRef,
-  });
+  const DashboardFilter({super.key, required this.commonRef});
 
-  final TransactionProviderProvider transactionRef;
-  final CategoryProviderProvider categoryRef;
+  final CommonProviderProvider commonRef;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final transactionProvider = ref.watch(transactionRef.notifier);
-    final categoryProvider = ref.watch(categoryRef.notifier);
-    final transactionState = ref.watch(transactionRef);
-
+    final provider = ref.read<CommonProvider>(commonRef.notifier);
+    final state = ref.watch<CommonState>(commonRef);
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -31,19 +23,19 @@ class DashboardFilter extends ConsumerWidget {
           CustomTextFormField(
             labelText: 'From Date of Transaction',
             hintText: 'dd/mm/yyyy',
-            controller: transactionProvider.fromLineChartDateController,
+            controller: provider.fromLineChartDateController,
             onTap: () async {
               final currentDate = DateTime.now();
               final pickedDate = await showDatePicker(
                 context: context,
                 firstDate: DateTime(1900),
                 lastDate: currentDate,
-                initialDate: transactionState.fromLineChartDate,
+                initialDate: state.fromLineChartDate,
                 currentDate: currentDate,
                 helpText: 'Select Transaction Date',
               );
               if (pickedDate != null) {
-                transactionProvider.selectfromLineTransactionDate(pickedDate);
+                provider.selectfromLineTransactionDate(pickedDate);
               }
             },
             readOnly: true,
@@ -53,19 +45,26 @@ class DashboardFilter extends ConsumerWidget {
           CustomTextFormField(
             labelText: 'To Date of Transaction',
             hintText: 'dd/mm/yyyy',
-            controller: transactionProvider.toLineChartDateController,
+            enabled: state.fromLineChartDate != null,
+            controller: provider.toLineChartDateController,
             onTap: () async {
               final currentDate = DateTime.now();
+              DateTime firstDate = DateTime(1900);
+              if ((state.fromLineChartDate != null)) {
+                firstDate = state.fromLineChartDate!.copyWith(
+                  day: (state.fromLineChartDate!.day) + 1,
+                );
+              }
               final pickedDate = await showDatePicker(
                 context: context,
-                firstDate: DateTime(1900),
+                firstDate: firstDate,
                 lastDate: DateTime(3000),
-                initialDate: transactionState.toLineChartDate,
+                initialDate: state.toLineChartDate,
                 currentDate: currentDate,
                 helpText: 'Select Transaction Date',
               );
               if (pickedDate != null) {
-                transactionProvider.selecttoLineTransactionDate(pickedDate);
+                provider.selecttoLineTransactionDate(pickedDate);
               }
             },
             readOnly: true,
@@ -75,7 +74,7 @@ class DashboardFilter extends ConsumerWidget {
           CustomTextFormField(
             labelText: 'Select Calender Month',
             hintText: 'dd/mm/yyyy',
-            controller: transactionProvider.calenderMonthController,
+            controller: provider.calenderMonthController,
             onTap: () async {
               final currentDate = DateTime.now();
               final pickedDate = await showDatePicker(
@@ -83,12 +82,12 @@ class DashboardFilter extends ConsumerWidget {
                 firstDate: DateTime(1900),
                 lastDate: DateTime(3000),
                 // lastDate: currentDate,
-                initialDate: transactionState.selectedCalenderMonth,
+                initialDate: state.selectedCalenderMonth,
                 currentDate: currentDate,
                 helpText: 'Select Transaction Date',
               );
               if (pickedDate != null) {
-                transactionProvider.selectCalenderMonth(pickedDate);
+                provider.selectCalenderMonth(pickedDate);
               }
             },
             readOnly: true,
@@ -96,19 +95,17 @@ class DashboardFilter extends ConsumerWidget {
           ),
           SizedBox(height: 10),
           CustomTextFormField(
-            labelText: 'Category',
-            hintText: 'Select Category',
-            controller: categoryProvider.filterSelectedCategoryController,
+            labelText: 'Budget',
+            hintText: 'Select Budget',
+            controller: provider.filterSelectedBudgetController,
             readOnly: true,
             onTap: () async {
-              final selectedCategory = await Navigator.push(
+              final selectedBudget = await Navigator.push(
                 context,
-                CategoryListPage.route(
-                  fromOtherPage: true,
-                ),
+                BudgetListPage.route(fromOtherPage: true),
               );
-              if (selectedCategory != null) {
-                categoryProvider.updateSelectedCategory(selectedCategory);
+              if ((selectedBudget != null)) {
+                provider.updateSelectedBudget(selectedBudget);
               }
             },
           ),
@@ -120,21 +117,8 @@ class DashboardFilter extends ConsumerWidget {
               Expanded(
                 child: CustomButton(
                   onTap: () {
-                    if ((transactionState.fromLineChartDate != null) &&
-                        (transactionState.toLineChartDate != null) &&
-                        (transactionState.toLineChartDate!.compareTo(
-                              transactionState.fromLineChartDate!,
-                            ) >=
-                            0)) {
                       Navigator.pop(context);
-                      transactionProvider.filterDashboard();
-                    } else {
-                      Fluttertoast.showToast(
-                        msg: "To Date can not be less than from Date",
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white,
-                      );
-                    }
+                      provider.filterDashboard();
                   },
                   label: 'Search',
                 ),
@@ -144,9 +128,8 @@ class DashboardFilter extends ConsumerWidget {
                 child: CustomButton(
                   onTap: () {
                     Navigator.pop(context);
-                    transactionProvider.resetDashboardWidgets();
-                    categoryProvider.resetWidgets();
-                    transactionProvider.filterDashboard();
+                    provider.resetDashboardWidgets();
+                    provider.filterDashboard();
                   },
                   label: 'Reset',
                   isSecondary: true,

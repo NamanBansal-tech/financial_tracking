@@ -1,4 +1,5 @@
 import 'package:finance_tracking/components/custom_bottom_sheet.dart';
+import 'package:finance_tracking/screens/create_budget/create_budget_page.dart';
 import 'package:finance_tracking/screens/create_category/create_category_page.dart';
 import 'package:finance_tracking/screens/create_transaction/create_transaction_page.dart';
 import 'package:flutter/material.dart';
@@ -35,16 +36,36 @@ void showCreateBottomSheet(BuildContext context) {
               height: MediaQuery.of(context).size.height / 10,
             ),
             title: Text(
-              'Add New Budget Category',
+              'Add New Category',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
-              'Add new budget categories to streamline your financial planning and stay organized.',
+              'Add new categories to streamline your financial planning and stay organized.',
             ),
             onTap: () {
               Navigator.push(
                 context,
                 CreateCategoryPage.route(fromOtherPage: false),
+              );
+            },
+          ),
+            SizedBox(height: 20),
+          ListTile(
+            leading: Image.asset(
+              'assets/images/budget.png',
+              height: MediaQuery.of(context).size.height / 10,
+            ),
+            title: Text(
+              'Add New Budget',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text(
+              'Create budgets to plan expenses and track your finances better.',
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                CreateBudgetPage.route(fromOtherPage: false),
               );
             },
           ),

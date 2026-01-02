@@ -1,4 +1,4 @@
-import 'package:finance_tracking/screens/home/provider/home_state.dart';
+import 'package:finance_tracking/providers/common_provider/common_state.dart';
 import 'package:finance_tracking/utils/utility.dart';
 import 'package:flutter/material.dart';
 
@@ -18,8 +18,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
       items: HomeTabs.values
           .map(
             (e) => BottomNavigationBarItem(
-              icon: Icon(
-                getCurrentTabIcon(e),
+              icon: Image.asset(
+                getCurrentTabImage(e),
+                height: 25,
+                width: 25,
+                color: e.index == currentIndex ? Colors.amber : Colors.grey,
               ),
               label: Utility.getCurrentTabLabel(e),
             ),
@@ -32,14 +35,16 @@ class CustomBottomNavigationBar extends StatelessWidget {
     );
   }
 
-  IconData getCurrentTabIcon(HomeTabs homeTab) {
+  String getCurrentTabImage(HomeTabs homeTab) {
     switch (homeTab) {
       case HomeTabs.dashboard:
-        return Icons.av_timer_outlined;
+        return "assets/images/ic_home_page.png";
       case HomeTabs.transaction:
-        return Icons.home_rounded;
+        return "assets/images/ic_transactions.png";
       case HomeTabs.category:
-        return Icons.av_timer_outlined;
+        return "assets/images/ic_categories.png";
+      case HomeTabs.budget:
+        return "assets/images/ic_budget.png";
     }
   }
 }

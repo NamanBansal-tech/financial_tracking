@@ -6,12 +6,13 @@ part 'transaction_model.g.dart';
 @freezed
 abstract class TransactionModel with _$TransactionModel {
   factory TransactionModel({
-    dynamic amount,
+    num? amount,
     int? categoryId,
     String? date,
-    String? notes,
+    String? name,
     int? type,
     int? id,
+    int? budgetId,
   }) = _TransactionModel;
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>

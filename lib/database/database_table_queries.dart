@@ -4,15 +4,23 @@ CREATE TABLE ${EDatabaseTableNames.transactionTable.name}(
 id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 amount FLOAT,
 categoryId INTEGER,
+budgetId INTEGER,
 date TEXT,
-notes TEXT,
+name TEXT,
 type INTEGER
 )
 ''';
-static String createCategoryTable = '''
+  static String createCategoryTable = '''
 CREATE TABLE ${EDatabaseTableNames.categoryTable.name}(
   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  categoryName TEXT,
+  name TEXT,
+  budgetId INTEGER
+)
+''';
+  static String createBudgetTable = '''
+CREATE TABLE ${EDatabaseTableNames.budgetTable.name}(
+  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  name TEXT,
   budgetAmount REAL,
   totalExpense REAL,
   startDate TEXT,
@@ -21,8 +29,4 @@ CREATE TABLE ${EDatabaseTableNames.categoryTable.name}(
 ''';
 }
 
-
-enum EDatabaseTableNames {
-  transactionTable,
-  categoryTable,
-}
+enum EDatabaseTableNames { transactionTable, categoryTable, budgetTable }

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CategoryModel {
 
- int? get id; String? get categoryName; double? get totalExpense; num? get budgetAmount; String? get startDate; String? get endDate;
+ int? get id; String? get name; int? get budgetId;
 /// Create a copy of CategoryModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CategoryModelCopyWith<CategoryModel> get copyWith => _$CategoryModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.categoryName, categoryName) || other.categoryName == categoryName)&&(identical(other.totalExpense, totalExpense) || other.totalExpense == totalExpense)&&(identical(other.budgetAmount, budgetAmount) || other.budgetAmount == budgetAmount)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CategoryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.budgetId, budgetId) || other.budgetId == budgetId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,categoryName,totalExpense,budgetAmount,startDate,endDate);
+int get hashCode => Object.hash(runtimeType,id,name,budgetId);
 
 @override
 String toString() {
-  return 'CategoryModel(id: $id, categoryName: $categoryName, totalExpense: $totalExpense, budgetAmount: $budgetAmount, startDate: $startDate, endDate: $endDate)';
+  return 'CategoryModel(id: $id, name: $name, budgetId: $budgetId)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CategoryModelCopyWith<$Res>  {
   factory $CategoryModelCopyWith(CategoryModel value, $Res Function(CategoryModel) _then) = _$CategoryModelCopyWithImpl;
 @useResult
 $Res call({
- int? id, String? categoryName, double? totalExpense, num? budgetAmount, String? startDate, String? endDate
+ int? id, String? name, int? budgetId
 });
 
 
@@ -65,15 +65,12 @@ class _$CategoryModelCopyWithImpl<$Res>
 
 /// Create a copy of CategoryModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? categoryName = freezed,Object? totalExpense = freezed,Object? budgetAmount = freezed,Object? startDate = freezed,Object? endDate = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = freezed,Object? budgetId = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int?,categoryName: freezed == categoryName ? _self.categoryName : categoryName // ignore: cast_nullable_to_non_nullable
-as String?,totalExpense: freezed == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
-as double?,budgetAmount: freezed == budgetAmount ? _self.budgetAmount : budgetAmount // ignore: cast_nullable_to_non_nullable
-as num?,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
-as String?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
-as String?,
+as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,budgetId: freezed == budgetId ? _self.budgetId : budgetId // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -158,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? categoryName,  double? totalExpense,  num? budgetAmount,  String? startDate,  String? endDate)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? name,  int? budgetId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CategoryModel() when $default != null:
-return $default(_that.id,_that.categoryName,_that.totalExpense,_that.budgetAmount,_that.startDate,_that.endDate);case _:
+return $default(_that.id,_that.name,_that.budgetId);case _:
   return orElse();
 
 }
@@ -179,10 +176,10 @@ return $default(_that.id,_that.categoryName,_that.totalExpense,_that.budgetAmoun
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? categoryName,  double? totalExpense,  num? budgetAmount,  String? startDate,  String? endDate)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? name,  int? budgetId)  $default,) {final _that = this;
 switch (_that) {
 case _CategoryModel():
-return $default(_that.id,_that.categoryName,_that.totalExpense,_that.budgetAmount,_that.startDate,_that.endDate);case _:
+return $default(_that.id,_that.name,_that.budgetId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +196,10 @@ return $default(_that.id,_that.categoryName,_that.totalExpense,_that.budgetAmoun
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? categoryName,  double? totalExpense,  num? budgetAmount,  String? startDate,  String? endDate)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? name,  int? budgetId)?  $default,) {final _that = this;
 switch (_that) {
 case _CategoryModel() when $default != null:
-return $default(_that.id,_that.categoryName,_that.totalExpense,_that.budgetAmount,_that.startDate,_that.endDate);case _:
+return $default(_that.id,_that.name,_that.budgetId);case _:
   return null;
 
 }
@@ -214,15 +211,12 @@ return $default(_that.id,_that.categoryName,_that.totalExpense,_that.budgetAmoun
 @JsonSerializable()
 
 class _CategoryModel implements CategoryModel {
-   _CategoryModel({this.id, this.categoryName, this.totalExpense, this.budgetAmount, this.startDate, this.endDate});
+   _CategoryModel({this.id, this.name, this.budgetId});
   factory _CategoryModel.fromJson(Map<String, dynamic> json) => _$CategoryModelFromJson(json);
 
 @override final  int? id;
-@override final  String? categoryName;
-@override final  double? totalExpense;
-@override final  num? budgetAmount;
-@override final  String? startDate;
-@override final  String? endDate;
+@override final  String? name;
+@override final  int? budgetId;
 
 /// Create a copy of CategoryModel
 /// with the given fields replaced by the non-null parameter values.
@@ -237,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CategoryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.categoryName, categoryName) || other.categoryName == categoryName)&&(identical(other.totalExpense, totalExpense) || other.totalExpense == totalExpense)&&(identical(other.budgetAmount, budgetAmount) || other.budgetAmount == budgetAmount)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CategoryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.budgetId, budgetId) || other.budgetId == budgetId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,categoryName,totalExpense,budgetAmount,startDate,endDate);
+int get hashCode => Object.hash(runtimeType,id,name,budgetId);
 
 @override
 String toString() {
-  return 'CategoryModel(id: $id, categoryName: $categoryName, totalExpense: $totalExpense, budgetAmount: $budgetAmount, startDate: $startDate, endDate: $endDate)';
+  return 'CategoryModel(id: $id, name: $name, budgetId: $budgetId)';
 }
 
 
@@ -257,7 +251,7 @@ abstract mixin class _$CategoryModelCopyWith<$Res> implements $CategoryModelCopy
   factory _$CategoryModelCopyWith(_CategoryModel value, $Res Function(_CategoryModel) _then) = __$CategoryModelCopyWithImpl;
 @override @useResult
 $Res call({
- int? id, String? categoryName, double? totalExpense, num? budgetAmount, String? startDate, String? endDate
+ int? id, String? name, int? budgetId
 });
 
 
@@ -274,15 +268,12 @@ class __$CategoryModelCopyWithImpl<$Res>
 
 /// Create a copy of CategoryModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? categoryName = freezed,Object? totalExpense = freezed,Object? budgetAmount = freezed,Object? startDate = freezed,Object? endDate = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = freezed,Object? budgetId = freezed,}) {
   return _then(_CategoryModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as int?,categoryName: freezed == categoryName ? _self.categoryName : categoryName // ignore: cast_nullable_to_non_nullable
-as String?,totalExpense: freezed == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
-as double?,budgetAmount: freezed == budgetAmount ? _self.budgetAmount : budgetAmount // ignore: cast_nullable_to_non_nullable
-as num?,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
-as String?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
-as String?,
+as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,budgetId: freezed == budgetId ? _self.budgetId : budgetId // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 

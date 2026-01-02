@@ -9,31 +9,25 @@ abstract class TransactionState with _$TransactionState {
   factory TransactionState({
     @Default(ETransactionState.initial) ETransactionState eTransactionState,
     @Default([]) List<TransactionModel> transactions,
-    @Default([]) List<TransactionModel> graphTransactions,
-    @Default([]) List<TransactionModel> calenderMonthtransactions,
     @Default(false) bool isIncomeAddInBudget,
     required PageMeta pageMeta,
     String? message,
-     DateTime? fromLineChartDate,
-     DateTime? toLineChartDate,
-     DateTime? selectedCalenderMonth,
     TransactionType? selectedTransactionType,
     int? selectedCategoryId,
+    int? selectedBudgetId,
     DateTime? selectedDate,
   }) = _TransactionState;
 
   factory TransactionState.initial({
     required ETransactionState eTransactionState,
-  }) =>
-      TransactionState(
-        eTransactionState: eTransactionState,
-        pageMeta: PageMeta(),
-      );
+  }) => TransactionState(
+    eTransactionState: eTransactionState,
+    pageMeta: PageMeta(),
+  );
 }
 
 enum ETransactionState {
   initial,
-  loadingDashboard,
   loading,
   loadingMore,
   ready,
@@ -42,7 +36,4 @@ enum ETransactionState {
   successDelete,
 }
 
-enum ESearchType{
-filter,
-reset,
-}
+enum ESearchType { filter, reset }
