@@ -6,7 +6,7 @@ import 'package:finance_tracking/providers/common_provider/common_state.dart';
 import 'package:finance_tracking/screens/home/ui/budget_chart.dart';
 import 'package:finance_tracking/screens/home/ui/calender_widget.dart';
 import 'package:finance_tracking/screens/home/ui/create_bottom_sheet.dart';
-import 'package:finance_tracking/screens/home/ui/dashboard_filter.dart';
+import 'package:finance_tracking/screens/home/ui/dashboard_filter_widget.dart';
 import 'package:finance_tracking/screens/home/ui/transactions_line_chart.dart';
 import 'package:finance_tracking/utils/extensions.dart';
 import 'package:finance_tracking/utils/listeners.dart';
@@ -42,7 +42,7 @@ class DashBoardPage extends ConsumerWidget {
             onPressed: () {
               customBottomSheet(
                 context: context,
-                child: DashboardFilter(commonRef: commonRef),
+                child: DashboardFilterWidget(commonRef: commonRef),
                 isDismissible: false,
                 enableDrag: false,
               );

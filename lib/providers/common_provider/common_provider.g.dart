@@ -58,7 +58,7 @@ final class CommonProviderProvider
   }
 }
 
-String _$commonProviderHash() => r'24342b332cc9446396fe671e9afb52ecf3bb8f51';
+String _$commonProviderHash() => r'88d5e286831090c4d8adc97a506816c64f0771be';
 
 final class CommonProviderFamily extends $Family
     with

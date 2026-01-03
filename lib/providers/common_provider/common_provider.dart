@@ -92,9 +92,9 @@ class CommonProvider extends _$CommonProvider {
     filterSelectedBudgetController.clear();
     state = state.copyWith(
       fromLineChartDate: DateTime(currentDate.year, currentDate.month, 1),
-      transactions: [],
       calenderMonthtransactions: [],
       selectedCalenderMonth: currentDate,
+      selectedBudget: null,
       toLineChartDate: DateTime(
         currentDate.year,
         currentDate.month,

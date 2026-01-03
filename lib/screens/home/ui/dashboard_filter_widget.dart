@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class DashboardFilter extends ConsumerWidget {
-  const DashboardFilter({super.key, required this.commonRef});
+class DashboardFilterWidget extends ConsumerWidget {
+  const DashboardFilterWidget({super.key, required this.commonRef});
 
   final CommonProviderProvider commonRef;
 

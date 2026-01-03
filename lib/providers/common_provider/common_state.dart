@@ -10,7 +10,6 @@ part 'common_state.freezed.dart';
 abstract class CommonState with _$CommonState {
   factory CommonState({
     @Default(EState.initial) EState eState,
-    @Default([]) List<TransactionModel> transactions,
     @Default([]) List<TransactionModel> graphTransactions,
     @Default([]) List<TransactionModel> calenderMonthtransactions,
     PieChartModel? pieChartData,

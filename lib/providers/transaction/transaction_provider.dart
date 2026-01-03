@@ -89,7 +89,12 @@ class TransactionProvider extends _$TransactionProvider {
     nameController.clear();
     amountController.clear();
     dateController.clear();
-    state = state.copyWith(selectedDate: null, selectedTransactionType: null);
+    state = state.copyWith(
+      selectedDate: null,
+      selectedTransactionType: null,
+      selectedCategoryId: null,
+      selectedBudgetId: null,
+    );
   }
 
   Future<void> getTransactions({bool loadMore = false}) async {
@@ -97,7 +102,11 @@ class TransactionProvider extends _$TransactionProvider {
       eState: loadMore ? EState.loadingMore : EState.loading,
     );
     if (!loadMore) {
-      state = state.copyWith(pageMeta: PageMeta(),totalExpense: 0,totalIncome: 0);
+      state = state.copyWith(
+        pageMeta: PageMeta(),
+        totalExpense: 0,
+        totalIncome: 0,
+      );
     }
 
     final result = await databaseHelper.getTransactions(

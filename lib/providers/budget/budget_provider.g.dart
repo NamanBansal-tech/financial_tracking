@@ -58,7 +58,7 @@ final class BudgetProviderProvider
   }
 }
 
-String _$budgetProviderHash() => r'40da1e29743ed0d293fc89f26ebba7b5f58508fa';
+String _$budgetProviderHash() => r'4f05481eb9d720a0e0bd14dd56119cdf227811cd';
 
 final class BudgetProviderFamily extends $Family
     with
