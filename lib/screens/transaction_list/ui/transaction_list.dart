@@ -245,7 +245,7 @@ class TransactionList extends ConsumerWidget {
         ),
         SizedBox(height: 4.h),
         Text(
-          value.toStringAsFixed(0),
+          value.toStringAsFixed(2),
           style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w600,
