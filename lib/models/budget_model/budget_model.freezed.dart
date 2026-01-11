@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BudgetModel {
 
- int? get id; String? get name; double? get totalExpense; num? get budgetAmount; String? get startDate; String? get endDate;
+ int? get id; String? get name; num? get totalExpense; num? get budgetAmount; String? get startDate; String? get endDate;
 /// Create a copy of BudgetModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $BudgetModelCopyWith<$Res>  {
   factory $BudgetModelCopyWith(BudgetModel value, $Res Function(BudgetModel) _then) = _$BudgetModelCopyWithImpl;
 @useResult
 $Res call({
- int? id, String? name, double? totalExpense, num? budgetAmount, String? startDate, String? endDate
+ int? id, String? name, num? totalExpense, num? budgetAmount, String? startDate, String? endDate
 });
 
 
@@ -70,7 +70,7 @@ class _$BudgetModelCopyWithImpl<$Res>
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,totalExpense: freezed == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
-as double?,budgetAmount: freezed == budgetAmount ? _self.budgetAmount : budgetAmount // ignore: cast_nullable_to_non_nullable
+as num?,budgetAmount: freezed == budgetAmount ? _self.budgetAmount : budgetAmount // ignore: cast_nullable_to_non_nullable
 as num?,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
 as String?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
 as String?,
@@ -158,7 +158,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? name,  double? totalExpense,  num? budgetAmount,  String? startDate,  String? endDate)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String? name,  num? totalExpense,  num? budgetAmount,  String? startDate,  String? endDate)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BudgetModel() when $default != null:
 return $default(_that.id,_that.name,_that.totalExpense,_that.budgetAmount,_that.startDate,_that.endDate);case _:
@@ -179,7 +179,7 @@ return $default(_that.id,_that.name,_that.totalExpense,_that.budgetAmount,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? name,  double? totalExpense,  num? budgetAmount,  String? startDate,  String? endDate)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String? name,  num? totalExpense,  num? budgetAmount,  String? startDate,  String? endDate)  $default,) {final _that = this;
 switch (_that) {
 case _BudgetModel():
 return $default(_that.id,_that.name,_that.totalExpense,_that.budgetAmount,_that.startDate,_that.endDate);case _:
@@ -199,7 +199,7 @@ return $default(_that.id,_that.name,_that.totalExpense,_that.budgetAmount,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? name,  double? totalExpense,  num? budgetAmount,  String? startDate,  String? endDate)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String? name,  num? totalExpense,  num? budgetAmount,  String? startDate,  String? endDate)?  $default,) {final _that = this;
 switch (_that) {
 case _BudgetModel() when $default != null:
 return $default(_that.id,_that.name,_that.totalExpense,_that.budgetAmount,_that.startDate,_that.endDate);case _:
@@ -219,7 +219,7 @@ class _BudgetModel implements BudgetModel {
 
 @override final  int? id;
 @override final  String? name;
-@override final  double? totalExpense;
+@override final  num? totalExpense;
 @override final  num? budgetAmount;
 @override final  String? startDate;
 @override final  String? endDate;
@@ -257,7 +257,7 @@ abstract mixin class _$BudgetModelCopyWith<$Res> implements $BudgetModelCopyWith
   factory _$BudgetModelCopyWith(_BudgetModel value, $Res Function(_BudgetModel) _then) = __$BudgetModelCopyWithImpl;
 @override @useResult
 $Res call({
- int? id, String? name, double? totalExpense, num? budgetAmount, String? startDate, String? endDate
+ int? id, String? name, num? totalExpense, num? budgetAmount, String? startDate, String? endDate
 });
 
 
@@ -279,7 +279,7 @@ class __$BudgetModelCopyWithImpl<$Res>
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,totalExpense: freezed == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
-as double?,budgetAmount: freezed == budgetAmount ? _self.budgetAmount : budgetAmount // ignore: cast_nullable_to_non_nullable
+as num?,budgetAmount: freezed == budgetAmount ? _self.budgetAmount : budgetAmount // ignore: cast_nullable_to_non_nullable
 as num?,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
 as String?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
 as String?,

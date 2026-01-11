@@ -13,6 +13,7 @@ abstract class CategoryState with _$CategoryState {
     @Default([]) List<CategoryModel> categories,
     CategoryModel? category,
     int? selectedBudgetId,
+    int? resultId,
   }) = _CategoryState;
 
   factory CategoryState.initial({

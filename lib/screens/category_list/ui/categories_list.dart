@@ -9,6 +9,7 @@ import 'package:finance_tracking/providers/transaction/transaction_state.dart';
 import 'package:finance_tracking/screens/category_list/ui/categories_filter_bottom_sheet.dart';
 import 'package:finance_tracking/screens/create_category/create_category_page.dart';
 import 'package:finance_tracking/screens/transaction_list/transactions_list_page.dart';
+import 'package:finance_tracking/utils/app_colors.dart';
 import 'package:finance_tracking/utils/extensions.dart';
 import 'package:finance_tracking/utils/listeners.dart';
 import 'package:flutter/material.dart';
@@ -67,10 +68,7 @@ class CategoriesList extends ConsumerWidget {
                 },
               );
             },
-            icon: Icon(
-              Icons.filter_alt_rounded,
-              size: context.height * .03,
-            ),
+            icon: Icon(Icons.filter_alt_rounded, size: context.height * .03),
           ),
           if (!(fromOtherPage))
             IconButton(
@@ -80,10 +78,7 @@ class CategoriesList extends ConsumerWidget {
                   CreateCategoryPage.route(fromOtherPage: false),
                 );
               },
-              icon: Icon(
-                Icons.add,
-                size: context.height * .035,
-              ),
+              icon: Icon(Icons.add, size: context.height * .035),
             ),
         ],
       ),
@@ -117,7 +112,7 @@ class CategoriesList extends ConsumerWidget {
                             case EMoreOptions.edit:
                               {
                                 provider.getCategories();
-                                break;
+                                return;
                               }
                             case EMoreOptions.delete:
                               {
@@ -125,19 +120,19 @@ class CategoriesList extends ConsumerWidget {
                                   deleteDialogBox(
                                     context: context,
                                     title:
-                                        "Are you sure want to delete the budget '${item.name ?? ""}'?",
+                                        "Are you sure want to delete the category '${item.name ?? ""}'?",
                                   ).then((value) {
                                     if ((value == true)) {
                                       provider.deleteCategory(item.id!);
                                     }
                                   });
                                 }
-                                break;
+                                return;
                               }
                             case EMoreOptions.select:
                               {
                                 Navigator.pop(context, item);
-                                break;
+                                return;
                               }
                             case EMoreOptions.viewTransactions:
                               {
@@ -163,37 +158,58 @@ class CategoriesList extends ConsumerWidget {
   Widget customCategoryTile({
     required BuildContext parentContext,
     required CategoryModel categoryModel,
-    required dynamic Function(dynamic)? onSuccess,
+    required dynamic Function(dynamic) onSuccess,
     required bool isDeleting,
   }) {
-    return ListTile(
-      title: Text(categoryModel.name ?? 'N/A', style: TextStyle(fontSize: 17.sp)),
-      onTap: () {
-        customBottomSheet(
-          context: parentContext,
-          topPadding: 0,
-          onSuccess: onSuccess,
-          child: CommonOptionsBottomSheet(
-            fromOtherPage: fromOtherPage,
-            onEdit: () {
-              Navigator.push(
-                parentContext,
-                CreateCategoryPage.route(
-                  fromOtherPage: true,
-                  categoryModel: categoryModel,
-                ),
-              ).then((_) {
-                if (parentContext.mounted) {
-                  Navigator.pop(parentContext, EMoreOptions.edit);
-                }
-              });
-            },
-          ),
-        );
-      },
-      trailing: isDeleting
-          ? const CircularProgressIndicator()
+    return InkWell(
+      onTap: fromOtherPage
+          ? () {
+              onSuccess(EMoreOptions.select);
+            }
           : null,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 12.h),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    categoryModel.name ?? 'N/A',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
+                isDeleting
+                    ? const CircularProgressIndicator()
+                    : CommonOptions(
+                        onDelete: () {
+                          onSuccess(EMoreOptions.delete);
+                        },
+                        onEdit: () {
+                          Navigator.push(
+                            parentContext,
+                            CreateCategoryPage.route(
+                              fromOtherPage: true,
+                              categoryModel: categoryModel,
+                            ),
+                          ).then((_) {
+                            onSuccess(EMoreOptions.edit);
+                          });
+                        },
+                        onView: () {
+                          onSuccess(EMoreOptions.viewTransactions);
+                        },
+                      ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

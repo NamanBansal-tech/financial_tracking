@@ -92,9 +92,9 @@ class CommonProvider extends _$CommonProvider {
     filterSelectedBudgetController.clear();
     state = state.copyWith(
       fromLineChartDate: DateTime(currentDate.year, currentDate.month, 1),
-      transactions: [],
       calenderMonthtransactions: [],
       selectedCalenderMonth: currentDate,
+      selectedBudget: null,
       toLineChartDate: DateTime(
         currentDate.year,
         currentDate.month,
@@ -160,53 +160,61 @@ class CommonProvider extends _$CommonProvider {
   Future<void> getDataForPieChart() async {
     try {
       final transactions = await getTransactionsForPieChart();
-
       if (transactions == null || transactions.isEmpty) {
         throw Exception("No transactions found in this budget.");
       }
-
+      bool isCategoriesEmpty = false;
       final categoryIds = transactions
           .map((e) => e.categoryId)
           .whereType<int>()
           .toSet()
           .toList();
-
-      if (categoryIds.isEmpty) return;
-
-      final categories = await getCategoriesForPieChart(categoryIds);
-
-      if (categories == null || categories.isEmpty) {
-        throw Exception('Something went wrong! Please try again later!');
-      }
-
-      final Map<int, List<TransactionModel>> transactionsByCategory = {};
-      final Map<int, num> expenseByCategory = {};
-
-      for (final tx in transactions) {
-        final categoryId = tx.categoryId;
-        if (categoryId == null) continue;
-
-        transactionsByCategory.putIfAbsent(categoryId, () => []).add(tx);
-
-        if (tx.type == 0) {
-          expenseByCategory[categoryId] =
-              (expenseByCategory[categoryId] ?? 0) + (tx.amount ?? 0);
+      if (categoryIds.isEmpty) {
+        isCategoriesEmpty = true;
+      } else {
+        final categories = await getCategoriesForPieChart(categoryIds);
+        if (categories == null || categories.isEmpty) {
+          isCategoriesEmpty = true;
+        } else {
+          final Map<int, List<TransactionModel>> transactionsByCategory = {};
+          final Map<int, num> expenseByCategory = {};
+          for (final tx in transactions) {
+            final categoryId = tx.categoryId;
+            if (categoryId == null) continue;
+            transactionsByCategory.putIfAbsent(categoryId, () => []).add(tx);
+            if (tx.type == 0) {
+              expenseByCategory[categoryId] =
+                  (expenseByCategory[categoryId] ?? 0) + (tx.amount ?? 0);
+            }
+          }
+          final pieChartData = PieChartModel(
+            totalBudget: (state.selectedBudget?.budgetAmount ?? 0),
+            budgetName: state.selectedBudget?.name,
+            items: categories.map((category) {
+              return PieChartItemModel(
+                categoryName: category.name,
+                transactions: transactionsByCategory[category.id] ?? [],
+                totalExpense: expenseByCategory[category.id] ?? 0,
+              );
+            }).toList(),
+          );
+          state = state.copyWith(pieChartData: pieChartData);
         }
       }
-
-      final pieChartData = PieChartModel(
-        totalBudget: state.selectedBudget?.budgetAmount,
-        budgetName: state.selectedBudget?.name,
-        items: categories.map((category) {
-          return PieChartItemModel(
-            categoryName: category.name,
-            transactions: transactionsByCategory[category.id] ?? [],
-            totalExpense: expenseByCategory[category.id] ?? 0,
-          );
-        }).toList(),
-      );
-
-      state = state.copyWith(pieChartData: pieChartData);
+      if ((isCategoriesEmpty)) {
+        num totalExpense = 0;
+        for (var element in transactions) {
+          if ((element.type == 0)) {
+            totalExpense = totalExpense + (element.amount ?? 0);
+          }
+        }
+        final pieChartData = PieChartModel(
+          totalBudget: (state.selectedBudget?.budgetAmount ?? 0),
+          budgetName: state.selectedBudget?.name,
+          totalExpense: totalExpense,
+        );
+        state = state.copyWith(pieChartData: pieChartData);
+      }
     } catch (e) {
       rethrow;
     }

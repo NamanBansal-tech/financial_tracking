@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BudgetState {
 
- EState get eState; String? get message; DateTime? get endDate; DateTime? get startDate; PageMeta get pageMeta; List<BudgetModel> get budgetList; BudgetModel? get budget;
+ EState get eState; String? get message; DateTime? get endDate; DateTime? get startDate; PageMeta get pageMeta; List<BudgetModel> get budgetList; BudgetModel? get budget; int? get resultId;
 /// Create a copy of BudgetState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $BudgetStateCopyWith<BudgetState> get copyWith => _$BudgetStateCopyWithImpl<Budg
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BudgetState&&(identical(other.eState, eState) || other.eState == eState)&&(identical(other.message, message) || other.message == message)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&const DeepCollectionEquality().equals(other.budgetList, budgetList)&&(identical(other.budget, budget) || other.budget == budget));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BudgetState&&(identical(other.eState, eState) || other.eState == eState)&&(identical(other.message, message) || other.message == message)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&const DeepCollectionEquality().equals(other.budgetList, budgetList)&&(identical(other.budget, budget) || other.budget == budget)&&(identical(other.resultId, resultId) || other.resultId == resultId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,eState,message,endDate,startDate,pageMeta,const DeepCollectionEquality().hash(budgetList),budget);
+int get hashCode => Object.hash(runtimeType,eState,message,endDate,startDate,pageMeta,const DeepCollectionEquality().hash(budgetList),budget,resultId);
 
 @override
 String toString() {
-  return 'BudgetState(eState: $eState, message: $message, endDate: $endDate, startDate: $startDate, pageMeta: $pageMeta, budgetList: $budgetList, budget: $budget)';
+  return 'BudgetState(eState: $eState, message: $message, endDate: $endDate, startDate: $startDate, pageMeta: $pageMeta, budgetList: $budgetList, budget: $budget, resultId: $resultId)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $BudgetStateCopyWith<$Res>  {
   factory $BudgetStateCopyWith(BudgetState value, $Res Function(BudgetState) _then) = _$BudgetStateCopyWithImpl;
 @useResult
 $Res call({
- EState eState, String? message, DateTime? endDate, DateTime? startDate, PageMeta pageMeta, List<BudgetModel> budgetList, BudgetModel? budget
+ EState eState, String? message, DateTime? endDate, DateTime? startDate, PageMeta pageMeta, List<BudgetModel> budgetList, BudgetModel? budget, int? resultId
 });
 
 
@@ -62,7 +62,7 @@ class _$BudgetStateCopyWithImpl<$Res>
 
 /// Create a copy of BudgetState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? eState = null,Object? message = freezed,Object? endDate = freezed,Object? startDate = freezed,Object? pageMeta = null,Object? budgetList = null,Object? budget = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? eState = null,Object? message = freezed,Object? endDate = freezed,Object? startDate = freezed,Object? pageMeta = null,Object? budgetList = null,Object? budget = freezed,Object? resultId = freezed,}) {
   return _then(_self.copyWith(
 eState: null == eState ? _self.eState : eState // ignore: cast_nullable_to_non_nullable
 as EState,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
@@ -71,7 +71,8 @@ as DateTime?,startDate: freezed == startDate ? _self.startDate : startDate // ig
 as DateTime?,pageMeta: null == pageMeta ? _self.pageMeta : pageMeta // ignore: cast_nullable_to_non_nullable
 as PageMeta,budgetList: null == budgetList ? _self.budgetList : budgetList // ignore: cast_nullable_to_non_nullable
 as List<BudgetModel>,budget: freezed == budget ? _self.budget : budget // ignore: cast_nullable_to_non_nullable
-as BudgetModel?,
+as BudgetModel?,resultId: freezed == resultId ? _self.resultId : resultId // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 /// Create a copy of BudgetState
@@ -177,10 +178,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( EState eState,  String? message,  DateTime? endDate,  DateTime? startDate,  PageMeta pageMeta,  List<BudgetModel> budgetList,  BudgetModel? budget)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( EState eState,  String? message,  DateTime? endDate,  DateTime? startDate,  PageMeta pageMeta,  List<BudgetModel> budgetList,  BudgetModel? budget,  int? resultId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BudgetState() when $default != null:
-return $default(_that.eState,_that.message,_that.endDate,_that.startDate,_that.pageMeta,_that.budgetList,_that.budget);case _:
+return $default(_that.eState,_that.message,_that.endDate,_that.startDate,_that.pageMeta,_that.budgetList,_that.budget,_that.resultId);case _:
   return orElse();
 
 }
@@ -198,10 +199,10 @@ return $default(_that.eState,_that.message,_that.endDate,_that.startDate,_that.p
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( EState eState,  String? message,  DateTime? endDate,  DateTime? startDate,  PageMeta pageMeta,  List<BudgetModel> budgetList,  BudgetModel? budget)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( EState eState,  String? message,  DateTime? endDate,  DateTime? startDate,  PageMeta pageMeta,  List<BudgetModel> budgetList,  BudgetModel? budget,  int? resultId)  $default,) {final _that = this;
 switch (_that) {
 case _BudgetState():
-return $default(_that.eState,_that.message,_that.endDate,_that.startDate,_that.pageMeta,_that.budgetList,_that.budget);case _:
+return $default(_that.eState,_that.message,_that.endDate,_that.startDate,_that.pageMeta,_that.budgetList,_that.budget,_that.resultId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -218,10 +219,10 @@ return $default(_that.eState,_that.message,_that.endDate,_that.startDate,_that.p
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( EState eState,  String? message,  DateTime? endDate,  DateTime? startDate,  PageMeta pageMeta,  List<BudgetModel> budgetList,  BudgetModel? budget)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( EState eState,  String? message,  DateTime? endDate,  DateTime? startDate,  PageMeta pageMeta,  List<BudgetModel> budgetList,  BudgetModel? budget,  int? resultId)?  $default,) {final _that = this;
 switch (_that) {
 case _BudgetState() when $default != null:
-return $default(_that.eState,_that.message,_that.endDate,_that.startDate,_that.pageMeta,_that.budgetList,_that.budget);case _:
+return $default(_that.eState,_that.message,_that.endDate,_that.startDate,_that.pageMeta,_that.budgetList,_that.budget,_that.resultId);case _:
   return null;
 
 }
@@ -233,7 +234,7 @@ return $default(_that.eState,_that.message,_that.endDate,_that.startDate,_that.p
 
 
 class _BudgetState implements BudgetState {
-   _BudgetState({this.eState = EState.initial, this.message, this.endDate, this.startDate, required this.pageMeta, final  List<BudgetModel> budgetList = const [], this.budget}): _budgetList = budgetList;
+   _BudgetState({this.eState = EState.initial, this.message, this.endDate, this.startDate, required this.pageMeta, final  List<BudgetModel> budgetList = const [], this.budget, this.resultId}): _budgetList = budgetList;
   
 
 @override@JsonKey() final  EState eState;
@@ -249,6 +250,7 @@ class _BudgetState implements BudgetState {
 }
 
 @override final  BudgetModel? budget;
+@override final  int? resultId;
 
 /// Create a copy of BudgetState
 /// with the given fields replaced by the non-null parameter values.
@@ -260,16 +262,16 @@ _$BudgetStateCopyWith<_BudgetState> get copyWith => __$BudgetStateCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BudgetState&&(identical(other.eState, eState) || other.eState == eState)&&(identical(other.message, message) || other.message == message)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&const DeepCollectionEquality().equals(other._budgetList, _budgetList)&&(identical(other.budget, budget) || other.budget == budget));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BudgetState&&(identical(other.eState, eState) || other.eState == eState)&&(identical(other.message, message) || other.message == message)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.pageMeta, pageMeta) || other.pageMeta == pageMeta)&&const DeepCollectionEquality().equals(other._budgetList, _budgetList)&&(identical(other.budget, budget) || other.budget == budget)&&(identical(other.resultId, resultId) || other.resultId == resultId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,eState,message,endDate,startDate,pageMeta,const DeepCollectionEquality().hash(_budgetList),budget);
+int get hashCode => Object.hash(runtimeType,eState,message,endDate,startDate,pageMeta,const DeepCollectionEquality().hash(_budgetList),budget,resultId);
 
 @override
 String toString() {
-  return 'BudgetState(eState: $eState, message: $message, endDate: $endDate, startDate: $startDate, pageMeta: $pageMeta, budgetList: $budgetList, budget: $budget)';
+  return 'BudgetState(eState: $eState, message: $message, endDate: $endDate, startDate: $startDate, pageMeta: $pageMeta, budgetList: $budgetList, budget: $budget, resultId: $resultId)';
 }
 
 
@@ -280,7 +282,7 @@ abstract mixin class _$BudgetStateCopyWith<$Res> implements $BudgetStateCopyWith
   factory _$BudgetStateCopyWith(_BudgetState value, $Res Function(_BudgetState) _then) = __$BudgetStateCopyWithImpl;
 @override @useResult
 $Res call({
- EState eState, String? message, DateTime? endDate, DateTime? startDate, PageMeta pageMeta, List<BudgetModel> budgetList, BudgetModel? budget
+ EState eState, String? message, DateTime? endDate, DateTime? startDate, PageMeta pageMeta, List<BudgetModel> budgetList, BudgetModel? budget, int? resultId
 });
 
 
@@ -297,7 +299,7 @@ class __$BudgetStateCopyWithImpl<$Res>
 
 /// Create a copy of BudgetState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? eState = null,Object? message = freezed,Object? endDate = freezed,Object? startDate = freezed,Object? pageMeta = null,Object? budgetList = null,Object? budget = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? eState = null,Object? message = freezed,Object? endDate = freezed,Object? startDate = freezed,Object? pageMeta = null,Object? budgetList = null,Object? budget = freezed,Object? resultId = freezed,}) {
   return _then(_BudgetState(
 eState: null == eState ? _self.eState : eState // ignore: cast_nullable_to_non_nullable
 as EState,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
@@ -306,7 +308,8 @@ as DateTime?,startDate: freezed == startDate ? _self.startDate : startDate // ig
 as DateTime?,pageMeta: null == pageMeta ? _self.pageMeta : pageMeta // ignore: cast_nullable_to_non_nullable
 as PageMeta,budgetList: null == budgetList ? _self._budgetList : budgetList // ignore: cast_nullable_to_non_nullable
 as List<BudgetModel>,budget: freezed == budget ? _self.budget : budget // ignore: cast_nullable_to_non_nullable
-as BudgetModel?,
+as BudgetModel?,resultId: freezed == resultId ? _self.resultId : resultId // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 

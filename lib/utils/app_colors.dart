@@ -61,4 +61,17 @@ class AppColors {
   ];
   static const Color availableBalanceBg = Color(0xFFEAF4EC);
 
+  // custom button
+  static const Color buttonDisabledBg = Color(0xFFF1F1F1);
+  static const Color buttonDisabledText = Color(0xFF9CA3AF);
+
+  // Toast backgrounds
+  static const Color toastErrorBg = Color(0xFFFEE2E2); // soft red
+  static const Color toastSuccessBg = Color(0xFFD1FAE5); // soft green
+  static const Color toastInfoBg = Color(0xFFFFF3CD); // soft amber
+
+  // Toast text
+  static const Color toastErrorText = Color(0xFF991B1B);
+  static const Color toastSuccessText = Color(0xFF065F46);
+  static const Color toastInfoText = Color(0xFF92400E);
 }

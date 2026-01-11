@@ -13,6 +13,7 @@ abstract class TransactionModel with _$TransactionModel {
     int? type,
     int? id,
     int? budgetId,
+    @Default(0) int isIncomeAddedInBudget,
   }) = _TransactionModel;
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) =>

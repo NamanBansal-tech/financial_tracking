@@ -24,11 +24,17 @@ class TransactionProvider extends _$TransactionProvider {
   TransactionState build({
     required WidgetRef widgetRef,
     TransactionModel? transaction,
+    bool fromFilterTransaction = false,
   }) {
     initWidgets();
     arguementTransaction = transaction;
     databaseHelper = widgetRef.watch(databaseHelperProvider);
-    return TransactionState.initial(eState: EState.ready);
+    return TransactionState.initial(
+      eState: EState.ready,
+      selectedTransactionType: fromFilterTransaction
+          ? null
+          : TransactionType.expense,
+    );
   }
 
   void updateBudgetCheck(bool value) {
@@ -52,10 +58,16 @@ class TransactionProvider extends _$TransactionProvider {
     if ((transaction?.budgetId != null)) {
       state = state.copyWith(selectedBudgetId: transaction?.budgetId);
     }
+    if ((transaction?.isIncomeAddedInBudget == 1)) {
+      updateBudgetCheck(true);
+    }
     setToInitialState();
   }
 
   void selectTransactionType(TransactionType? type) {
+    if ((type == TransactionType.expense)) {
+      state = state.copyWith(isIncomeAddInBudget: false);
+    }
     state = state.copyWith(selectedTransactionType: type);
   }
 
@@ -83,7 +95,12 @@ class TransactionProvider extends _$TransactionProvider {
     nameController.clear();
     amountController.clear();
     dateController.clear();
-    state = state.copyWith(selectedDate: null, selectedTransactionType: null);
+    state = state.copyWith(
+      selectedDate: null,
+      selectedTransactionType: null,
+      selectedCategoryId: null,
+      selectedBudgetId: null,
+    );
   }
 
   Future<void> getTransactions({bool loadMore = false}) async {
@@ -91,7 +108,11 @@ class TransactionProvider extends _$TransactionProvider {
       eState: loadMore ? EState.loadingMore : EState.loading,
     );
     if (!loadMore) {
-      state = state.copyWith(pageMeta: PageMeta());
+      state = state.copyWith(
+        pageMeta: PageMeta(),
+        totalExpense: 0,
+        totalIncome: 0,
+      );
     }
 
     final result = await databaseHelper.getTransactions(
@@ -116,8 +137,38 @@ class TransactionProvider extends _$TransactionProvider {
             offset: state.pageMeta.offset + state.pageMeta.limit,
           ),
         );
+        updateTotalValues(r);
         setToInitialState();
       },
+    );
+  }
+
+  void updateTotalValues(List<TransactionModel> transactions) {
+    num totalExpense = state.totalExpense;
+    num totalIncome = state.totalIncome;
+    if ((transactions.isNotEmpty)) {
+      for (var element in transactions) {
+        final type = TransactionType.values.elementAtOrNull(element.type ?? -1);
+        final amount = (element.amount ?? 0);
+        switch (type) {
+          case null:
+            break;
+          case TransactionType.expense:
+            {
+              totalExpense += amount;
+              break;
+            }
+          case TransactionType.income:
+            {
+              totalIncome += amount;
+              break;
+            }
+        }
+      }
+    }
+    state = state.copyWith(
+      totalExpense: totalExpense,
+      totalIncome: totalIncome,
     );
   }
 
@@ -132,6 +183,7 @@ class TransactionProvider extends _$TransactionProvider {
           name: nameController.text.trim(),
           type: state.selectedTransactionType!.index,
           budgetId: state.selectedBudgetId,
+          isIncomeAddedInBudget: state.isIncomeAddInBudget ? 1 : 0,
         ),
       );
       result.fold(
@@ -159,6 +211,7 @@ class TransactionProvider extends _$TransactionProvider {
           id: arguementTransaction?.id,
           type: state.selectedTransactionType!.index,
           budgetId: state.selectedBudgetId,
+          isIncomeAddedInBudget: state.isIncomeAddInBudget ? 1 : 0,
         ),
       );
       result.fold(

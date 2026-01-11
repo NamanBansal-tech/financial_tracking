@@ -73,7 +73,7 @@ class DatabaseHelperImpl extends DatabaseHelper {
   }
 
   @override
-  ResultOrException<String> addCategory(CategoryModel category) async {
+  ResultOrException<int> addCategory(CategoryModel category) async {
     try {
       final db = await database;
       if (db != null) {
@@ -89,8 +89,11 @@ class DatabaseHelperImpl extends DatabaseHelper {
         } else {
           final map = category.toJson();
           map.remove('id');
-          await db.insert(EDatabaseTableNames.categoryTable.name, map);
-          return Right('Category Added Successfully');
+          final id = await db.insert(
+            EDatabaseTableNames.categoryTable.name,
+            map,
+          );
+          return Right(id);
         }
       } else {
         return Left('Something went wrong! Please try again later!');
@@ -102,7 +105,7 @@ class DatabaseHelperImpl extends DatabaseHelper {
   }
 
   @override
-  ResultOrException<String> addBudget(BudgetModel budget) async {
+  ResultOrException<int> addBudget(BudgetModel budget) async {
     try {
       final db = await database;
       if (db != null) {
@@ -118,8 +121,8 @@ class DatabaseHelperImpl extends DatabaseHelper {
         } else {
           final map = budget.toJson();
           map.remove('id');
-          await db.insert(EDatabaseTableNames.budgetTable.name, map);
-          return Right('Budget Added Successfully');
+          final id = await db.insert(EDatabaseTableNames.budgetTable.name, map);
+          return Right(id);
         }
       } else {
         return Left('Something went wrong! Please try again later!');

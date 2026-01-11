@@ -10,8 +10,8 @@ abstract class DatabaseHelper {
   ResultOrException<String> addTransaction(TransactionModel transaction);
   ResultOrException<String> editTransaction(TransactionModel transaction);
   ResultOrException<String> deleteTransaction(int transactionId);
-  ResultOrException<String> addCategory(CategoryModel category);
-  ResultOrException<String> addBudget(BudgetModel budget);
+  ResultOrException<int> addCategory(CategoryModel category);
+  ResultOrException<int> addBudget(BudgetModel budget);
   ResultOrException<String> editCategory(CategoryModel category);
   ResultOrException<String> editBudget(BudgetModel budget);
   ResultOrException<String> deleteCategory(int categoryId);
@@ -27,7 +27,10 @@ abstract class DatabaseHelper {
     int? budgetId,
     int? categoryId,
   });
-  ResultOrException<List<CategoryModel>> getCategories({String? name, List<int?>? ids});
+  ResultOrException<List<CategoryModel>> getCategories({
+    String? name,
+    List<int?>? ids,
+  });
   ResultOrException<List<BudgetModel>> getBudgetList({
     String? name,
     double? budgetAmount,

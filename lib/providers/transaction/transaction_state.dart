@@ -17,10 +17,18 @@ abstract class TransactionState with _$TransactionState {
     int? selectedCategoryId,
     int? selectedBudgetId,
     DateTime? selectedDate,
+    @Default(0) num totalExpense,
+    @Default(0) num totalIncome,
   }) = _TransactionState;
 
-  factory TransactionState.initial({required EState eState}) =>
-      TransactionState(eState: eState, pageMeta: PageMeta());
+  factory TransactionState.initial({
+    required EState eState,
+    TransactionType? selectedTransactionType,
+  }) => TransactionState(
+    eState: eState,
+    pageMeta: PageMeta(),
+    selectedTransactionType: selectedTransactionType,
+  );
 }
 
 enum ESearchType { filter, reset }
