@@ -47,19 +47,13 @@ class DashBoardPage extends ConsumerWidget {
                 enableDrag: false,
               );
             },
-            icon: Icon(
-              Icons.filter_alt_rounded,
-              size: context.height * .03,
-            ),
+            icon: Icon(Icons.filter_alt_rounded, size: context.height * .03),
           ),
           IconButton(
             onPressed: () {
               showCreateBottomSheet(context);
             },
-            icon: Icon(
-              Icons.add,
-              size: context.height * .035,
-            ),
+            icon: Icon(Icons.add, size: context.height * .035),
           ),
         ],
       ),
@@ -79,7 +73,10 @@ class DashBoardPage extends ConsumerWidget {
                 children: [
                   Text(
                     "Transactions Summary",
-                    style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 16.h),
@@ -91,8 +88,9 @@ class DashBoardPage extends ConsumerWidget {
                       transactions: state.calenderMonthtransactions,
                     ),
                   SizedBox(height: 16.h),
-                  if ((state.pieChartData != null))
+                  if ((state.pieChartData != null)) ...[
                     BudgetChart(data: state.pieChartData),
+                  ],
                 ],
               ),
             ),

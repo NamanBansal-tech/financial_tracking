@@ -36,7 +36,7 @@ class TransactionList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final transactionRef = transactionProviderProvider(widgetRef: ref);
+    final transactionRef = transactionProviderProvider(widgetRef: ref,fromFilterTransaction: true);
     final provider = ref.read(transactionRef.notifier);
     final state = ref.watch(transactionRef);
     final budgetRef = budgetProviderProvider(widgetRef: ref);

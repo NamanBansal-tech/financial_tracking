@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PieChartModel {
 
- num? get totalBudget; String? get budgetName; List<PieChartItemModel> get items;
+ num get totalBudget; String? get budgetName; List<PieChartItemModel> get items; num get totalExpense;
 /// Create a copy of PieChartModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PieChartModelCopyWith<PieChartModel> get copyWith => _$PieChartModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PieChartModel&&(identical(other.totalBudget, totalBudget) || other.totalBudget == totalBudget)&&(identical(other.budgetName, budgetName) || other.budgetName == budgetName)&&const DeepCollectionEquality().equals(other.items, items));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PieChartModel&&(identical(other.totalBudget, totalBudget) || other.totalBudget == totalBudget)&&(identical(other.budgetName, budgetName) || other.budgetName == budgetName)&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.totalExpense, totalExpense) || other.totalExpense == totalExpense));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,totalBudget,budgetName,const DeepCollectionEquality().hash(items));
+int get hashCode => Object.hash(runtimeType,totalBudget,budgetName,const DeepCollectionEquality().hash(items),totalExpense);
 
 @override
 String toString() {
-  return 'PieChartModel(totalBudget: $totalBudget, budgetName: $budgetName, items: $items)';
+  return 'PieChartModel(totalBudget: $totalBudget, budgetName: $budgetName, items: $items, totalExpense: $totalExpense)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PieChartModelCopyWith<$Res>  {
   factory $PieChartModelCopyWith(PieChartModel value, $Res Function(PieChartModel) _then) = _$PieChartModelCopyWithImpl;
 @useResult
 $Res call({
- num? totalBudget, String? budgetName, List<PieChartItemModel> items
+ num totalBudget, String? budgetName, List<PieChartItemModel> items, num totalExpense
 });
 
 
@@ -65,12 +65,13 @@ class _$PieChartModelCopyWithImpl<$Res>
 
 /// Create a copy of PieChartModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? totalBudget = freezed,Object? budgetName = freezed,Object? items = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? totalBudget = null,Object? budgetName = freezed,Object? items = null,Object? totalExpense = null,}) {
   return _then(_self.copyWith(
-totalBudget: freezed == totalBudget ? _self.totalBudget : totalBudget // ignore: cast_nullable_to_non_nullable
-as num?,budgetName: freezed == budgetName ? _self.budgetName : budgetName // ignore: cast_nullable_to_non_nullable
+totalBudget: null == totalBudget ? _self.totalBudget : totalBudget // ignore: cast_nullable_to_non_nullable
+as num,budgetName: freezed == budgetName ? _self.budgetName : budgetName // ignore: cast_nullable_to_non_nullable
 as String?,items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
-as List<PieChartItemModel>,
+as List<PieChartItemModel>,totalExpense: null == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
+as num,
   ));
 }
 
@@ -155,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( num? totalBudget,  String? budgetName,  List<PieChartItemModel> items)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( num totalBudget,  String? budgetName,  List<PieChartItemModel> items,  num totalExpense)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PieChartModel() when $default != null:
-return $default(_that.totalBudget,_that.budgetName,_that.items);case _:
+return $default(_that.totalBudget,_that.budgetName,_that.items,_that.totalExpense);case _:
   return orElse();
 
 }
@@ -176,10 +177,10 @@ return $default(_that.totalBudget,_that.budgetName,_that.items);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( num? totalBudget,  String? budgetName,  List<PieChartItemModel> items)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( num totalBudget,  String? budgetName,  List<PieChartItemModel> items,  num totalExpense)  $default,) {final _that = this;
 switch (_that) {
 case _PieChartModel():
-return $default(_that.totalBudget,_that.budgetName,_that.items);case _:
+return $default(_that.totalBudget,_that.budgetName,_that.items,_that.totalExpense);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +197,10 @@ return $default(_that.totalBudget,_that.budgetName,_that.items);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( num? totalBudget,  String? budgetName,  List<PieChartItemModel> items)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( num totalBudget,  String? budgetName,  List<PieChartItemModel> items,  num totalExpense)?  $default,) {final _that = this;
 switch (_that) {
 case _PieChartModel() when $default != null:
-return $default(_that.totalBudget,_that.budgetName,_that.items);case _:
+return $default(_that.totalBudget,_that.budgetName,_that.items,_that.totalExpense);case _:
   return null;
 
 }
@@ -211,10 +212,10 @@ return $default(_that.totalBudget,_that.budgetName,_that.items);case _:
 @JsonSerializable()
 
 class _PieChartModel implements PieChartModel {
-   _PieChartModel({this.totalBudget, this.budgetName, final  List<PieChartItemModel> items = const []}): _items = items;
+   _PieChartModel({this.totalBudget = 0, this.budgetName, final  List<PieChartItemModel> items = const [], this.totalExpense = 0}): _items = items;
   factory _PieChartModel.fromJson(Map<String, dynamic> json) => _$PieChartModelFromJson(json);
 
-@override final  num? totalBudget;
+@override@JsonKey() final  num totalBudget;
 @override final  String? budgetName;
  final  List<PieChartItemModel> _items;
 @override@JsonKey() List<PieChartItemModel> get items {
@@ -223,6 +224,7 @@ class _PieChartModel implements PieChartModel {
   return EqualUnmodifiableListView(_items);
 }
 
+@override@JsonKey() final  num totalExpense;
 
 /// Create a copy of PieChartModel
 /// with the given fields replaced by the non-null parameter values.
@@ -237,16 +239,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PieChartModel&&(identical(other.totalBudget, totalBudget) || other.totalBudget == totalBudget)&&(identical(other.budgetName, budgetName) || other.budgetName == budgetName)&&const DeepCollectionEquality().equals(other._items, _items));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PieChartModel&&(identical(other.totalBudget, totalBudget) || other.totalBudget == totalBudget)&&(identical(other.budgetName, budgetName) || other.budgetName == budgetName)&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.totalExpense, totalExpense) || other.totalExpense == totalExpense));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,totalBudget,budgetName,const DeepCollectionEquality().hash(_items));
+int get hashCode => Object.hash(runtimeType,totalBudget,budgetName,const DeepCollectionEquality().hash(_items),totalExpense);
 
 @override
 String toString() {
-  return 'PieChartModel(totalBudget: $totalBudget, budgetName: $budgetName, items: $items)';
+  return 'PieChartModel(totalBudget: $totalBudget, budgetName: $budgetName, items: $items, totalExpense: $totalExpense)';
 }
 
 
@@ -257,7 +259,7 @@ abstract mixin class _$PieChartModelCopyWith<$Res> implements $PieChartModelCopy
   factory _$PieChartModelCopyWith(_PieChartModel value, $Res Function(_PieChartModel) _then) = __$PieChartModelCopyWithImpl;
 @override @useResult
 $Res call({
- num? totalBudget, String? budgetName, List<PieChartItemModel> items
+ num totalBudget, String? budgetName, List<PieChartItemModel> items, num totalExpense
 });
 
 
@@ -274,12 +276,13 @@ class __$PieChartModelCopyWithImpl<$Res>
 
 /// Create a copy of PieChartModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? totalBudget = freezed,Object? budgetName = freezed,Object? items = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? totalBudget = null,Object? budgetName = freezed,Object? items = null,Object? totalExpense = null,}) {
   return _then(_PieChartModel(
-totalBudget: freezed == totalBudget ? _self.totalBudget : totalBudget // ignore: cast_nullable_to_non_nullable
-as num?,budgetName: freezed == budgetName ? _self.budgetName : budgetName // ignore: cast_nullable_to_non_nullable
+totalBudget: null == totalBudget ? _self.totalBudget : totalBudget // ignore: cast_nullable_to_non_nullable
+as num,budgetName: freezed == budgetName ? _self.budgetName : budgetName // ignore: cast_nullable_to_non_nullable
 as String?,items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
-as List<PieChartItemModel>,
+as List<PieChartItemModel>,totalExpense: null == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
+as num,
   ));
 }
 
@@ -290,7 +293,7 @@ as List<PieChartItemModel>,
 /// @nodoc
 mixin _$PieChartItemModel {
 
- String? get categoryName; num? get totalExpense; List<TransactionModel>? get transactions;
+ String? get categoryName; num get totalExpense; List<TransactionModel>? get transactions;
 /// Create a copy of PieChartItemModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -323,7 +326,7 @@ abstract mixin class $PieChartItemModelCopyWith<$Res>  {
   factory $PieChartItemModelCopyWith(PieChartItemModel value, $Res Function(PieChartItemModel) _then) = _$PieChartItemModelCopyWithImpl;
 @useResult
 $Res call({
- String? categoryName, num? totalExpense, List<TransactionModel>? transactions
+ String? categoryName, num totalExpense, List<TransactionModel>? transactions
 });
 
 
@@ -340,11 +343,11 @@ class _$PieChartItemModelCopyWithImpl<$Res>
 
 /// Create a copy of PieChartItemModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? categoryName = freezed,Object? totalExpense = freezed,Object? transactions = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? categoryName = freezed,Object? totalExpense = null,Object? transactions = freezed,}) {
   return _then(_self.copyWith(
 categoryName: freezed == categoryName ? _self.categoryName : categoryName // ignore: cast_nullable_to_non_nullable
-as String?,totalExpense: freezed == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
-as num?,transactions: freezed == transactions ? _self.transactions : transactions // ignore: cast_nullable_to_non_nullable
+as String?,totalExpense: null == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
+as num,transactions: freezed == transactions ? _self.transactions : transactions // ignore: cast_nullable_to_non_nullable
 as List<TransactionModel>?,
   ));
 }
@@ -430,7 +433,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? categoryName,  num? totalExpense,  List<TransactionModel>? transactions)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? categoryName,  num totalExpense,  List<TransactionModel>? transactions)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PieChartItemModel() when $default != null:
 return $default(_that.categoryName,_that.totalExpense,_that.transactions);case _:
@@ -451,7 +454,7 @@ return $default(_that.categoryName,_that.totalExpense,_that.transactions);case _
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? categoryName,  num? totalExpense,  List<TransactionModel>? transactions)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? categoryName,  num totalExpense,  List<TransactionModel>? transactions)  $default,) {final _that = this;
 switch (_that) {
 case _PieChartItemModel():
 return $default(_that.categoryName,_that.totalExpense,_that.transactions);case _:
@@ -471,7 +474,7 @@ return $default(_that.categoryName,_that.totalExpense,_that.transactions);case _
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? categoryName,  num? totalExpense,  List<TransactionModel>? transactions)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? categoryName,  num totalExpense,  List<TransactionModel>? transactions)?  $default,) {final _that = this;
 switch (_that) {
 case _PieChartItemModel() when $default != null:
 return $default(_that.categoryName,_that.totalExpense,_that.transactions);case _:
@@ -486,11 +489,11 @@ return $default(_that.categoryName,_that.totalExpense,_that.transactions);case _
 @JsonSerializable()
 
 class _PieChartItemModel implements PieChartItemModel {
-   _PieChartItemModel({this.categoryName, this.totalExpense, final  List<TransactionModel>? transactions}): _transactions = transactions;
+   _PieChartItemModel({this.categoryName, this.totalExpense = 0, final  List<TransactionModel>? transactions}): _transactions = transactions;
   factory _PieChartItemModel.fromJson(Map<String, dynamic> json) => _$PieChartItemModelFromJson(json);
 
 @override final  String? categoryName;
-@override final  num? totalExpense;
+@override@JsonKey() final  num totalExpense;
  final  List<TransactionModel>? _transactions;
 @override List<TransactionModel>? get transactions {
   final value = _transactions;
@@ -534,7 +537,7 @@ abstract mixin class _$PieChartItemModelCopyWith<$Res> implements $PieChartItemM
   factory _$PieChartItemModelCopyWith(_PieChartItemModel value, $Res Function(_PieChartItemModel) _then) = __$PieChartItemModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? categoryName, num? totalExpense, List<TransactionModel>? transactions
+ String? categoryName, num totalExpense, List<TransactionModel>? transactions
 });
 
 
@@ -551,11 +554,11 @@ class __$PieChartItemModelCopyWithImpl<$Res>
 
 /// Create a copy of PieChartItemModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? categoryName = freezed,Object? totalExpense = freezed,Object? transactions = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? categoryName = freezed,Object? totalExpense = null,Object? transactions = freezed,}) {
   return _then(_PieChartItemModel(
 categoryName: freezed == categoryName ? _self.categoryName : categoryName // ignore: cast_nullable_to_non_nullable
-as String?,totalExpense: freezed == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
-as num?,transactions: freezed == transactions ? _self._transactions : transactions // ignore: cast_nullable_to_non_nullable
+as String?,totalExpense: null == totalExpense ? _self.totalExpense : totalExpense // ignore: cast_nullable_to_non_nullable
+as num,transactions: freezed == transactions ? _self._transactions : transactions // ignore: cast_nullable_to_non_nullable
 as List<TransactionModel>?,
   ));
 }

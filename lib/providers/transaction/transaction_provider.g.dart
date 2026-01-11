@@ -16,7 +16,11 @@ final class TransactionProviderProvider
     extends $NotifierProvider<TransactionProvider, TransactionState> {
   const TransactionProviderProvider._({
     required TransactionProviderFamily super.from,
-    required ({WidgetRef widgetRef, TransactionModel? transaction})
+    required ({
+      WidgetRef widgetRef,
+      TransactionModel? transaction,
+      bool fromFilterTransaction,
+    })
     super.argument,
   }) : super(
          retry: null,
@@ -60,7 +64,7 @@ final class TransactionProviderProvider
 }
 
 String _$transactionProviderHash() =>
-    r'8228bbb5c909c3f33c8c5e41c394f5294658be81';
+    r'9d26e9381066772ca37f0c1e08b7c7ede6014db2';
 
 final class TransactionProviderFamily extends $Family
     with
@@ -69,7 +73,11 @@ final class TransactionProviderFamily extends $Family
           TransactionState,
           TransactionState,
           TransactionState,
-          ({WidgetRef widgetRef, TransactionModel? transaction})
+          ({
+            WidgetRef widgetRef,
+            TransactionModel? transaction,
+            bool fromFilterTransaction,
+          })
         > {
   const TransactionProviderFamily._()
     : super(
@@ -83,8 +91,13 @@ final class TransactionProviderFamily extends $Family
   TransactionProviderProvider call({
     required WidgetRef widgetRef,
     TransactionModel? transaction,
+    bool fromFilterTransaction = false,
   }) => TransactionProviderProvider._(
-    argument: (widgetRef: widgetRef, transaction: transaction),
+    argument: (
+      widgetRef: widgetRef,
+      transaction: transaction,
+      fromFilterTransaction: fromFilterTransaction,
+    ),
     from: this,
   );
 
@@ -94,13 +107,20 @@ final class TransactionProviderFamily extends $Family
 
 abstract class _$TransactionProvider extends $Notifier<TransactionState> {
   late final _$args =
-      ref.$arg as ({WidgetRef widgetRef, TransactionModel? transaction});
+      ref.$arg
+          as ({
+            WidgetRef widgetRef,
+            TransactionModel? transaction,
+            bool fromFilterTransaction,
+          });
   WidgetRef get widgetRef => _$args.widgetRef;
   TransactionModel? get transaction => _$args.transaction;
+  bool get fromFilterTransaction => _$args.fromFilterTransaction;
 
   TransactionState build({
     required WidgetRef widgetRef,
     TransactionModel? transaction,
+    bool fromFilterTransaction = false,
   });
   @$mustCallSuper
   @override
@@ -108,6 +128,7 @@ abstract class _$TransactionProvider extends $Notifier<TransactionState> {
     final created = build(
       widgetRef: _$args.widgetRef,
       transaction: _$args.transaction,
+      fromFilterTransaction: _$args.fromFilterTransaction,
     );
     final ref = this.ref as $Ref<TransactionState, TransactionState>;
     final element =

@@ -12,13 +12,8 @@ class BudgetChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final totalBudget = data?.totalBudget?.toDouble() ?? 0;
-    final totalSpent =
-        data?.items.fold<double>(
-          0,
-          (sum, e) => sum + (e.totalExpense?.toDouble() ?? 0),
-        ) ??
-        0;
+    final totalBudget = data?.totalBudget.toDouble() ?? 0;
+    final totalSpent = getTotalSpent();
     final remaining = (totalBudget - totalSpent).clamp(0, totalBudget);
 
     return Container(
@@ -58,34 +53,17 @@ class BudgetChart extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           PieChart(
-            dataMap: data == null
-                ? {}
-                : Map.fromEntries(
-                    data!.items.map(
-                      (e) => MapEntry(
-                        _legendLabel(
-                          amount: e.totalExpense,
-                          name: Utility.makeFirstLetterCapital(e.categoryName),
-                        ),
-                        (e.totalExpense?.toDouble() ?? 0.0),
-                      ),
-                    ),
-                  ),
+            dataMap: getDataMap(),
             baseChartColor: AppColors.availableBalanceBg,
             totalValue: totalBudget,
-            colorList: List<Color>.generate(
-              data!.items.length,
-              (index) =>
-                  AppColors.categoryColors[index %
-                      AppColors.categoryColors.length],
-            ),
+            colorList: getColors(),
             chartValuesOptions: const ChartValuesOptions(
               showChartValues: false,
               showChartValueBackground: false,
             ),
             centerWidget: CircleAvatar(
-                backgroundColor: Colors.black,
-                radius: 3.r,
+              backgroundColor: Colors.black,
+              radius: 3.r,
             ),
             legendOptions: LegendOptions(
               showLegends: true,
@@ -129,11 +107,53 @@ class BudgetChart extends StatelessWidget {
     );
   }
 
-  String _legendLabel({required String? name, required num? amount}) {
+  String _legendLabel({required String? name}) {
     final int lengthLimit = 14;
     final shortName = (name?.length ?? 0) > lengthLimit
         ? '${name?.substring(0, lengthLimit)}…'
         : name;
     return shortName ?? "";
+  }
+
+  num getTotalSpent() {
+    if ((data?.items.isNotEmpty ?? false)) {
+      return data?.items.fold<double>(
+            0,
+            (sum, e) => sum + (e.totalExpense.toDouble()),
+          ) ??
+          0;
+    } else {
+      return data?.totalExpense ?? 0;
+    }
+  }
+
+  List<Color> getColors() {
+    if ((data?.items.isNotEmpty ?? false)) {
+      return List<Color>.generate(
+        data!.items.length,
+        (index) =>
+            AppColors.categoryColors[index % AppColors.categoryColors.length],
+      );
+    } else {
+      return [AppColors.categoryColors[0]];
+    }
+  }
+
+  Map<String, double> getDataMap() {
+    if ((data?.items.isNotEmpty ?? false)) {
+      return Map.fromEntries(
+        data!.items.map(
+          (e) => MapEntry(
+            _legendLabel(name: Utility.makeFirstLetterCapital(e.categoryName)),
+            (e.totalExpense.toDouble()),
+          ),
+        ),
+      );
+    } else {
+      return <String, double>{
+        _legendLabel(name: Utility.makeFirstLetterCapital("Expenses")):
+            (data?.totalExpense ?? 0.0).toDouble(),
+      };
+    }
   }
 }

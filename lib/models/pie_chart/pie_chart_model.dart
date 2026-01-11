@@ -7,9 +7,10 @@ part 'pie_chart_model.g.dart';
 @freezed
 abstract class PieChartModel with _$PieChartModel {
   factory PieChartModel({
-    num? totalBudget,
+     @Default(0) num totalBudget,
     String? budgetName,
     @Default([]) List<PieChartItemModel> items,
+    @Default(0) num totalExpense,
   }) = _PieChartModel;
 
   factory PieChartModel.fromJson(Map<String, dynamic> json) =>
@@ -20,7 +21,7 @@ abstract class PieChartModel with _$PieChartModel {
 abstract class PieChartItemModel with _$PieChartItemModel {
   factory PieChartItemModel({
     String? categoryName,
-    num? totalExpense,
+     @Default(0) num totalExpense,
     List<TransactionModel>? transactions,
   }) = _PieChartItemModel;
 

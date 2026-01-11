@@ -8,7 +8,7 @@ part of 'pie_chart_model.dart';
 
 _PieChartModel _$PieChartModelFromJson(Map<String, dynamic> json) =>
     _PieChartModel(
-      totalBudget: json['totalBudget'] as num?,
+      totalBudget: json['totalBudget'] as num? ?? 0,
       budgetName: json['budgetName'] as String?,
       items:
           (json['items'] as List<dynamic>?)
@@ -17,6 +17,7 @@ _PieChartModel _$PieChartModelFromJson(Map<String, dynamic> json) =>
               )
               .toList() ??
           const [],
+      totalExpense: json['totalExpense'] as num? ?? 0,
     );
 
 Map<String, dynamic> _$PieChartModelToJson(_PieChartModel instance) =>
@@ -24,12 +25,13 @@ Map<String, dynamic> _$PieChartModelToJson(_PieChartModel instance) =>
       'totalBudget': instance.totalBudget,
       'budgetName': instance.budgetName,
       'items': instance.items,
+      'totalExpense': instance.totalExpense,
     };
 
 _PieChartItemModel _$PieChartItemModelFromJson(Map<String, dynamic> json) =>
     _PieChartItemModel(
       categoryName: json['categoryName'] as String?,
-      totalExpense: json['totalExpense'] as num?,
+      totalExpense: json['totalExpense'] as num? ?? 0,
       transactions: (json['transactions'] as List<dynamic>?)
           ?.map((e) => TransactionModel.fromJson(e as Map<String, dynamic>))
           .toList(),

@@ -24,11 +24,17 @@ class TransactionProvider extends _$TransactionProvider {
   TransactionState build({
     required WidgetRef widgetRef,
     TransactionModel? transaction,
+    bool fromFilterTransaction = false,
   }) {
     initWidgets();
     arguementTransaction = transaction;
     databaseHelper = widgetRef.watch(databaseHelperProvider);
-    return TransactionState.initial(eState: EState.ready);
+    return TransactionState.initial(
+      eState: EState.ready,
+      selectedTransactionType: fromFilterTransaction
+          ? null
+          : TransactionType.expense,
+    );
   }
 
   void updateBudgetCheck(bool value) {
